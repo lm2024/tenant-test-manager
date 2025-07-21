@@ -7,7 +7,7 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>bugs</artifactId>
+    <artifactId>my-bugs</artifactId>
     <packaging>jar</packaging>
 
     <name>bugs</name>

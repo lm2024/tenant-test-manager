@@ -10,10 +10,10 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>test-execute</module>
-        <module>product-tenant</module>
-        <module>function-demand</module>
-        <module>bugs</module>
+        <module>my-test-execute</module>
+        <module>my-product-tenant</module>
+        <module>my-function-demand</module>
+        <module>my-bugs</module>
     </modules>
 
 
