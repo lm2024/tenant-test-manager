@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  activemq:
+    image: rmohr/activemq:5.15.9
+    # image: daocloud.io/library/activemq:5.17.6
+    # image: webcenter/activemq:5.17.6
+    container_name: activemq
+    restart: unless-stopped
+    ports:
+      - "61616:61616"   # JMS 端口
+      - "8161:8161"     # 管理控制台端口
+    environment:
+      - ACTIVEMQ_ADMIN_LOGIN=admin
+      - ACTIVEMQ_ADMIN_PASSWORD=admin
+    volumes:
+      - activemq-data:/data
+      - activemq-logs:/var/log/activemq
+
+volumes:
+  activemq-data:
+  activemq-logs: 
