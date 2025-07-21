@@ -2,3 +2,5 @@
 /target/
 /docker/mysql/data
 /docker/mysql
+docker/mysql/data/ib_logfile0
+docker/mysql/data/ibdata1
