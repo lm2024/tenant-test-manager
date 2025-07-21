@@ -1,0 +1,373 @@
+请求网址
+https://www.tapd.cn/api/entity/workflow/get_workflow_info?workspace_id=33142026&program_id=&entity_type=bug&workflow_id=1133142026001000010&entity_id=1133142026001000004
+请求方法
+GET
+
+入参：
+workspace_id=33142026&program_id=&entity_type=bug&workflow_id=1133142026001000010&entity_id=1133142026001000004
+
+
+返参：
+
+{
+    "data": {
+        "all_steps": {
+            "new": {
+                "NameOriginal": "new",
+                "NameAlias": "\u65b0",
+                "Remark": "",
+                "AllowCreateSubStory": "1",
+                "AppendFieldsToSub": "0",
+                "parent_status": "",
+                "type": "status",
+                "first_step": "1",
+                "last_step": "0",
+                "sort": "0",
+                "status_color_id": "3",
+                "status_color": "#28AB80",
+                "is_custom_status_color": "0"
+            },
+            "in_progress": {
+                "NameOriginal": "in_progress",
+                "NameAlias": "\u63a5\u53d7\/\u5904\u7406",
+                "Remark": "",
+                "AllowCreateSubStory": "1",
+                "AppendFieldsToSub": "0",
+                "parent_status": "",
+                "type": "status",
+                "first_step": "0",
+                "last_step": "0",
+                "sort": "0",
+                "status_color_id": "1",
+                "status_color": "#0D68FF",
+                "is_custom_status_color": "0"
+            },
+            "resolved": {
+                "NameOriginal": "resolved",
+                "NameAlias": "\u5df2\u89e3\u51b3",
+                "Remark": "",
+                "AllowCreateSubStory": "1",
+                "AppendFieldsToSub": "0",
+                "parent_status": "",
+                "type": "status",
+                "first_step": "0",
+                "last_step": "0",
+                "sort": "0",
+                "status_color_id": "1",
+                "status_color": "#0D68FF",
+                "is_custom_status_color": "0"
+            },
+            "verified": {
+                "NameOriginal": "verified",
+                "NameAlias": "\u5df2\u9a8c\u8bc1",
+                "Remark": "",
+                "AllowCreateSubStory": "1",
+                "AppendFieldsToSub": "0",
+                "parent_status": "",
+                "type": "status",
+                "first_step": "0",
+                "last_step": "0",
+                "sort": "0",
+                "status_color_id": "1",
+                "status_color": "#0D68FF",
+                "is_custom_status_color": "0"
+            },
+            "reopened": {
+                "NameOriginal": "reopened",
+                "NameAlias": "\u91cd\u65b0\u6253\u5f00",
+                "Remark": "",
+                "AllowCreateSubStory": "1",
+                "AppendFieldsToSub": "0",
+                "parent_status": "",
+                "type": "status",
+                "first_step": "0",
+                "last_step": "0",
+                "sort": "0",
+                "status_color_id": "1",
+                "status_color": "#0D68FF",
+                "is_custom_status_color": "0"
+            },
+            "rejected": {
+                "NameOriginal": "rejected",
+                "NameAlias": "\u5df2\u62d2\u7edd",
+                "Remark": "",
+                "AllowCreateSubStory": "1",
+                "AppendFieldsToSub": "0",
+                "parent_status": "",
+                "type": "status",
+                "first_step": "0",
+                "last_step": "0",
+                "sort": "0",
+                "status_color_id": "1",
+                "status_color": "#0D68FF",
+                "is_custom_status_color": "0"
+            },
+            "closed": {
+                "NameOriginal": "closed",
+                "NameAlias": "\u5df2\u5173\u95ed",
+                "Remark": "",
+                "AllowCreateSubStory": "1",
+                "AppendFieldsToSub": "0",
+                "parent_status": "",
+                "type": "status",
+                "first_step": "0",
+                "last_step": "1",
+                "sort": "0",
+                "status_color_id": "11",
+                "status_color": "#7C8597",
+                "is_custom_status_color": "0"
+            }
+        },
+        "status_pool": [
+            {
+                "sys_name": "new",
+                "cus_name": "\u65b0"
+            },
+            {
+                "sys_name": "in_progress",
+                "cus_name": "\u63a5\u53d7\/\u5904\u7406"
+            },
+            {
+                "sys_name": "resolved",
+                "cus_name": "\u5df2\u89e3\u51b3"
+            },
+            {
+                "sys_name": "verified",
+                "cus_name": "\u5df2\u9a8c\u8bc1"
+            },
+            {
+                "sys_name": "reopened",
+                "cus_name": "\u91cd\u65b0\u6253\u5f00"
+            },
+            {
+                "sys_name": "rejected",
+                "cus_name": "\u5df2\u62d2\u7edd"
+            },
+            {
+                "sys_name": "closed",
+                "cus_name": "\u5df2\u5173\u95ed"
+            }
+        ],
+        "step_relation": [
+            {
+                "sys_name": "closed",
+                "sub_items": []
+            },
+            {
+                "sys_name": "in_progress",
+                "sub_items": []
+            },
+            {
+                "sys_name": "new",
+                "sub_items": []
+            },
+            {
+                "sys_name": "rejected",
+                "sub_items": []
+            },
+            {
+                "sys_name": "reopened",
+                "sub_items": []
+            },
+            {
+                "sys_name": "resolved",
+                "sub_items": []
+            },
+            {
+                "sys_name": "verified",
+                "sub_items": []
+            }
+        ],
+        "diagram": "",
+        "type": "classic",
+        "actions_config": [],
+        "schedule_config": [],
+        "workflow_transitions_info": {
+            "closed": [
+                "reopened"
+            ],
+            "in_progress": [
+                "in_progress",
+                "resolved",
+                "rejected"
+            ],
+            "new": [
+                "new",
+                "in_progress",
+                "rejected"
+            ],
+            "rejected": [
+                "reopened",
+                "rejected",
+                "closed"
+            ],
+            "reopened": [
+                "in_progress",
+                "reopened",
+                "rejected"
+            ],
+            "resolved": [
+                "resolved",
+                "verified",
+                "reopened",
+                "closed"
+            ],
+            "verified": [
+                "verified",
+                "reopened",
+                "closed"
+            ]
+        },
+        "first_steps": {
+            "33142026": {
+                "start": "new"
+            }
+        },
+        "end_steps": {
+            "33142026": {
+                "end": [
+                    "closed"
+                ]
+            }
+        },
+        "status_map": {
+            "33142026": {
+                "new": "\u65b0",
+                "in_progress": "\u63a5\u53d7\/\u5904\u7406",
+                "resolved": "\u5df2\u89e3\u51b3",
+                "verified": "\u5df2\u9a8c\u8bc1",
+                "reopened": "\u91cd\u65b0\u6253\u5f00",
+                "rejected": "\u5df2\u62d2\u7edd",
+                "closed": "\u5df2\u5173\u95ed"
+            }
+        },
+        "status_color": {
+            "33142026": {
+                "new": "0",
+                "in_progress": "0",
+                "resolved": "0",
+                "verified": "0",
+                "reopened": "0",
+                "rejected": "0",
+                "closed": "0"
+            }
+        },
+        "status_color_map": {
+            "1": "#0D68FF",
+            "2": "#00B3EB",
+            "3": "#28AB80",
+            "4": "#70B400",
+            "5": "#FAA23B",
+            "6": "#F7C100",
+            "7": "#7E84FF",
+            "8": "#A576EE",
+            "9": "#FE66A8",
+            "10": "#FF6770",
+            "11": "#7C8597"
+        },
+        "step_map": [],
+        "step_color": [],
+        "step_color_map": {
+            "1": "#0D68FF",
+            "2": "#00B3EB",
+            "3": "#28AB80",
+            "4": "#70B400",
+            "5": "#FAA23B",
+            "6": "#F7C100",
+            "7": "#7E84FF",
+            "8": "#A576EE",
+            "9": "#FE66A8",
+            "10": "#FF6770",
+            "11": "#7C8597",
+            "12": "#FFFFFF"
+        },
+        "enabled_day_measurement": "1"
+    },
+    "meta": {
+        "code": "0",
+        "message": "success"
+    },
+    "timestamp": "1752546323"
+}
+
+
+
+请求网址
+https://www.tapd.cn/api/entity/workitems/get_workitem_status_transfer_history?workspace_id=33142026&program_id=&entity_type=bug&entity_id=1133142026001000004
+请求方法
+GET
+入参：
+workspace_id=33142026&program_id=&entity_type=bug&entity_id=1133142026001000004
+
+返参：
+{
+    "data": [
+        {
+            "change_type": "create_bug",
+            "creator": "TAPD",
+            "created": "2025-07-15 09:47:48",
+            "changes": [
+                {
+                    "field": "\u6807\u9898",
+                    "value_before": "",
+                    "value_after": "\u3010\u793a\u4f8b\u3011\u7f3a\u96771",
+                    "value_before_origin": "",
+                    "value_after_origin": "\u3010\u793a\u4f8b\u3011\u7f3a\u96771",
+                    "html_type": ""
+                },
+                {
+                    "field": "\u521b\u5efa\u4eba",
+                    "value_before": "",
+                    "value_after": "TAPD",
+                    "value_before_origin": "",
+                    "value_after_origin": "TAPD",
+                    "html_type": ""
+                },
+                {
+                    "field": "\u72b6\u6001",
+                    "value_before": "",
+                    "value_after": "\u63a5\u53d7\/\u5904\u7406",
+                    "value_before_origin": "",
+                    "value_after_origin": "in_progress",
+                    "html_type": ""
+                },
+                {
+                    "field": "\u4f18\u5148\u7ea7",
+                    "value_before": "",
+                    "value_after": "high",
+                    "value_before_origin": "",
+                    "value_after_origin": "high",
+                    "html_type": ""
+                },
+                {
+                    "field": "\u4e25\u91cd\u7a0b\u5ea6",
+                    "value_before": "",
+                    "value_after": "serious",
+                    "value_before_origin": "",
+                    "value_after_origin": "serious",
+                    "html_type": ""
+                },
+                {
+                    "field": "\u53d1\u73b0\u7248\u672c",
+                    "value_before": "",
+                    "value_after": "\u7248\u672c1",
+                    "value_before_origin": "",
+                    "value_after_origin": "\u7248\u672c1",
+                    "html_type": ""
+                }
+            ],
+            "current_status": "\u63a5\u53d7\/\u5904\u7406",
+            "current_status_origin": "in_progress",
+            "status_remain_time": "-1752544068",
+            "status_remain_begin_date": "2025-07-15 09:47:48",
+            "status_remain_end_date": "",
+            "entity_type": "bug"
+        }
+    ],
+    "meta": {
+        "code": "0",
+        "message": "success"
+    },
+    "timestamp": "1752546323"
+}
+
