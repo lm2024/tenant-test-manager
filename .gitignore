@@ -4,3 +4,7 @@
 /docker/mysql
 docker/mysql/data/ib_logfile0
 docker/mysql/data/ibdata1
+docker/mysql/data/ib_logfile0
+docker/mysql/data/ib_logfile0
+docker/mysql/data/tenant_center/test_case.ibd
+docker/mysql/data/tenant_center/test_case.frm
