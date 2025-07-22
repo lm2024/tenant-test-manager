@@ -1,6 +1,5 @@
 package com.tenant.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -13,10 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
-    
-    @Autowired
-    private GlobalTenantInterceptor globalTenantInterceptor;
-    
     // Swagger认证配置 - 从配置文件读取
     @Value("${swagger.auth.username:admin}")
     private String swaggerUsername;
@@ -36,12 +31,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        // 注册全局租户拦截器（优先级高）
-        registry.addInterceptor(globalTenantInterceptor)
-                .addPathPatterns("/**")
-                .excludePathPatterns("/swagger-ui.html", "/swagger-resources/**", "/v2/api-docs/**", "/webjars/**", "/doc.html");
-        
-        // 注册Swagger认证拦截器
+        // 只注册Swagger认证拦截器
         registry.addInterceptor(new SwaggerAuthInterceptor())
                 .addPathPatterns("/swagger-ui.html", "/swagger-resources/**", "/v2/api-docs/**", "/webjars/**", "/doc.html");
     }
@@ -50,7 +40,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
      * Swagger认证拦截器
      */
     public class SwaggerAuthInterceptor extends HandlerInterceptorAdapter {
-        
         @Override
         public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
             // 获取Authorization头
