@@ -12,3 +12,4 @@ docker/mysql/data/tenant_center/test_case.frm
 /my-product-tenant/target
 /my-test-execute/target
 *.iml
+/elasticsearch
