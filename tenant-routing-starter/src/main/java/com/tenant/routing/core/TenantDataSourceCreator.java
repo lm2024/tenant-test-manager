@@ -1,7 +1,6 @@
 package com.tenant.routing.core;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
+import com.alibaba.druid.pool.DruidDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,31 +30,46 @@ public class TenantDataSourceCreator {
         return dataSourceCache.computeIfAbsent(tenantId, key -> {
             logger.info("Creating data source for tenant: {}, URL: {}", tenantId, url);
             
-            HikariConfig config = new HikariConfig();
-            config.setJdbcUrl(url);
-            config.setUsername(username);
-            config.setPassword(password);
+            DruidDataSource dataSource = new DruidDataSource();
+            dataSource.setUrl(url);
+            dataSource.setUsername(username);
+            dataSource.setPassword(password);
             
             // 使用默认值或配置值
             if (properties != null) {
-                config.setDriverClassName(properties.getDriverClassName());
-                config.setMaximumPoolSize(properties.getMaxPoolSize());
-                config.setMinimumIdle(properties.getMinIdle());
-                config.setConnectionTimeout(properties.getConnectionTimeout());
-                config.setIdleTimeout(properties.getIdleTimeout());
-                config.setMaxLifetime(properties.getMaxLifetime());
+                dataSource.setDriverClassName(properties.getDriverClassName());
+                dataSource.setMaxActive(properties.getMaxPoolSize());
+                dataSource.setMinIdle(properties.getMinIdle());
+                dataSource.setMaxWait(properties.getConnectionTimeout());
+                dataSource.setTimeBetweenEvictionRunsMillis(properties.getIdleTimeout());
+                dataSource.setMinEvictableIdleTimeMillis(properties.getMaxLifetime());
             } else {
                 // 默认配置
-                config.setDriverClassName("com.mysql.cj.jdbc.Driver");
-                config.setMaximumPoolSize(10);
-                config.setMinimumIdle(2);
-                config.setConnectionTimeout(30000);
-                config.setIdleTimeout(600000);
-                config.setMaxLifetime(1800000);
+                dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+                dataSource.setMaxActive(10);
+                dataSource.setMinIdle(2);
+                dataSource.setMaxWait(30000);
+                dataSource.setTimeBetweenEvictionRunsMillis(60000);
+                dataSource.setMinEvictableIdleTimeMillis(300000);
             }
-            config.setPoolName("TenantPool-" + tenantId);
             
-            return new HikariDataSource(config);
+            // Druid特有配置
+            dataSource.setInitialSize(5);
+            dataSource.setPoolPreparedStatements(true);
+            dataSource.setMaxPoolPreparedStatementPerConnectionSize(20);
+            dataSource.setValidationQuery("SELECT 1");
+            dataSource.setTestWhileIdle(true);
+            dataSource.setTestOnBorrow(false);
+            dataSource.setTestOnReturn(false);
+            
+            try {
+                dataSource.setFilters("stat,wall,slf4j");
+                dataSource.init();
+            } catch (Exception e) {
+                logger.error("Error initializing Druid data source for tenant: " + tenantId, e);
+            }
+            
+            return dataSource;
         });
     }
     
@@ -71,9 +85,9 @@ public class TenantDataSourceCreator {
      */
     public void removeDataSource(String tenantId) {
         DataSource dataSource = dataSourceCache.remove(tenantId);
-        if (dataSource instanceof HikariDataSource) {
+        if (dataSource instanceof DruidDataSource) {
             logger.info("Closing data source for tenant: {}", tenantId);
-            ((HikariDataSource) dataSource).close();
+            ((DruidDataSource) dataSource).close();
         }
     }
     
