@@ -8,3 +8,7 @@ docker/mysql/data/ib_logfile0
 docker/mysql/data/ib_logfile0
 docker/mysql/data/tenant_center/test_case.ibd
 docker/mysql/data/tenant_center/test_case.frm
+/my-function-demand/target
+/my-product-tenant/target
+/my-test-execute/target
+*.iml
