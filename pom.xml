@@ -10,6 +10,8 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>tenant-routing-starter</module>
+        <module>file-import-export-starter</module>
         <module>my-test-execute</module>
         <module>my-product-tenant</module>
         <module>my-function-demand</module>
