@@ -4,16 +4,14 @@ import com.tenant.routing.config.TenantRoutingProperties;
 import com.tenant.routing.core.DynamicDataSource;
 import com.tenant.routing.core.TenantDataSourceCreator;
 import com.tenant.routing.entity.TenantDbInfo;
+import com.tenant.routing.service.RedissonTenantCacheService;
 import com.tenant.routing.service.TenantDbInfoService;
 import com.tenant.routing.service.TenantRegistryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -21,7 +19,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 租户数据库信息服务实现
@@ -42,8 +39,8 @@ public class TenantDbInfoServiceImpl implements TenantDbInfoService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
     
-    // 租户信息缓存
-    private final Map<String, TenantDbInfo> tenantCache = new ConcurrentHashMap<>();
+    @Autowired(required = false)
+    private RedissonTenantCacheService redissonTenantCacheService;
     
     /**
      * 租户数据库信息行映射器
@@ -64,12 +61,14 @@ public class TenantDbInfoServiceImpl implements TenantDbInfoService {
     }
     
     @Override
-    // 使用内存缓存，避免频繁查询数据库
     public TenantDbInfo findByTenantId(String tenantId) {
-        // 先从缓存中获取
-        TenantDbInfo cachedTenant = tenantCache.get(tenantId);
-        if (cachedTenant != null) {
-            return cachedTenant;
+        // 先从Redis缓存中获取
+        if (redissonTenantCacheService != null) {
+            TenantDbInfo cachedTenant = redissonTenantCacheService.getTenant(tenantId);
+            if (cachedTenant != null) {
+                logger.debug("从Redis缓存获取租户信息: {}", tenantId);
+                return cachedTenant;
+            }
         }
         
         try {
@@ -79,12 +78,15 @@ public class TenantDbInfoServiceImpl implements TenantDbInfoService {
             
             if (!tenants.isEmpty()) {
                 TenantDbInfo tenantDbInfo = tenants.get(0);
-                // 放入缓存
-                tenantCache.put(tenantId, tenantDbInfo);
+                // 放入Redis缓存
+                if (redissonTenantCacheService != null) {
+                    redissonTenantCacheService.cacheTenant(tenantDbInfo);
+                    logger.debug("租户信息已缓存到Redis: {}", tenantId);
+                }
                 return tenantDbInfo;
             }
         } catch (Exception e) {
-            logger.error("Failed to find tenant by ID: " + tenantId, e);
+            logger.error("查询租户信息失败: " + tenantId, e);
         }
         
         return null;
@@ -96,14 +98,15 @@ public class TenantDbInfoServiceImpl implements TenantDbInfoService {
             String sql = "SELECT * FROM tenant_db_info";
             List<TenantDbInfo> tenants = jdbcTemplate.query(sql, new TenantDbInfoRowMapper());
             
-            // 更新缓存
-            for (TenantDbInfo tenant : tenants) {
-                tenantCache.put(tenant.getTenantId(), tenant);
+            // 更新Redis缓存
+            if (redissonTenantCacheService != null && !tenants.isEmpty()) {
+                redissonTenantCacheService.cacheTenants(tenants);
+                logger.debug("已将所有租户信息缓存到Redis，共 {} 个", tenants.size());
             }
             
             return tenants;
         } catch (Exception e) {
-            logger.error("Failed to find all tenants", e);
+            logger.error("查询所有租户信息失败", e);
             return java.util.Collections.emptyList();
         }
     }
@@ -139,8 +142,10 @@ public class TenantDbInfoServiceImpl implements TenantDbInfoService {
             // 刷新数据源
             refreshTenantDataSource(tenantDbInfo.getTenantId());
             
-            // 更新缓存
-            tenantCache.put(tenantDbInfo.getTenantId(), tenantDbInfo);
+            // 更新Redis缓存
+            if (redissonTenantCacheService != null) {
+                redissonTenantCacheService.cacheTenant(tenantDbInfo);
+            }
             
             return tenantDbInfo;
         } catch (Exception e) {
@@ -164,8 +169,10 @@ public class TenantDbInfoServiceImpl implements TenantDbInfoService {
             dynamicDataSource.setTargetDataSources(targetDataSources);
             dynamicDataSource.afterPropertiesSet();
             
-            // 从缓存中移除
-            tenantCache.remove(tenantId);
+            // 从Redis缓存中移除
+            if (redissonTenantCacheService != null) {
+                redissonTenantCacheService.removeTenant(tenantId);
+            }
             
             logger.info("Deleted tenant: {}", tenantId);
         } catch (Exception e) {
