@@ -11,7 +11,7 @@ import com.common.fileio.processor.DataProcessor;
 import com.common.fileio.processor.ProcessorContext;
 import com.common.fileio.queue.TaskQueueManager;
 import com.common.fileio.util.FileUtils;
-import com.tenant.config.dynamic.DataSourceContextHolder;
+import com.tenant.routing.core.TenantContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -138,7 +138,7 @@ public class ImportService {
         try {
             // 设置租户上下文
             String tenantId = task.getTenantId();
-            DataSourceContextHolder.set(tenantId);
+            TenantContextHolder.setTenantId(tenantId);
             
             // 更新任务状态
             taskQueueManager.updateProgress(task.getTaskId(), 0, "RUNNING", "开始处理导入任务");
@@ -169,14 +169,14 @@ public class ImportService {
             taskQueueManager.updateProgress(task.getTaskId(), 100, "SUCCESS", "导入完成");
             
             // 清理租户上下文
-            DataSourceContextHolder.clear();
+            TenantContextHolder.clear();
             
         } catch (Exception e) {
             log.error("处理导入任务失败: {}", task.getTaskId(), e);
             taskQueueManager.updateProgress(task.getTaskId(), 0, "FAILED", "导入失败: " + e.getMessage());
             
             // 清理租户上下文
-            DataSourceContextHolder.clear();
+            TenantContextHolder.clear();
         }
     }
     

@@ -2,6 +2,27 @@ server:
   port: 8082
   servlet:
     context-path: /
+    
+# 文件导入导出配置
+file:
+  import:
+    export:
+      enabled: true
+      import:
+        max-batch-size: 20000
+        max-files: 20
+        concurrent: 1
+      export:
+        max-batch-size: 50000
+        concurrent: 10
+      path:
+        upload-dir: C:\\Users\\lm\\Downloads\\uploads
+        export-dir: C:\\Users\\lm\\Downloads\\exports
+      redis:
+        key-prefix: "file-io"
+        task-ttl: 86400
+      swagger:
+        enabled: false # 确保禁用 Swagger
 
 spring:
   main:
@@ -30,6 +51,10 @@ spring:
           connectionPoolSize: 64
           connectTimeout: 10000
           timeout: 3000
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 200MB
   jpa:
     hibernate:
       ddl-auto: none

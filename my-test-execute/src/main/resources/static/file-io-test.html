@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件导入导出测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        h1 {
+            color: #333;
+        }
+        h2 {
+            color: #555;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        input[type=text], input[type=file] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            min-height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h1>文件导入导出测试</h1>
+    
+    <div class="section">
+        <h2>1. 文件导入</h2>
+        <form id="importForm">
+            <div>
+                <label for="importFiles">选择文件：</label>
+                <input type="file" id="importFiles" name="files" multiple>
+            </div>
+            <div>
+                <label for="tenantId">租户ID：</label>
+                <input type="text" id="tenantId" name="tenantId" value="tenant1">
+            </div>
+            <button type="button" onclick="importFiles()">导入文件</button>
+        </form>
+        <div class="result" id="importResult">
+            <p>导入结果将显示在这里...</p>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>2. 文件导出</h2>
+        <form id="exportForm">
+            <div>
+                <label for="exportTenantId">租户ID：</label>
+                <input type="text" id="exportTenantId" name="tenantId" value="tenant1">
+            </div>
+            <button type="button" onclick="exportFiles()">导出Excel文件</button>
+            <button type="button" onclick="exportCsvFiles()">导出CSV文件（修复乱码）</button>
+        </form>
+        <div class="result" id="exportResult">
+            <p>导出结果将显示在这里...</p>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>3. 任务进度查询</h2>
+        <form id="progressForm">
+            <div>
+                <label for="taskId">任务ID：</label>
+                <input type="text" id="taskId" name="taskId" placeholder="输入任务ID">
+            </div>
+            <button type="button" onclick="checkProgress()">查询进度</button>
+        </form>
+        <div class="result" id="progressResult">
+            <p>进度结果将显示在这里...</p>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>4. 文件下载</h2>
+        <form id="downloadForm">
+            <div>
+                <label for="downloadTaskId">任务ID：</label>
+                <input type="text" id="downloadTaskId" name="taskId" placeholder="输入任务ID">
+            </div>
+            <button type="button" onclick="downloadFile()">下载文件</button>
+        </form>
+    </div>
+    
+    <script>
+        // 导入文件
+        function importFiles() {
+            const formData = new FormData();
+            const files = document.getElementById('importFiles').files;
+            const tenantId = document.getElementById('tenantId').value;
+            
+            if (files.length === 0) {
+                alert('请选择文件');
+                return;
+            }
+            
+            for (let i = 0; i < files.length; i++) {
+                formData.append('files', files[i]);
+            }
+            
+            fetch('/api/test/file-io/import', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Tenant-ID': tenantId
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('importResult').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            })
+            .catch(error => {
+                document.getElementById('importResult').innerHTML = '<p>错误: ' + error.message + '</p>';
+            });
+        }
+        
+        // 导出文件
+        function exportFiles() {
+            const tenantId = document.getElementById('exportTenantId').value;
+            
+            fetch('/api/test/file-io/export', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Tenant-ID': tenantId
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('exportResult').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            })
+            .catch(error => {
+                document.getElementById('exportResult').innerHTML = '<p>错误: ' + error.message + '</p>';
+            });
+        }
+        
+        // 查询进度
+        function checkProgress() {
+            const taskId = document.getElementById('taskId').value;
+            
+            if (!taskId) {
+                alert('请输入任务ID');
+                return;
+            }
+            
+            fetch('/api/test/file-io/progress/' + taskId)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('progressResult').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            })
+            .catch(error => {
+                document.getElementById('progressResult').innerHTML = '<p>错误: ' + error.message + '</p>';
+            });
+        }
+        
+        // 下载文件
+        function downloadFile() {
+            const taskId = document.getElementById('downloadTaskId').value;
+            
+            if (!taskId) {
+                alert('请输入任务ID');
+                return;
+            }
+            
+            window.location.href = '/api/test/file-io/download/' + taskId;
+        }
+    </script>
+</body>
+</html>

@@ -49,6 +49,11 @@ public class ImportExportTask implements Serializable {
      * 任务参数
      */
     private Map<String, Object> params;
+
+    /**
+     * 导出文件类型（excel/csv/txt）
+     */
+    private String fileType = "excel";
     
     /**
      * 创建时间

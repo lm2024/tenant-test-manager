@@ -4,11 +4,9 @@ import com.common.fileio.exception.FileOperationException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.QuoteMode;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,20 +36,28 @@ public class CsvUtils {
                 file.getParentFile().mkdirs();
             }
             
-            // 创建CSV格式
-            CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
+            // 创建CSV格式（使用Excel兼容格式）
+            CSVFormat csvFormat = CSVFormat.EXCEL.builder()
                     .setHeader(headers.toArray(new String[0]))
+                    .setQuoteMode(QuoteMode.MINIMAL)
                     .build();
             
-            // 写入CSV
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8));
+            // 写入CSV（添加UTF-8 BOM以解决中文乱码问题）
+            try (FileOutputStream fos = new FileOutputStream(file);
+                 OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
+                 BufferedWriter writer = new BufferedWriter(osw);
                  CSVPrinter printer = new CSVPrinter(writer, csvFormat)) {
+                
+                // 写入UTF-8 BOM
+                fos.write(new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF});
                 
                 // 写入数据
                 for (Map<String, Object> data : dataList) {
                     List<Object> row = new ArrayList<>();
                     for (String header : headers) {
-                        row.add(data.get(header));
+                        Object value = data.get(header);
+                        // 处理null值和特殊字符
+                        row.add(value != null ? value.toString() : "");
                     }
                     printer.printRecord(row);
                 }
@@ -85,14 +91,20 @@ public class CsvUtils {
                 file.getParentFile().mkdirs();
             }
             
-            // 创建CSV格式
-            CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
+            // 创建CSV格式（使用Excel兼容格式）
+            CSVFormat csvFormat = CSVFormat.EXCEL.builder()
                     .setHeader(headers.toArray(new String[0]))
+                    .setQuoteMode(QuoteMode.MINIMAL)
                     .build();
             
-            // 写入CSV
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8));
+            // 写入CSV（添加UTF-8 BOM以解决中文乱码问题）
+            try (FileOutputStream fos = new FileOutputStream(file);
+                 OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
+                 BufferedWriter writer = new BufferedWriter(osw);
                  CSVPrinter printer = new CSVPrinter(writer, csvFormat)) {
+                
+                // 写入UTF-8 BOM
+                fos.write(new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF});
                 
                 // 分批获取数据
                 int page = 0;
@@ -103,7 +115,9 @@ public class CsvUtils {
                     for (Map<String, Object> data : batch) {
                         List<Object> row = new ArrayList<>();
                         for (String header : headers) {
-                            row.add(data.get(header));
+                            Object value = data.get(header);
+                            // 处理null值和特殊字符
+                            row.add(value != null ? value.toString() : "");
                         }
                         printer.printRecord(row);
                     }

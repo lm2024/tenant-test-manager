@@ -16,3 +16,4 @@ docker/mysql/data/tenant_center/test_case.frm
 /docker/elasticsearch
 /docker/mysql
 /tenant-routing-starter/target
+/file-import-export-starter/target

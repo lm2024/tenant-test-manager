@@ -6,8 +6,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
-import java.io.FileReader;
-import java.io.Reader;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -36,7 +35,7 @@ public abstract class CsvDataProcessor<T> extends AbstractDataProcessor<T> {
         
         List<T> result = new ArrayList<>();
         
-        try (Reader reader = new FileReader(filePath, StandardCharsets.UTF_8);
+        try (Reader reader = new InputStreamReader(new FileInputStream(filePath), StandardCharsets.UTF_8);
              CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader())) {
             
             Map<String, Integer> headerMap = csvParser.getHeaderMap();

@@ -16,6 +16,8 @@ file:
       redis:
         key-prefix: "file-io"
         task-ttl: 86400
+      swagger:
+        enabled: true
         
 # 线程池配置
 spring:

@@ -5,6 +5,7 @@ import com.tenant.routing.core.TenantDataSourceCreator;
 import com.tenant.routing.interceptor.GlobalTenantInterceptor;
 import com.tenant.routing.interceptor.TenantHeaderInterceptor;
 import com.tenant.routing.interceptor.TenantSwitchAspect;
+import com.tenant.routing.interceptor.TenantSwitchHeaderAspect;
 import com.tenant.routing.service.TenantDbInfoService;
 import com.tenant.routing.service.TenantRegistryService;
 import com.tenant.routing.service.impl.TenantDbInfoServiceImpl;
@@ -78,6 +79,11 @@ public class TenantAutoConfiguration implements WebMvcConfigurer {
     @Bean
     public TenantSwitchAspect tenantSwitchAspect() {
         return new TenantSwitchAspect();
+    }
+    
+    @Bean
+    public TenantSwitchHeaderAspect tenantSwitchHeaderAspect() {
+        return new TenantSwitchHeaderAspect();
     }
     
     @Bean
