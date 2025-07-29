@@ -5,9 +5,13 @@
 
     <!-- 项目基本信息 -->
     <groupId>com.example</groupId>
-    <artifactId>multi-tenant-test-management</artifactId>
+    <artifactId>test-management</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <modules>
         <module>file-import-export-starter</module>
@@ -19,5 +23,4 @@
         <module>my-bugs</module>
     </modules>
 
-
-</project> 
+</project>

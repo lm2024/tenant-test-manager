@@ -108,11 +108,6 @@
       <artifactId>spring-boot-starter-data-redis</artifactId>
     </dependency>
     <!-- Hutool（可选，推荐） -->
-    <dependency>
-      <groupId>cn.hutool</groupId>
-      <artifactId>hutool-all</artifactId>
-      <version>5.8.22</version>
-    </dependency>
   </dependencies>
 
   <build>
