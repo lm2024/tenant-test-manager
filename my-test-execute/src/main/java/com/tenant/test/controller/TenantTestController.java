@@ -2,6 +2,9 @@ package com.tenant.test.controller;
 
 import com.tenant.routing.annotation.TenantSwitch;
 import com.tenant.routing.core.TenantContextHolder;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,12 +18,14 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/api/tenant-test")
+@Tag(name = "租户测试", description = "租户路由和切换测试接口")
 public class TenantTestController {
 
     /**
      * 获取当前租户ID
      */
     @GetMapping("/current")
+    @Operation(summary = "获取当前租户", description = "获取当前请求的租户ID")
     public Map<String, Object> getCurrentTenant() {
         String tenantId = TenantContextHolder.getTenantId();
         
@@ -36,6 +41,7 @@ public class TenantTestController {
      */
     @TenantSwitch("tenant001")
     @GetMapping("/fixed")
+    @Operation(summary = "固定租户测试", description = "使用注解切换到固定租户tenant001")
     public Map<String, Object> getFixedTenant() {
         String tenantId = TenantContextHolder.getTenantId();
         
@@ -51,7 +57,8 @@ public class TenantTestController {
      * 动态切换租户
      */
     @GetMapping("/switch/{tenantId}")
-    public Map<String, Object> switchTenant(@PathVariable String tenantId) {
+    @Operation(summary = "动态切换租户", description = "动态切换到指定的租户ID")
+    public Map<String, Object> switchTenant(@PathVariable @Parameter(description = "租户ID") String tenantId) {
         String originalTenant = TenantContextHolder.getTenantId();
         
         Map<String, Object> result = new HashMap<>();

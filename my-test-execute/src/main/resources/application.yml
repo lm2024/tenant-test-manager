@@ -3,6 +3,39 @@ server:
   servlet:
     context-path: /
     
+# Knife4j配置
+knife4j:
+  enable: true
+  setting:
+    language: zh-CN
+    enable-swagger-models: true
+    enable-document-manage: true
+    swagger-model-name: 实体类列表
+    enable-version: false
+    enable-reload-cache-parameter: false
+    enable-after-script: true
+    enable-filter-multipart-api-method-type: POST
+    enable-filter-multipart-apis: false
+    enable-request-cache: true
+    enable-host: false
+    enable-host-text: ""
+    enable-home-custom: false
+    home-custom-path: ""
+    enable-search: true
+    enable-footer: false
+    enable-footer-custom: true
+    footer-custom-content: Apache License 2.0 | Copyright  2024-[测试执行微服务]
+    enable-dynamic-parameter: false
+    enable-debug: true
+    enable-open-api: false
+    enable-group: true
+  cors: false
+  production: false
+  basic:
+    enable: false
+    username: test
+    password: 12313
+
 # 文件导入导出配置
 file:
   import:
@@ -74,8 +107,13 @@ tenant:
     exclude-paths: 
       - /swagger-ui.html
       - /doc.html
+      - /swagger-resources/**
+      - /v3/api-docs/**
+      - /webjars/**
       - /actuator/**
       - /api/public/**
+      - /knife4j/**
+      - /favicon.ico
     tenant-center:
       url: jdbc:mysql://localhost:3306/tenant_center?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
       username: root

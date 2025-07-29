@@ -1,8 +1,9 @@
-version : '3.8'
+# version : '3.8'
 services:
   ruoyi-mysql:
     container_name: ruoyi-mysql
     image: mysql:5.7
+    platform: linux/amd64  # M1/M2 必选
     build:
       context: ./mysql
     ports:

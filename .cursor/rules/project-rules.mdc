@@ -1,4 +1,6 @@
 ---
+description: 
+globs: 
 alwaysApply: true
 ---
 ## 我的环境
@@ -39,7 +41,17 @@ flowable_6.x、jimu_1.x、
 ### 动态调度：
 quartz、
 ### 接口展示：
-swagger_2.x、knife4j_2.x、
+knife4j
+以下是一些常见的Spring Boot版本及其对应的Knife4j版本兼容推荐：
+
+Spring Boot版本	Knife4j Swagger2规范	Knife4j OpenAPI3规范
+1.5.x~2.0.0	<Knife4j 2.0.0	>=Knife4j 4.0.0
+2.0~2.2	Knife4j 2.0.0 ~ 2.0.6	>=Knife4j 4.0.0
+2.2.x~2.4.0	Knife4j 2.0.6 ~ 2.0.9	>=Knife4j 4.0.0
+2.4.0~2.7.x	>=Knife4j 4.0.0	>=Knife4j 4.0.0
+>= 3.0	>=Knife4j 4.0.0	>=Knife4j 4.0.0
+
+
 ### 监控：
 Skywalking、Prometheus、Grafana、
 ## 通用（如果用到再去生成）
@@ -87,4 +99,7 @@ logback中包含了普通日志打印，控制台日志打印，还会包含elk�
 
 
 
+
+### knife4j 需求
+@/my-test-execute     工程中无损引入 knife4j 进行安装   @project-rules.mdc    参考文档中描述的版本对照表进行修改。springboot2.7.0. 这是现在的工程中的版本。 请参考互联网中的最佳实践进行代码的改造。我不需要你写文档。也不需要给我讲解的很详细。 我只需要你把代码修改。不影响现有的功能。 改动最小化，配置最小化完成目标。修改完成后我自己进行测试验证。 你只需要最小改动。确保是好用的。改动后进行检查确认，明确目标的完整度。不要给我带来 bug 。
 

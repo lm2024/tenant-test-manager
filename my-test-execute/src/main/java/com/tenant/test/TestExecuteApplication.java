@@ -5,9 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
-@SpringBootApplication(scanBasePackages = {"com.tenant.test", "com.common.fileio", "com.common.segmentid"})
-@EnableJpaRepositories(basePackages = {"com.tenant.test.repository", "com.common.segmentid.repository"})
-@EntityScan(basePackages = {"com.tenant.test.entity", "com.common.segmentid.entity"})
+@SpringBootApplication(scanBasePackages = {"com.tenant.test", "com.common.fileio"})
+@EnableJpaRepositories(basePackages = {"com.tenant.test.repository"})
+@EntityScan(basePackages = {"com.tenant.test.entity"})
 /**
  * 测试执行微服务启动类
  */

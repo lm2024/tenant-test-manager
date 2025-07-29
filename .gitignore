@@ -18,3 +18,4 @@ docker/mysql/data/tenant_center/test_case.frm
 /tenant-routing-starter/target
 /file-import-export-starter/target
 /segment-id-generator-starter/target
+/my-bugs/target
