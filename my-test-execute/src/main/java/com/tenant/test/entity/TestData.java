@@ -1,58 +1,30 @@
 package com.tenant.test.entity;
 
+import lombok.Data;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-/**
- * 测试数据实体
- */
 @Entity
 @Table(name = "test_data")
+@Data
 public class TestData {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    private String name;
+    @Column(name = "data_name")
+    private String dataName;
     
-    @Column(name = "tenant_id")
-    private String tenantId;
+    @Column(name = "data_value")
+    private String dataValue;
     
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    @Column(name = "data_type")
+    private String dataType;
     
-    // Getters and Setters
+    @Column(name = "create_time")
+    private LocalDateTime createTime;
     
-    public Long getId() {
-        return id;
-    }
-    
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
-    public String getName() {
-        return name;
-    }
-    
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-    public String getTenantId() {
-        return tenantId;
-    }
-    
-    public void setTenantId(String tenantId) {
-        this.tenantId = tenantId;
-    }
-    
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-    
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
+    @Column(name = "update_time")
+    private LocalDateTime updateTime;
 }

@@ -1,3 +1,2 @@
-# Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.example.elasticsearch.config.ElasticsearchCrudAutoConfiguration
+com.tenant.es.config.ElasticsearchCrudAutoConfiguration

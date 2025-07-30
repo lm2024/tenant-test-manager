@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.common.fileio.config.FileImportExportAutoConfiguration
+com.tenant.fileio.config.FileImportExportAutoConfiguration

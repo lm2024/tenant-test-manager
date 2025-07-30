@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: 8083
   servlet:
     context-path: /
     
@@ -90,11 +90,11 @@ spring:
       max-request-size: 200MB
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: true
+      ddl-auto: none  # 暂时禁用自动DDL，避免与动态数据源冲突
+    show-sql: false  # 减少日志输出
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
         dialect: org.hibernate.dialect.MySQL8Dialect
     open-in-view: false
     database-platform: org.hibernate.dialect.MySQL8Dialect
@@ -184,7 +184,6 @@ logging:
   level:
     root: INFO
     com.tenant: DEBUG
-    com.example.elasticsearch: DEBUG
     org.elasticsearch: INFO
     org.springframework.data.elasticsearch: DEBUG
     org.hibernate.SQL: DEBUG
