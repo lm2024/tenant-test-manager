@@ -1,4 +1,4 @@
-package org.example.config;
+package com.tenant.test.config;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -33,7 +33,6 @@ public class JpaConfig {
         em.setDataSource(dataSource);
         em.setPackagesToScan(
             "com.tenant.test.entity",
-            "org.example.entity", 
             "com.common.segmentid.entity"
         );
 
@@ -61,4 +60,4 @@ public class JpaConfig {
         transactionManager.setEntityManagerFactory(entityManagerFactory);
         return transactionManager;
     }
-}
+} 

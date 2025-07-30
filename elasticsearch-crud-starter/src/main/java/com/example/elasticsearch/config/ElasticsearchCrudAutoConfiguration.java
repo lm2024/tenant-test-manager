@@ -2,7 +2,6 @@ package com.example.elasticsearch.config;
 
 import com.example.elasticsearch.service.*;
 import com.example.elasticsearch.service.impl.*;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -29,7 +28,6 @@ import java.util.concurrent.Executor;
  * 
  * @author Kiro
  */
-@Slf4j
 @Configuration
 @EnableRetry
 @EnableAsync
@@ -37,6 +35,8 @@ import java.util.concurrent.Executor;
 @EnableConfigurationProperties(ElasticsearchCrudProperties.class)
 @ConditionalOnProperty(prefix = "elasticsearch.crud", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class ElasticsearchCrudAutoConfiguration {
+
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(ElasticsearchCrudAutoConfiguration.class);
 
     private final ElasticsearchCrudProperties properties;
 

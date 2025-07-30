@@ -1,12 +1,12 @@
-package org.example.controller;
+package com.tenant.test.controller;
 
 import com.example.elasticsearch.service.ElasticsearchCrudService;
 import com.example.elasticsearch.service.ElasticsearchIndexService;
+import com.tenant.test.entity.TestDocument;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import org.example.entity.TestDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -410,4 +410,4 @@ public class ElasticsearchTestController {
             return ResponseEntity.status(500).body(result);
         }
     }
-}
+} 

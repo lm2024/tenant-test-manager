@@ -1,4 +1,4 @@
-package org.example.entity;
+package com.tenant.test.entity;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -49,4 +49,4 @@ public class TestDocument {
 
     @Field(type = FieldType.Boolean)
     private Boolean active;
-}
+} 

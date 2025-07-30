@@ -140,44 +140,8 @@ tenant:
     cache-expire-time: 604800  # 7天，单位秒
     batch-size: 100
 
-# Elasticsearch CRUD 配置
-elasticsearch:
-  crud:
-    enabled: true
-    hosts:
-      - localhost:9200
-    # 如果ES有认证，请取消注释并配置
-    # username: elastic
-    # password: password
-    connection-timeout: 5000
-    socket-timeout: 60000
-    request-timeout: 60000
-    
-    # 同步配置
-    sync:
-      batch-size: 1000
-      thread-pool-size: 10
-      retry-times: 3
-    
-    # 队列配置
-    queue:
-      type: redis
-      redis:
-        key-prefix: "es:sync:"
-        max-retry: 3
-        consumer-threads: 5
-    
-    # 租户配置
-    tenant:
-      enabled: true
-      index-prefix: "tenant_"
-      auto-create-index: true
-    
-    # 索引配置
-    index:
-      use-keyword-as-default: true
-      default-shards: 1
-      default-replicas: 0
+# Elasticsearch 配置（由 elasticsearch-crud-starter 提供）
+# 详细配置请参考 elasticsearch-crud-starter/src/main/resources/application-elasticsearch.yml
 
 # 日志配置
 logging:

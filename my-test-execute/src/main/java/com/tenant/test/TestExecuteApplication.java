@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 @SpringBootApplication(
     scanBasePackages = {
         "com.tenant.test",           // 您原有的业务包
-        "org.example",               // Elasticsearch测试控制器包
         "com.example.elasticsearch", // Elasticsearch CRUD组件包
         "com.common.fileio",         // 文件导入导出组件包
         "com.common.segmentid"       // 号段ID生成组件包
@@ -20,7 +19,6 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 })
 @EntityScan(basePackages = {
     "com.tenant.test.entity", 
-    "org.example.entity",
     "com.common.segmentid.entity"
 })
 /**
