@@ -3,7 +3,9 @@ package com.tenant.test.processor;
 import com.common.fileio.processor.DataProcessor;
 import com.tenant.test.entity.TestCase;
 import com.tenant.test.repository.TestCaseRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -15,10 +17,12 @@ import java.util.Map;
  * 测试用例数据处理器
  * 用于处理测试用例的导入导出
  */
+@Slf4j
 @Component
+@ConditionalOnBean(name = "entityManagerFactory")
 public class TestCaseDataProcessor implements DataProcessor<TestCase> {
 
-    @Autowired
+    @Autowired(required = false)
     private TestCaseRepository testCaseRepository;
 
     @Override
@@ -34,7 +38,11 @@ public class TestCaseDataProcessor implements DataProcessor<TestCase> {
     @Override
     public void saveBatch(List<TestCase> entities) {
         // 批量保存测试用例数据
-        testCaseRepository.saveAll(entities);
+        if (testCaseRepository != null) {
+            testCaseRepository.saveAll(entities);
+        } else {
+            log.warn("TestCaseRepository未初始化，跳过保存操作");
+        }
     }
 
     @Override

@@ -94,14 +94,19 @@
       </exclusions>
     </dependency>
     
-    <!-- 号段ID生成组件 - 暂时注释，因为依赖不存在 -->
-    <!--
+    <!-- Elasticsearch CRUD 组件 -->
+    <dependency>
+      <groupId>com.example</groupId>
+      <artifactId>elasticsearch-crud-starter</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    
+    <!-- 号段ID生成组件 -->
     <dependency>
       <groupId>com.common</groupId>
       <artifactId>segment-id-generator-starter</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
-    -->
   </dependencies>
 
   <build>

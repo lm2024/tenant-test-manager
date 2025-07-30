@@ -1,0 +1,74 @@
+{
+  "properties": [
+    {
+      "name": "elasticsearch.crud.enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否启用Elasticsearch CRUD功能",
+      "defaultValue": true
+    },
+    {
+      "name": "elasticsearch.crud.hosts",
+      "type": "java.util.List<java.lang.String>",
+      "description": "Elasticsearch集群节点地址列表",
+      "defaultValue": ["localhost:9200"]
+    },
+    {
+      "name": "elasticsearch.crud.username",
+      "type": "java.lang.String",
+      "description": "Elasticsearch用户名"
+    },
+    {
+      "name": "elasticsearch.crud.password",
+      "type": "java.lang.String",
+      "description": "Elasticsearch密码"
+    },
+    {
+      "name": "elasticsearch.crud.connection-timeout",
+      "type": "java.lang.Integer",
+      "description": "连接超时时间（毫秒）",
+      "defaultValue": 5000
+    },
+    {
+      "name": "elasticsearch.crud.socket-timeout",
+      "type": "java.lang.Integer",
+      "description": "Socket超时时间（毫秒）",
+      "defaultValue": 60000
+    },
+    {
+      "name": "elasticsearch.crud.sync.batch-size",
+      "type": "java.lang.Integer",
+      "description": "同步批处理大小",
+      "defaultValue": 1000
+    },
+    {
+      "name": "elasticsearch.crud.sync.thread-pool-size",
+      "type": "java.lang.Integer",
+      "description": "同步线程池大小",
+      "defaultValue": 10
+    },
+    {
+      "name": "elasticsearch.crud.queue.type",
+      "type": "java.lang.String",
+      "description": "队列类型：redis, activemq",
+      "defaultValue": "redis"
+    },
+    {
+      "name": "elasticsearch.crud.tenant.enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否启用租户支持",
+      "defaultValue": true
+    },
+    {
+      "name": "elasticsearch.crud.tenant.index-prefix",
+      "type": "java.lang.String",
+      "description": "租户索引前缀",
+      "defaultValue": "tenant_"
+    },
+    {
+      "name": "elasticsearch.crud.index.use-keyword-as-default",
+      "type": "java.lang.Boolean",
+      "description": "是否使用keyword类型作为默认字符串类型",
+      "defaultValue": true
+    }
+  ]
+}

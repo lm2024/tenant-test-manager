@@ -65,7 +65,7 @@ spring:
     name: my-test-execute
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/tenant_center?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/tenant_center?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
     username: root
     password: password
   redis:
@@ -90,13 +90,14 @@ spring:
       max-request-size: 200MB
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
         format_sql: true
-        dialect: org.hibernate.dialect.MySQL57Dialect
+        dialect: org.hibernate.dialect.MySQL8Dialect
     open-in-view: false
+    database-platform: org.hibernate.dialect.MySQL8Dialect
 
 # 租户路由配置
 tenant:
@@ -115,7 +116,7 @@ tenant:
       - /knife4j/**
       - /favicon.ico
     tenant-center:
-      url: jdbc:mysql://localhost:3306/tenant_center?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+      url: jdbc:mysql://localhost:3306/tenant_center?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
       username: root
       password: password
     max-pool-size: 10
@@ -139,10 +140,52 @@ tenant:
     cache-expire-time: 604800  # 7天，单位秒
     batch-size: 100
 
+# Elasticsearch CRUD 配置
+elasticsearch:
+  crud:
+    enabled: true
+    hosts:
+      - localhost:9200
+    # 如果ES有认证，请取消注释并配置
+    # username: elastic
+    # password: password
+    connection-timeout: 5000
+    socket-timeout: 60000
+    request-timeout: 60000
+    
+    # 同步配置
+    sync:
+      batch-size: 1000
+      thread-pool-size: 10
+      retry-times: 3
+    
+    # 队列配置
+    queue:
+      type: redis
+      redis:
+        key-prefix: "es:sync:"
+        max-retry: 3
+        consumer-threads: 5
+    
+    # 租户配置
+    tenant:
+      enabled: true
+      index-prefix: "tenant_"
+      auto-create-index: true
+    
+    # 索引配置
+    index:
+      use-keyword-as-default: true
+      default-shards: 1
+      default-replicas: 0
+
 # 日志配置
 logging:
   level:
     root: INFO
     com.tenant: DEBUG
+    com.example.elasticsearch: DEBUG
+    org.elasticsearch: INFO
+    org.springframework.data.elasticsearch: DEBUG
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE

@@ -1,6 +1,6 @@
 package com.tenant.test.controller;
 
-// import com.common.segmentid.service.SegmentIdService;
+import com.common.segmentid.service.SegmentIdService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -15,8 +15,8 @@ import java.util.List;
 @RequestMapping("/test/segmentid")
 @Tag(name = "号段ID生成", description = "号段ID生成相关接口")
 public class SegmentIdTestController {
-    // @Autowired
-    // private SegmentIdService segmentIdService;
+    @Autowired
+    private SegmentIdService segmentIdService;
     
     @Autowired
     private RedissonClient redissonClient;
@@ -26,8 +26,7 @@ public class SegmentIdTestController {
     public String generateId(
             @Parameter(description = "租户ID") @PathVariable String tenantId, 
             @Parameter(description = "业务类型") @PathVariable String bizType) {
-        // return segmentIdService.generateId(tenantId, bizType);
-        return "ID生成功能暂未实现";
+        return segmentIdService.generateId(tenantId, bizType);
     }
 
     @GetMapping("/generateBatch/{tenantId}/{bizType}/{count}")
@@ -36,8 +35,7 @@ public class SegmentIdTestController {
             @Parameter(description = "租户ID") @PathVariable String tenantId, 
             @Parameter(description = "业务类型") @PathVariable String bizType, 
             @Parameter(description = "生成数量") @PathVariable int count) {
-        // return segmentIdService.generateBatchIds(tenantId, bizType, count);
-        return Arrays.asList("批量ID生成功能暂未实现");
+        return segmentIdService.generateBatchIds(tenantId, bizType, count);
     }
 
     @GetMapping("/info/{tenantId}/{bizType}")

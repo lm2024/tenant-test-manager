@@ -4,7 +4,7 @@ globs:
 alwaysApply: true
 ---
 ## 我的环境
-Windows11 中国
+macos 操作系统，中国，保持中文对话
 docker desktop 新版
 docker compose 新版
 jdk8
@@ -12,11 +12,11 @@ jdk8
 
 
 ## 你的角色
-你是一名优秀的java架构师，懂互联网，懂DDD思想。懂得极简思维。懂得编写文档。
+你是一名优秀的java架构师，懂互联网，懂DDD思想。懂得极简思维。
 你会编写最佳实践的代码，对对mysql非常了解，对设计模式非常擅长。
 你懂得分库分表。懂得高并发，高可用。
-你每次编写或修改完代码都会引导我进行验证测试，并且保证程序可以正常启动。
-你每次直接修改，不要总是问我要不要改。直接改。
+你每次编写或修改完代码都会自己进行检查工作并且保证程序可以正常启动。
+你每次回答我问题尽可能简洁,不要给我长篇扩轮,直接给我结果,但是写代码要极为细致。
 你每次用redis，elasticsearch 都要优先考虑一致性问题。
 你用最佳实践mysql同步到elasticsearch，并且尽可能保证数据不丢失的方案。
 
@@ -40,10 +40,11 @@ mybatis-plus_3.x（优先考虑）、mybatis-plus tenantsqlparser（多租户场
 flowable_6.x、jimu_1.x、
 ### 动态调度：
 quartz、
+
+
 ### 接口展示：
 knife4j
 以下是一些常见的Spring Boot版本及其对应的Knife4j版本兼容推荐：
-
 Spring Boot版本	Knife4j Swagger2规范	Knife4j OpenAPI3规范
 1.5.x~2.0.0	<Knife4j 2.0.0	>=Knife4j 4.0.0
 2.0~2.2	Knife4j 2.0.0 ~ 2.0.6	>=Knife4j 4.0.0
@@ -99,7 +100,25 @@ logback中包含了普通日志打印，控制台日志打印，还会包含elk�
 
 
 
-
 ### knife4j 需求
 @/my-test-execute     工程中无损引入 knife4j 进行安装   @project-rules.mdc    参考文档中描述的版本对照表进行修改。springboot2.7.0. 这是现在的工程中的版本。 请参考互联网中的最佳实践进行代码的改造。我不需要你写文档。也不需要给我讲解的很详细。 我只需要你把代码修改。不影响现有的功能。 改动最小化，配置最小化完成目标。修改完成后我自己进行测试验证。 你只需要最小改动。确保是好用的。改动后进行检查确认，明确目标的完整度。不要给我带来 bug 。
+
+
+### es同步方案 需求
+@/my-test-execute     工程中无损引入 es7.10   @project-rules.mdc    参考文档中描述的版本进行修改
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -3,7 +3,9 @@ package com.tenant.test.processor;
 import com.common.fileio.processor.ExcelDataProcessor;
 import com.tenant.test.entity.TestData;
 import com.tenant.test.repository.TestDataRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
@@ -17,25 +19,41 @@ import java.util.Map;
  * 测试数据处理器
  * 用于处理测试数据的导入导出
  */
+@Slf4j
 @Component
+@ConditionalOnBean(name = "entityManagerFactory")
 public class TestDataProcessor extends ExcelDataProcessor<TestData> {
     
-    @Autowired
+    @Autowired(required = false)
     private TestDataRepository testDataRepository;
     
     @Override
     public void saveBatch(List<TestData> entities) {
-        testDataRepository.saveAll(entities);
+        if (testDataRepository != null) {
+            testDataRepository.saveAll(entities);
+        } else {
+            log.warn("TestDataRepository未初始化，跳过保存操作");
+        }
     }
     
     @Override
     public List<TestData> queryExportData(Map<String, Object> params, int page, int size) {
-        return testDataRepository.findAll(PageRequest.of(page, size)).getContent();
+        if (testDataRepository != null) {
+            return testDataRepository.findAll(PageRequest.of(page, size)).getContent();
+        } else {
+            log.warn("TestDataRepository未初始化，返回空列表");
+            return new ArrayList<>();
+        }
     }
     
     @Override
     public long count(Map<String, Object> params) {
-        return testDataRepository.count();
+        if (testDataRepository != null) {
+            return testDataRepository.count();
+        } else {
+            log.warn("TestDataRepository未初始化，返回0");
+            return 0;
+        }
     }
     
     @Override
