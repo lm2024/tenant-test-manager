@@ -1,5 +1,6 @@
 package com.example.elasticsearch.service;
 
+import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.stereotype.Component;
@@ -7,6 +8,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class ElasticsearchHealthIndicator implements HealthIndicator {
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(ElasticsearchHealthIndicator.class);
+
+    private final RestHighLevelClient restHighLevelClient;
+
+    public ElasticsearchHealthIndicator(RestHighLevelClient restHighLevelClient) {
+        this.restHighLevelClient = restHighLevelClient;
+    }
 
     @Override
     public Health health() {

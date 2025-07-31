@@ -9,7 +9,7 @@ public class CsvUtil {
     // 流式读取CSV
     public static void readCsv(String filePath, Consumer<CSVRecord> consumer) throws IOException {
         try (Reader in = new FileReader(filePath)) {
-            Iterable<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(in);
+            Iterable<CSVRecord> records = CSVFormat.DEFAULT.builder().setHeader().build().parse(in);
             for (CSVRecord record : records) consumer.accept(record);
         }
     }

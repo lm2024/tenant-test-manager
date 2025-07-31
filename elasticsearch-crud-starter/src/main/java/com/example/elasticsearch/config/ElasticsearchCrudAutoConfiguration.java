@@ -21,7 +21,10 @@ import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.Executor;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Elasticsearch CRUD 自动配置类
@@ -38,22 +41,24 @@ public class ElasticsearchCrudAutoConfiguration {
 
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(ElasticsearchCrudAutoConfiguration.class);
 
-    private final ElasticsearchCrudProperties properties;
-
-    public ElasticsearchCrudAutoConfiguration(ElasticsearchCrudProperties properties) {
-        this.properties = properties;
-        log.info("Elasticsearch CRUD Starter 自动配置开始初始化...");
-    }
-
     /**
      * 配置Elasticsearch RestHighLevelClient
      */
     @Bean
     @ConditionalOnMissingBean
-    public RestHighLevelClient restHighLevelClient() {
-        log.info("创建 Elasticsearch RestHighLevelClient，节点: {}", properties.getHosts());
+    public RestHighLevelClient restHighLevelClient(ElasticsearchCrudProperties properties) {
+        log.info("创建 Elasticsearch RestHighLevelClient");
         
-        HttpHost[] httpHosts = properties.getHosts().stream()
+        // 检查hosts配置
+        List<String> hosts = properties.getHosts();
+        if (hosts == null || hosts.isEmpty()) {
+            log.warn("Elasticsearch hosts配置为空，使用默认配置: localhost:9200");
+            hosts = Arrays.asList("localhost:9200");
+        }
+        
+        log.info("Elasticsearch节点: {}", hosts);
+        
+        HttpHost[] httpHosts = hosts.stream()
                 .map(host -> {
                     String[] parts = host.split(":");
                     return new HttpHost(parts[0], Integer.parseInt(parts[1]), "http");
@@ -102,7 +107,7 @@ public class ElasticsearchCrudAutoConfiguration {
      */
     @Bean(name = "elasticsearchTaskExecutor")
     @ConditionalOnMissingBean(name = "elasticsearchTaskExecutor")
-    public Executor elasticsearchTaskExecutor() {
+    public Executor elasticsearchTaskExecutor(ElasticsearchCrudProperties properties) {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(properties.getSync().getThreadPoolSize());
         executor.setMaxPoolSize(properties.getSync().getThreadPoolSize() * 2);
@@ -118,8 +123,11 @@ public class ElasticsearchCrudAutoConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    public ElasticsearchCrudService elasticsearchCrudService(ElasticsearchRestTemplate elasticsearchRestTemplate) {
-        return new ElasticsearchCrudServiceImpl(elasticsearchRestTemplate, properties);
+    public ElasticsearchCrudService elasticsearchCrudService(RestHighLevelClient restHighLevelClient,
+                                                             ElasticsearchRestTemplate elasticsearchRestTemplate,
+                                                             ElasticsearchCrudProperties properties,
+                                                             ObjectMapper objectMapper) {
+        return new ElasticsearchCrudServiceImpl(restHighLevelClient, elasticsearchRestTemplate, properties, objectMapper);
     }
 
     /**
@@ -128,7 +136,8 @@ public class ElasticsearchCrudAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public ElasticsearchComplexQueryService elasticsearchComplexQueryService(
-            ElasticsearchRestTemplate elasticsearchRestTemplate) {
+            ElasticsearchRestTemplate elasticsearchRestTemplate,
+            ElasticsearchCrudProperties properties) {
         return new ElasticsearchComplexQueryServiceImpl(elasticsearchRestTemplate, properties);
     }
 
@@ -138,9 +147,10 @@ public class ElasticsearchCrudAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public ElasticsearchIndexService elasticsearchIndexService(
-            RestHighLevelClient restHighLevelClient,
-            ElasticsearchRestTemplate elasticsearchRestTemplate) {
-        return new ElasticsearchIndexServiceImpl(restHighLevelClient, elasticsearchRestTemplate, properties);
+            ElasticsearchRestTemplate elasticsearchRestTemplate,
+            ElasticsearchCrudProperties properties,
+            RestHighLevelClient restHighLevelClient) {
+        return new ElasticsearchIndexServiceImpl(elasticsearchRestTemplate, properties, restHighLevelClient);
     }
 
     /**
@@ -150,7 +160,8 @@ public class ElasticsearchCrudAutoConfiguration {
     @ConditionalOnMissingBean
     public DataSyncService dataSyncService(
             ElasticsearchRestTemplate elasticsearchRestTemplate,
-            ElasticsearchCrudService elasticsearchCrudService) {
+            ElasticsearchCrudService elasticsearchCrudService,
+            ElasticsearchCrudProperties properties) {
         return new DataSyncServiceImpl(elasticsearchRestTemplate, elasticsearchCrudService, properties);
     }
 
@@ -160,7 +171,8 @@ public class ElasticsearchCrudAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = "elasticsearch.crud.queue", name = "type", havingValue = "redis", matchIfMissing = true)
-    public QueueSyncService queueSyncService(DataSyncService dataSyncService) {
+    public QueueSyncService queueSyncService(DataSyncService dataSyncService,
+                                            ElasticsearchCrudProperties properties) {
         return new RedisQueueSyncServiceImpl(dataSyncService, properties);
     }
 
@@ -170,7 +182,7 @@ public class ElasticsearchCrudAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = "elasticsearch.crud.tenant", name = "enabled", havingValue = "true", matchIfMissing = true)
-    public TenantIndexResolver tenantIndexResolver() {
+    public TenantIndexResolver tenantIndexResolver(ElasticsearchCrudProperties properties) {
         return new TenantIndexResolver(properties);
     }
 

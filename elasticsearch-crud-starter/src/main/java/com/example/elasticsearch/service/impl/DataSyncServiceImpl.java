@@ -1,6 +1,9 @@
 package com.example.elasticsearch.service.impl;
 
+import com.example.elasticsearch.config.ElasticsearchCrudProperties;
 import com.example.elasticsearch.service.DataSyncService;
+import com.example.elasticsearch.service.ElasticsearchCrudService;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -15,6 +18,18 @@ import java.util.Map;
 public class DataSyncServiceImpl implements DataSyncService {
 
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(DataSyncServiceImpl.class);
+
+    private final ElasticsearchRestTemplate elasticsearchRestTemplate;
+    private final ElasticsearchCrudService elasticsearchCrudService;
+    private final ElasticsearchCrudProperties properties;
+
+    public DataSyncServiceImpl(ElasticsearchRestTemplate elasticsearchRestTemplate,
+                               ElasticsearchCrudService elasticsearchCrudService,
+                               ElasticsearchCrudProperties properties) {
+        this.elasticsearchRestTemplate = elasticsearchRestTemplate;
+        this.elasticsearchCrudService = elasticsearchCrudService;
+        this.properties = properties;
+    }
 
     @Override
     public Map<String, Object> getSyncStatus() {

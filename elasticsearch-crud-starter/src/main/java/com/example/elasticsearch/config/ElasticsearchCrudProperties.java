@@ -1,7 +1,6 @@
 package com.example.elasticsearch.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
@@ -11,7 +10,6 @@ import java.util.Map;
  * 
  * @author Kiro
  */
-@Component
 @ConfigurationProperties(prefix = "elasticsearch.crud")
 public class ElasticsearchCrudProperties {
 

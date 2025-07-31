@@ -36,7 +36,7 @@ public abstract class CsvDataProcessor<T> extends AbstractDataProcessor<T> {
         List<T> result = new ArrayList<>();
         
         try (Reader reader = new InputStreamReader(new FileInputStream(filePath), StandardCharsets.UTF_8);
-             CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader())) {
+             CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.builder().setHeader().build())) {
             
             Map<String, Integer> headerMap = csvParser.getHeaderMap();
             log.debug("解析到表头: {}", headerMap.keySet());

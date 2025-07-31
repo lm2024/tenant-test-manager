@@ -141,7 +141,42 @@ tenant:
     batch-size: 100
 
 # Elasticsearch 配置（由 elasticsearch-crud-starter 提供）
-# 详细配置请参考 elasticsearch-crud-starter/src/main/resources/application-elasticsearch.yml
+elasticsearch:
+  crud:
+    enabled: true
+    hosts:
+      - localhost:9200
+    username: # 如果有认证，请填写
+    password: # 如果有认证，请填写
+    connection-timeout: 5000
+    socket-timeout: 60000
+    request-timeout: 60000
+    max-connections: 100
+    max-connections-per-route: 100
+    sync:
+      batch-size: 1000
+      thread-pool-size: 10
+      retry-times: 3
+      retry-interval: 1000
+      enable-checkpoint: true
+      checkpoint-interval: 1000
+    tenant:
+      enabled: true
+      index-prefix: "tenant_"
+      auto-create-index: true
+      default-shards: 3
+      default-replicas: 1
+    index:
+      use-keyword-as-default: true
+      default-shards: 1
+      default-replicas: 0
+      refresh-interval: "1s"
+    queue:
+      type: redis
+      redis:
+        key-prefix: "es:sync:"
+        max-retry: 3
+        consumer-threads: 5
 
 # 日志配置
 logging:

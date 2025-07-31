@@ -7,7 +7,8 @@ alwaysApply: true
 macos 操作系统，中国，保持中文对话
 docker desktop 新版
 docker compose 新版
-jdk8
+全程保持jdk1.8、java8
+
 
 
 

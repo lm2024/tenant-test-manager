@@ -1,5 +1,6 @@
 package com.tenant.test.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -36,9 +37,11 @@ public class TestDocument {
     private String tenantId;
 
     @Field(type = FieldType.Date)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 
     @Field(type = FieldType.Date)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
 
     @Field(type = FieldType.Long)
