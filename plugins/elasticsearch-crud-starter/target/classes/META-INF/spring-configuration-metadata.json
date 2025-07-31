@@ -63,17 +63,20 @@
     {
       "name": "elasticsearch.crud.index.default-replicas",
       "type": "java.lang.Integer",
-      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties$IndexConfig"
+      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties$IndexConfig",
+      "defaultValue": 0
     },
     {
       "name": "elasticsearch.crud.index.default-shards",
       "type": "java.lang.Integer",
-      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties$IndexConfig"
+      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties$IndexConfig",
+      "defaultValue": 1
     },
     {
       "name": "elasticsearch.crud.index.refresh-interval",
       "type": "java.lang.String",
-      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties$IndexConfig"
+      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties$IndexConfig",
+      "defaultValue": "1s"
     },
     {
       "name": "elasticsearch.crud.index.use-keyword-as-default",
@@ -85,12 +88,14 @@
     {
       "name": "elasticsearch.crud.max-connections",
       "type": "java.lang.Integer",
-      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties"
+      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties",
+      "defaultValue": 100
     },
     {
       "name": "elasticsearch.crud.max-connections-per-route",
       "type": "java.lang.Integer",
-      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties"
+      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties",
+      "defaultValue": 100
     },
     {
       "name": "elasticsearch.crud.password",
@@ -101,17 +106,20 @@
     {
       "name": "elasticsearch.crud.queue.redis.consumer-threads",
       "type": "java.lang.Integer",
-      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties$QueueConfig$RedisConfig"
+      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties$QueueConfig$RedisConfig",
+      "defaultValue": 5
     },
     {
       "name": "elasticsearch.crud.queue.redis.key-prefix",
       "type": "java.lang.String",
-      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties$QueueConfig$RedisConfig"
+      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties$QueueConfig$RedisConfig",
+      "defaultValue": "es:sync:"
     },
     {
       "name": "elasticsearch.crud.queue.redis.max-retry",
       "type": "java.lang.Integer",
-      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties$QueueConfig$RedisConfig"
+      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties$QueueConfig$RedisConfig",
+      "defaultValue": 3
     },
     {
       "name": "elasticsearch.crud.queue.type",
@@ -123,7 +131,8 @@
     {
       "name": "elasticsearch.crud.request-timeout",
       "type": "java.lang.Integer",
-      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties"
+      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties",
+      "defaultValue": 60000
     },
     {
       "name": "elasticsearch.crud.socket-timeout",
@@ -142,22 +151,26 @@
     {
       "name": "elasticsearch.crud.sync.checkpoint-interval",
       "type": "java.lang.Integer",
-      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties$SyncConfig"
+      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties$SyncConfig",
+      "defaultValue": 1000
     },
     {
       "name": "elasticsearch.crud.sync.enable-checkpoint",
       "type": "java.lang.Boolean",
-      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties$SyncConfig"
+      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties$SyncConfig",
+      "defaultValue": true
     },
     {
       "name": "elasticsearch.crud.sync.retry-interval",
       "type": "java.lang.Integer",
-      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties$SyncConfig"
+      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties$SyncConfig",
+      "defaultValue": 1000
     },
     {
       "name": "elasticsearch.crud.sync.retry-times",
       "type": "java.lang.Integer",
-      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties$SyncConfig"
+      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties$SyncConfig",
+      "defaultValue": 3
     },
     {
       "name": "elasticsearch.crud.sync.thread-pool-size",
@@ -169,17 +182,20 @@
     {
       "name": "elasticsearch.crud.tenant.auto-create-index",
       "type": "java.lang.Boolean",
-      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties$TenantConfig"
+      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties$TenantConfig",
+      "defaultValue": true
     },
     {
       "name": "elasticsearch.crud.tenant.default-replicas",
       "type": "java.lang.Integer",
-      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties$TenantConfig"
+      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties$TenantConfig",
+      "defaultValue": 1
     },
     {
       "name": "elasticsearch.crud.tenant.default-shards",
       "type": "java.lang.Integer",
-      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties$TenantConfig"
+      "sourceType": "com.example.elasticsearch.config.ElasticsearchCrudProperties$TenantConfig",
+      "defaultValue": 3
     },
     {
       "name": "elasticsearch.crud.tenant.enabled",

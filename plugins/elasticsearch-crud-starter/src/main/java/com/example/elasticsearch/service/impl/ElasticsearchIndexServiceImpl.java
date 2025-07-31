@@ -2,7 +2,7 @@ package com.example.elasticsearch.service.impl;
 
 import co.elastic.clients.elasticsearch.indices.GetMappingRequest;
 import co.elastic.clients.elasticsearch.indices.GetMappingResponse;
-import com.carrotsearch.hppc.cursors.ObjectObjectCursor;
+
 import com.example.elasticsearch.config.ElasticsearchCrudProperties;
 import com.example.elasticsearch.service.ElasticsearchIndexService;
 import java.util.Collections;
@@ -19,6 +19,7 @@ import org.elasticsearch.cluster.metadata.AliasMetadata;
 import org.elasticsearch.cluster.metadata.MappingMetadata;
 import org.elasticsearch.common.collect.ImmutableOpenMap;
 import org.elasticsearch.common.settings.Settings;
+import com.carrotsearch.hppc.cursors.ObjectCursor;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.IndexOperations;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
@@ -62,15 +63,49 @@ public class ElasticsearchIndexServiceImpl implements ElasticsearchIndexService 
             for (String indexName : indexNames) {
                 Map<String, Object> indexInfo = new HashMap<>();
                 indexInfo.put("name", indexName);
-//                indexInfo.put("aliases", new ArrayList<>());
-//                indexInfo.put("mappings", new HashMap<>());
-//                indexInfo.put("settings", new HashMap<>());
-                indices.add(indexInfo);
-            }
-            ImmutableOpenMap<String, List<AliasMetadata>> aliases = res.getAliases();
-            for (ObjectObjectCursor<String, List<AliasMetadata>> alias : aliases) {
-                Map<String, Object> indexInfo = new HashMap<>();
-                indexInfo.put("aliases", alias.value);
+                
+                // 获取别名信息
+                ImmutableOpenMap<String, List<AliasMetadata>> aliases = res.getAliases();
+                if (aliases.containsKey(indexName)) {
+                    List<String> aliasList = new ArrayList<>();
+                    for (AliasMetadata aliasMetadata : aliases.get(indexName)) {
+                        aliasList.add(aliasMetadata.alias());
+                    }
+                    indexInfo.put("aliases", aliasList);
+                } else {
+                    indexInfo.put("aliases", new ArrayList<>());
+                }
+                
+                // 获取映射信息
+                ImmutableOpenMap<String, ImmutableOpenMap<String, MappingMetadata>> mappings = res.getMappings();
+                if (mappings.containsKey(indexName)) {
+                    ImmutableOpenMap<String, MappingMetadata> indexMappings = mappings.get(indexName);
+                    Map<String, Object> mappingMap = new HashMap<>();
+                    for (ObjectCursor<String> cursor : indexMappings.keys()) {
+                        String typeName = cursor.value;
+                        MappingMetadata mappingMetadata = indexMappings.get(typeName);
+                        if (mappingMetadata != null) {
+                            mappingMap.put(typeName, mappingMetadata.getSourceAsMap());
+                        }
+                    }
+                    indexInfo.put("mappings", mappingMap);
+                } else {
+                    indexInfo.put("mappings", new HashMap<>());
+                }
+                
+                // 获取设置信息
+                ImmutableOpenMap<String, Settings> settings = res.getSettings();
+                if (settings.containsKey(indexName)) {
+                    Settings indexSettings = settings.get(indexName);
+                    Map<String, String> settingsMap = new HashMap<>();
+                    for (String key : indexSettings.keySet()) {
+                        settingsMap.put(key, indexSettings.get(key));
+                    }
+                    indexInfo.put("settings", settingsMap);
+                } else {
+                    indexInfo.put("settings", new HashMap<>());
+                }
+                
                 indices.add(indexInfo);
             }
 

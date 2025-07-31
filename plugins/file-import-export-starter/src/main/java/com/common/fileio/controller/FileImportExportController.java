@@ -8,9 +8,9 @@ import com.common.fileio.service.ImportService;
 import com.common.fileio.service.TaskManagementService;
 import com.common.fileio.util.FileUtils;
 import com.tenant.routing.annotation.TenantSwitchHeader;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -33,7 +33,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/file-io")
-@Api(tags = "文件导入导出", description = "提供文件导入导出相关的API")
+@Tag(name = "文件导入导出", description = "提供文件导入导出相关的API")
 @Slf4j
 public class FileImportExportController {
     
@@ -71,12 +71,12 @@ public class FileImportExportController {
      */
     @PostMapping("/import")
     @TenantSwitchHeader(headerName = "X-Tenant-ID")
-    @ApiOperation(value = "导入文件", notes = "上传文件并异步导入数据，返回任务ID")
+    @Operation(summary = "导入文件", description = "上传文件并异步导入数据，返回任务ID")
     public ResponseEntity<ApiResponse<String>> importFiles(
-            @ApiParam(value = "上传文件列表，最多20个", required = true) @RequestParam("files") List<MultipartFile> files,
-            @ApiParam(value = "文件类型：excel/csv/txt", required = false, defaultValue = "excel") @RequestParam(value = "type", required = false, defaultValue = "excel") String fileType,
-            @ApiParam(value = "处理器名称", required = true) @RequestParam("processor") String processorName,
-            @ApiParam(value = "租户ID", required = true) @RequestHeader("X-Tenant-ID") String tenantId) {
+            @Parameter(description = "上传文件列表，最多20个", required = true) @RequestParam("files") List<MultipartFile> files,
+            @Parameter(description = "文件类型：excel/csv/txt", required = false) @RequestParam(value = "type", required = false, defaultValue = "excel") String fileType,
+            @Parameter(description = "处理器名称", required = true) @RequestParam("processor") String processorName,
+            @Parameter(description = "租户ID", required = true) @RequestHeader("X-Tenant-ID") String tenantId) {
         
         try {
             // 提交导入任务
@@ -98,10 +98,10 @@ public class FileImportExportController {
      */
     @PostMapping("/export")
     @TenantSwitchHeader(headerName = "X-Tenant-ID")
-    @ApiOperation(value = "导出数据", notes = "异步导出数据，返回任务ID")
+    @Operation(summary = "导出数据", description = "异步导出数据，返回任务ID")
     public ResponseEntity<ApiResponse<String>> exportData(
-            @ApiParam(value = "导出请求", required = true) @RequestBody ExportRequest request,
-            @ApiParam(value = "租户ID", required = true) @RequestHeader("X-Tenant-ID") String tenantId) {
+            @Parameter(description = "导出请求", required = true) @RequestBody ExportRequest request,
+            @Parameter(description = "租户ID", required = true) @RequestHeader("X-Tenant-ID") String tenantId) {
         
         try {
             // 设置租户ID
@@ -124,9 +124,9 @@ public class FileImportExportController {
      * @return 任务进度
      */
     @GetMapping("/progress/{taskId}")
-    @ApiOperation(value = "获取任务进度", notes = "根据任务ID获取导入/导出任务的进度")
+    @Operation(summary = "获取任务进度", description = "根据任务ID获取导入/导出任务的进度")
     public ResponseEntity<ApiResponse<TaskProgress>> getProgress(
-            @ApiParam(value = "任务ID", required = true) @PathVariable String taskId) {
+            @Parameter(description = "任务ID", required = true) @PathVariable String taskId) {
         
         try {
             // 获取任务进度
@@ -146,9 +146,9 @@ public class FileImportExportController {
      * @return 操作结果
      */
     @PostMapping("/stop/{taskId}")
-    @ApiOperation(value = "停止任务", notes = "停止正在执行的导入/导出任务")
+    @Operation(summary = "停止任务", description = "停止正在执行的导入/导出任务")
     public ResponseEntity<ApiResponse<String>> stopTask(
-            @ApiParam(value = "任务ID", required = true) @PathVariable String taskId) {
+            @Parameter(description = "任务ID", required = true) @PathVariable String taskId) {
         
         try {
             // 停止任务
@@ -169,10 +169,10 @@ public class FileImportExportController {
      * @return 操作结果
      */
     @DeleteMapping("/delete/{taskId}")
-    @ApiOperation(value = "删除任务", notes = "删除导入/导出任务及相关文件")
+    @Operation(summary = "删除任务", description = "删除导入/导出任务及相关文件")
     public ResponseEntity<ApiResponse<String>> deleteTask(
-            @ApiParam(value = "任务ID", required = true) @PathVariable String taskId,
-            @ApiParam(value = "是否删除关联文件", required = false, defaultValue = "false") @RequestParam(value = "deleteFiles", required = false, defaultValue = "false") boolean deleteFiles) {
+            @Parameter(description = "任务ID", required = true) @PathVariable String taskId,
+            @Parameter(description = "是否删除关联文件", required = false) @RequestParam(value = "deleteFiles", required = false, defaultValue = "false") boolean deleteFiles) {
         
         try {
             // 删除任务
@@ -192,9 +192,9 @@ public class FileImportExportController {
      * @param response HTTP响应
      */
     @GetMapping("/download/{taskId}")
-    @ApiOperation(value = "下载导出文件", notes = "下载导出任务生成的文件")
+    @Operation(summary = "下载导出文件", description = "下载导出任务生成的文件")
     public void downloadFile(
-            @ApiParam(value = "任务ID", required = true) @PathVariable String taskId,
+            @Parameter(description = "任务ID", required = true) @PathVariable String taskId,
             HttpServletResponse response) {
         
         try {
@@ -227,9 +227,9 @@ public class FileImportExportController {
      * @return 文件资源
      */
     @GetMapping("/download2/{taskId}")
-    @ApiOperation(value = "下载导出文件（使用ResponseEntity）", notes = "下载导出任务生成的文件")
+    @Operation(summary = "下载导出文件（使用ResponseEntity）", description = "下载导出任务生成的文件")
     public ResponseEntity<Resource> downloadFile2(
-            @ApiParam(value = "任务ID", required = true) @PathVariable String taskId) {
+            @Parameter(description = "任务ID", required = true) @PathVariable String taskId) {
         
         try {
             // 获取导出文件

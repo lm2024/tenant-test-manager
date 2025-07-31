@@ -24,9 +24,9 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 /**
  * 测试执行微服务启动类
  */
-public class TestExecuteApplication {
+public class TestExecuteApp {
 
     public static void main(String[] args) {
-        SpringApplication.run(TestExecuteApplication.class, args);
+        SpringApplication.run(TestExecuteApp.class, args);
     }
 }

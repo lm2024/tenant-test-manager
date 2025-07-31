@@ -1,7 +1,7 @@
-/Users/lm/Downloads/projects/tenant-test-manager/plugins/segment-id-generator-starter/src/main/java/com/common/segmentid/config/RedissonConfig.java
-/Users/lm/Downloads/projects/tenant-test-manager/plugins/segment-id-generator-starter/src/main/java/com/common/segmentid/config/SegmentIdGeneratorAutoConfiguration.java
-/Users/lm/Downloads/projects/tenant-test-manager/plugins/segment-id-generator-starter/src/main/java/com/common/segmentid/entity/Sequence.java
 /Users/lm/Downloads/projects/tenant-test-manager/plugins/segment-id-generator-starter/src/main/java/com/common/segmentid/repository/SequenceRepository.java
+/Users/lm/Downloads/projects/tenant-test-manager/plugins/segment-id-generator-starter/src/main/java/com/common/segmentid/entity/Sequence.java
 /Users/lm/Downloads/projects/tenant-test-manager/plugins/segment-id-generator-starter/src/main/java/com/common/segmentid/service/SegmentIdService.java
-/Users/lm/Downloads/projects/tenant-test-manager/plugins/segment-id-generator-starter/src/main/java/com/common/segmentid/service/SequenceManager.java
+/Users/lm/Downloads/projects/tenant-test-manager/plugins/segment-id-generator-starter/src/main/java/com/common/segmentid/config/RedissonConfig.java
 /Users/lm/Downloads/projects/tenant-test-manager/plugins/segment-id-generator-starter/src/main/java/com/common/segmentid/service/impl/SegmentIdServiceImpl.java
+/Users/lm/Downloads/projects/tenant-test-manager/plugins/segment-id-generator-starter/src/main/java/com/common/segmentid/service/SequenceManager.java
+/Users/lm/Downloads/projects/tenant-test-manager/plugins/segment-id-generator-starter/src/main/java/com/common/segmentid/config/SegmentIdGeneratorAutoConfiguration.java

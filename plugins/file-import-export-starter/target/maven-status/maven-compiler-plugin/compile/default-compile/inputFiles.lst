@@ -11,7 +11,6 @@
 /Users/lm/Downloads/projects/tenant-test-manager/plugins/file-import-export-starter/src/main/java/com/common/fileio/processor/DataProcessor.java
 /Users/lm/Downloads/projects/tenant-test-manager/plugins/file-import-export-starter/src/main/java/com/common/fileio/service/TaskManagementService.java
 /Users/lm/Downloads/projects/tenant-test-manager/plugins/file-import-export-starter/src/main/java/com/common/fileio/exception/DataProcessException.java
-/Users/lm/Downloads/projects/tenant-test-manager/plugins/file-import-export-starter/src/main/java/com/common/fileio/config/SwaggerConfig.java
 /Users/lm/Downloads/projects/tenant-test-manager/plugins/file-import-export-starter/src/main/java/com/common/fileio/service/ExportService.java
 /Users/lm/Downloads/projects/tenant-test-manager/plugins/file-import-export-starter/src/main/java/com/common/fileio/util/CsvUtils.java
 /Users/lm/Downloads/projects/tenant-test-manager/plugins/file-import-export-starter/src/main/java/com/common/fileio/processor/AbstractDataProcessor.java

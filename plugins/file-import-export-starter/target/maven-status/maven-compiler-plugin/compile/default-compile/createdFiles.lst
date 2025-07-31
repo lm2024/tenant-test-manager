@@ -25,7 +25,6 @@ com/common/fileio/config/MessageSourceConfig.class
 com/common/fileio/exception/UnsupportedFileTypeException.class
 com/common/fileio/model/ImportExportTask.class
 com/common/fileio/model/ImportRequest.class
-com/common/fileio/config/SwaggerConfig.class
 com/common/fileio/config/FileImportExportProperties$Import.class
 com/common/fileio/queue/TaskQueueManager.class
 com/common/fileio/util/CsvUtils.class
