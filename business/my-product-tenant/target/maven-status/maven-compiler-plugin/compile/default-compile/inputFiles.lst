@@ -1,0 +1,10 @@
+/Users/lm/Downloads/projects/tenant-test-manager/business/my-product-tenant/src/main/java/com/tenant/service/DbInitService.java
+/Users/lm/Downloads/projects/tenant-test-manager/business/my-product-tenant/src/main/java/com/tenant/service/TenantDatabaseService.java
+/Users/lm/Downloads/projects/tenant-test-manager/business/my-product-tenant/src/main/java/com/tenant/entity/TestCase.java
+/Users/lm/Downloads/projects/tenant-test-manager/business/my-product-tenant/src/main/java/com/tenant/entity/TenantDbInfo.java
+/Users/lm/Downloads/projects/tenant-test-manager/business/my-product-tenant/src/main/java/com/tenant/model/DatabaseStatus.java
+/Users/lm/Downloads/projects/tenant-test-manager/business/my-product-tenant/src/main/java/com/tenant/config/log/TenantLogConverter.java
+/Users/lm/Downloads/projects/tenant-test-manager/business/my-product-tenant/src/main/java/com/tenant/TenentApp.java
+/Users/lm/Downloads/projects/tenant-test-manager/business/my-product-tenant/src/main/java/com/tenant/config/JpaConfig.java
+/Users/lm/Downloads/projects/tenant-test-manager/business/my-product-tenant/src/main/java/com/tenant/controller/tenant/TenantDatabaseController.java
+/Users/lm/Downloads/projects/tenant-test-manager/business/my-product-tenant/src/main/java/com/tenant/controller/tenant/TenantDbInfoController.java

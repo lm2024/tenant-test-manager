@@ -4,20 +4,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <!-- 项目基本信息 -->
-    <groupId>com.example</groupId>
-    <artifactId>multi-tenant-test-management</artifactId>
+    <groupId>com.test</groupId>
+    <artifactId>tenant-test-management</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
-        <module>file-import-export-starter</module>
-        <module>tenant-routing-starter</module>
-        <module>segment-id-generator-starter</module>
-        <module>elasticsearch-crud-starter</module>
-        <module>my-test-execute</module>
-        <module>my-product-tenant</module>
-        <module>my-function-demand</module>
-        <module>my-bugs</module>
+        <module>business</module>
+        <module>plugins</module>
     </modules>
 
 

@@ -1,0 +1,190 @@
+server:
+  port: 8082
+  servlet:
+    context-path: /
+    
+# Knife4j配置
+knife4j:
+  enable: true
+  setting:
+    language: zh-CN
+    enable-swagger-models: true
+    enable-document-manage: true
+    swagger-model-name: 实体类列表
+    enable-version: false
+    enable-reload-cache-parameter: false
+    enable-after-script: true
+    enable-filter-multipart-api-method-type: POST
+    enable-filter-multipart-apis: false
+    enable-request-cache: true
+    enable-host: false
+    enable-host-text: ""
+    enable-home-custom: false
+    home-custom-path: ""
+    enable-search: true
+    enable-footer: false
+    enable-footer-custom: true
+    footer-custom-content: Apache License 2.0 | Copyright  2024-[测试执行微服务]
+    enable-dynamic-parameter: false
+    enable-debug: true
+    enable-open-api: false
+    enable-group: true
+  cors: false
+  production: false
+  basic:
+    enable: false
+    username: test
+    password: 12313
+
+# 文件导入导出配置
+file:
+  import:
+    export:
+      enabled: true
+      import:
+        max-batch-size: 20000
+        max-files: 20
+        concurrent: 1
+      export:
+        max-batch-size: 50000
+        concurrent: 10
+      path:
+        upload-dir: C:\\Users\\lm\\Downloads\\uploads
+        export-dir: C:\\Users\\lm\\Downloads\\exports
+      redis:
+        key-prefix: "file-io"
+        task-ttl: 86400
+      swagger:
+        enabled: false # 确保禁用 Swagger
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+  application:
+    name: my-test-execute
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/tenant_center?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: password
+  redis:
+    host: localhost
+    port: 6379
+    # password: 如果有密码，请取消注释并填写
+    database: 0
+    # 使用Redisson客户端
+    redisson:
+      config: |
+        singleServerConfig:
+          address: redis://localhost:6379
+          database: 0
+          # password: 如果有密码，请取消注释并填写
+          connectionMinimumIdleSize: 8
+          connectionPoolSize: 64
+          connectTimeout: 10000
+          timeout: 3000
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 200MB
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    open-in-view: false
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+
+# 租户路由配置
+tenant:
+  routing:
+    enabled: true
+    header-name: X-Tenant-ID
+    required: false  # 设置为false，这样没有租户ID也能访问
+    exclude-paths: 
+      - /swagger-ui.html
+      - /doc.html
+      - /swagger-resources/**
+      - /v3/api-docs/**
+      - /webjars/**
+      - /actuator/**
+      - /api/public/**
+      - /knife4j/**
+      - /favicon.ico
+    tenant-center:
+      url: jdbc:mysql://localhost:3306/tenant_center?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+      username: root
+      password: password
+    max-pool-size: 10
+    min-idle: 2
+    connection-timeout: 30000
+    idle-timeout: 600000
+    max-lifetime: 1800000
+    # Redis配置
+    redis:
+      host: localhost
+      port: 6379
+      # password: 如果有密码，请取消注释并填写
+      database: 0
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+        max-wait: -1
+    # 租户缓存配置
+    preload-enabled: true
+    cache-expire-time: 604800  # 7天，单位秒
+    batch-size: 100
+
+# Elasticsearch 配置（由 elasticsearch-crud-starter 提供）
+elasticsearch:
+  crud:
+    enabled: true
+    hosts:
+      - localhost:9200
+    username: # 如果有认证，请填写
+    password: # 如果有认证，请填写
+    connection-timeout: 5000
+    socket-timeout: 60000
+    request-timeout: 60000
+    max-connections: 100
+    max-connections-per-route: 100
+    sync:
+      batch-size: 1000
+      thread-pool-size: 10
+      retry-times: 3
+      retry-interval: 1000
+      enable-checkpoint: true
+      checkpoint-interval: 1000
+    tenant:
+      enabled: true
+      index-prefix: "tenant_"
+      auto-create-index: true
+      default-shards: 3
+      default-replicas: 1
+    index:
+      use-keyword-as-default: true
+      default-shards: 1
+      default-replicas: 0
+      refresh-interval: "1s"
+    queue:
+      type: redis
+      redis:
+        key-prefix: "es:sync:"
+        max-retry: 3
+        consumer-threads: 5
+
+# 日志配置
+logging:
+  level:
+    root: INFO
+    com.tenant: DEBUG
+    com.example.elasticsearch: DEBUG
+    org.elasticsearch: INFO
+    org.springframework.data.elasticsearch: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

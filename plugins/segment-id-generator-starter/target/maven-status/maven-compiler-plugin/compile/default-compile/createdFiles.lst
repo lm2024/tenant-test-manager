@@ -1,0 +1,7 @@
+com/common/segmentid/config/SegmentIdGeneratorAutoConfiguration.class
+com/common/segmentid/service/SequenceManager.class
+com/common/segmentid/entity/Sequence.class
+com/common/segmentid/service/SegmentIdService.class
+com/common/segmentid/service/impl/SegmentIdServiceImpl.class
+com/common/segmentid/repository/SequenceRepository.class
+com/common/segmentid/config/RedissonConfig.class
