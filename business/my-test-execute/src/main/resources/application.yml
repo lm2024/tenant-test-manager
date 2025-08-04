@@ -140,19 +140,31 @@ tenant:
     cache-expire-time: 604800  # 7天，单位秒
     batch-size: 100
 
-# Elasticsearch 配置（由 elasticsearch-crud-starter 提供）
+# Elasticsearch 配置
+# ==========================================
+# ES连接配置
 elasticsearch:
   crud:
     enabled: true
+    # ES节点地址配置
     hosts:
       - localhost:9200
-    username: # 如果有认证，请填写
-    password: # 如果有认证，请填写
+    # ES认证配置（如果ES启用了安全认证，请取消注释并配置正确的用户名密码）
+    # 方案1：如果ES启用了安全认证，使用以下配置
+    username: elastic
+    password: 123456
+    # 方案2：如果ES没有启用安全认证，注释掉上面的用户名密码配置
+    # username: 
+    # password: 
+    
+    # 连接超时配置
     connection-timeout: 5000
     socket-timeout: 60000
     request-timeout: 60000
     max-connections: 100
     max-connections-per-route: 100
+    
+    # 数据同步配置
     sync:
       batch-size: 1000
       thread-pool-size: 10
@@ -160,17 +172,23 @@ elasticsearch:
       retry-interval: 1000
       enable-checkpoint: true
       checkpoint-interval: 1000
+    
+    # 租户配置（多租户场景）
     tenant:
-      enabled: true
+      enabled: false  # 暂时禁用租户功能进行基础测试
       index-prefix: "tenant_"
       auto-create-index: true
       default-shards: 3
       default-replicas: 1
+    
+    # 索引配置
     index:
       use-keyword-as-default: true
       default-shards: 1
       default-replicas: 0
       refresh-interval: "1s"
+    
+    # 队列配置（用于数据同步）
     queue:
       type: redis
       redis:

@@ -8,9 +8,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -183,12 +181,12 @@ public class ElasticsearchTestController {
                 return ResponseEntity.status(500).body(result);
             }
 
-            Optional<TestDocument> document = crudService.findById(id);
+            TestDocument document = crudService.findById(id);
             
-            if (document.isPresent()) {
+            if (document != null) {
                 result.put("status", "success");
                 result.put("message", "查询成功");
-                result.put("data", document.get());
+                result.put("data", document);
             } else {
                 result.put("status", "not_found");
                 result.put("message", "文档不存在");
@@ -197,7 +195,7 @@ public class ElasticsearchTestController {
             
             result.put("timestamp", LocalDateTime.now());
             
-            log.info("查询测试文档，ID: {}, 结果: {}", id, document.isPresent() ? "找到" : "未找到");
+            log.info("查询测试文档，ID: {}, 结果: {}", id, document != null ? "找到" : "未找到");
             return ResponseEntity.ok(result);
             
         } catch (Exception e) {
@@ -224,19 +222,18 @@ public class ElasticsearchTestController {
                 return ResponseEntity.status(500).body(result);
             }
 
-            Pageable pageable = PageRequest.of(page, size);
-            Page<TestDocument> documents = crudService.findAll(pageable);
+            List<TestDocument> documents = crudService.findAll();
             
             result.put("status", "success");
             result.put("message", "查询成功");
-            result.put("data", documents.getContent());
-            result.put("totalElements", documents.getTotalElements());
-            result.put("totalPages", documents.getTotalPages());
-            result.put("currentPage", documents.getNumber());
-            result.put("pageSize", documents.getSize());
+            result.put("data", documents);
+            result.put("totalElements", documents.size());
+            result.put("totalPages", 1);
+            result.put("currentPage", 0);
+            result.put("pageSize", documents.size());
             result.put("timestamp", LocalDateTime.now());
             
-            log.info("分页查询测试文档，页码: {}, 大小: {}, 总数: {}", page, size, documents.getTotalElements());
+            log.info("分页查询测试文档，页码: {}, 大小: {}, 总数: {}", page, size, documents.size());
             return ResponseEntity.ok(result);
             
         } catch (Exception e) {
@@ -264,21 +261,20 @@ public class ElasticsearchTestController {
                 return ResponseEntity.status(500).body(result);
             }
 
-            Pageable pageable = PageRequest.of(page, size);
-            Page<TestDocument> documents = crudService.search(keyword, pageable);
+            List<TestDocument> documents = crudService.search("title", keyword);
             
             result.put("status", "success");
             result.put("message", "搜索成功");
             result.put("keyword", keyword);
-            result.put("data", documents.getContent());
-            result.put("totalElements", documents.getTotalElements());
-            result.put("totalPages", documents.getTotalPages());
-            result.put("currentPage", documents.getNumber());
-            result.put("pageSize", documents.getSize());
+            result.put("data", documents);
+            result.put("totalElements", documents.size());
+            result.put("totalPages", 1);
+            result.put("currentPage", 0);
+            result.put("pageSize", documents.size());
             result.put("timestamp", LocalDateTime.now());
             
             log.info("搜索测试文档，关键词: {}, 页码: {}, 大小: {}, 结果数: {}", 
-                    keyword, page, size, documents.getTotalElements());
+                    keyword, page, size, documents.size());
             return ResponseEntity.ok(result);
             
         } catch (Exception e) {
@@ -371,19 +367,17 @@ public class ElasticsearchTestController {
             }
 
             // 创建默认的keyword类型映射
+            // 根据ES 7.10.2源码，mapping方法期望的是扁平化的字段定义
             Map<String, Object> mapping = new HashMap<>();
-            Map<String, Object> properties = new HashMap<>();
             
-            // 添加基础字段映射
+            // 直接定义字段映射，不需要嵌套properties
             Map<String, Object> titleMapping = new HashMap<>();
             titleMapping.put("type", "keyword");
-            properties.put("title", titleMapping);
+            mapping.put("title", titleMapping);
             
             Map<String, Object> contentMapping = new HashMap<>();
             contentMapping.put("type", "keyword");
-            properties.put("content", contentMapping);
-            
-            mapping.put("properties", properties);
+            mapping.put("content", contentMapping);
 
             boolean success = indexService.createIndex(indexName, mapping);
             

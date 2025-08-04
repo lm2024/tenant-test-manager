@@ -18,7 +18,6 @@ echo "服务将在端口8083启动"
 echo "Swagger文档地址: http://localhost:8083/doc.html"
 echo ""
 
-# 使用专门的测试配置启动
+# 启动服务
 mvn spring-boot:run \
-  -Dspring-boot.run.main-class=org.example.ElasticsearchTestApplication \
-  -Dspring-boot.run.profiles=es-test
+  -Dspring-boot.run.main-class=com.tenant.test.TestExecuteApp

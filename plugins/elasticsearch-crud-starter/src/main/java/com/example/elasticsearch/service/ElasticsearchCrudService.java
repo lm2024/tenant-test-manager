@@ -1,10 +1,6 @@
 package com.example.elasticsearch.service;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Elasticsearch CRUD 服务接口
@@ -35,47 +31,47 @@ public interface ElasticsearchCrudService<T> {
      * @param id 实体ID
      * @return 实体对象（可能为空）
      */
-    Optional<T> findById(String id);
+    T findById(String id);
 
     /**
      * 根据ID删除实体
      * 
      * @param id 实体ID
+     * @return 是否删除成功
      */
-    void deleteById(String id);
+    boolean deleteById(String id);
 
     /**
      * 批量删除实体
      * 
      * @param ids ID列表
+     * @return 是否删除成功
      */
-    void deleteByIds(List<String> ids);
+    boolean deleteByIds(List<String> ids);
 
     /**
      * 更新实体
      * 
-     * @param id 实体ID
      * @param entity 更新的实体数据
      * @return 更新后的实体
      */
-    T update(String id, T entity);
+    T update(T entity);
 
     /**
-     * 分页查询所有实体
+     * 查询所有实体
      * 
-     * @param pageable 分页参数
-     * @return 分页结果
+     * @return 实体列表
      */
-    Page<T> findAll(Pageable pageable);
+    List<T> findAll();
 
     /**
-     * 根据条件搜索实体
+     * 根据字段搜索实体
      * 
-     * @param keyword 搜索关键词
-     * @param pageable 分页参数
+     * @param field 搜索字段
+     * @param value 搜索值
      * @return 搜索结果
      */
-    Page<T> search(String keyword, Pageable pageable);
+    List<T> search(String field, String value);
 
     /**
      * 统计实体总数

@@ -9,9 +9,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -163,8 +161,8 @@ public class ElasticsearchBusinessController {
             }
 
             // 检查文档是否存在
-            Optional<TestDocument> existingDoc = crudService.findById(id);
-            if (!existingDoc.isPresent()) {
+            TestDocument existingDoc = crudService.findById(id);
+            if (existingDoc == null) {
                 result.put("status", "not_found");
                 result.put("message", "文档不存在");
                 result.put("timestamp", LocalDateTime.now());
@@ -175,7 +173,7 @@ public class ElasticsearchBusinessController {
             document.setUpdateTime(LocalDateTime.now());
             document.setId(id);
 
-            TestDocument updatedDocument = crudService.update(id, document);
+            TestDocument updatedDocument = crudService.update(document);
             
             result.put("status", "success");
             result.put("message", "测试文档更新成功");
@@ -227,22 +225,21 @@ public class ElasticsearchBusinessController {
             if (priority != null) conditions.put("priority", priority);
             if (active != null) conditions.put("active", active);
 
-            Pageable pageable = PageRequest.of(page, size);
             // 暂时使用简单搜索，等复杂查询服务实现后再替换
-            Page<TestDocument> documents = crudService.search(title != null ? title : content != null ? content : "", pageable);
+            List<TestDocument> documents = crudService.search("title", title != null ? title : content != null ? content : "");
             
             result.put("status", "success");
             result.put("message", "高级搜索成功");
             result.put("conditions", conditions);
-            result.put("data", documents.getContent());
-            result.put("totalElements", documents.getTotalElements());
-            result.put("totalPages", documents.getTotalPages());
-            result.put("currentPage", documents.getNumber());
-            result.put("pageSize", documents.getSize());
+            result.put("data", documents);
+            result.put("totalElements", documents.size());
+            result.put("totalPages", 1);
+            result.put("currentPage", 0);
+            result.put("pageSize", documents.size());
             result.put("timestamp", LocalDateTime.now());
             
             log.info("高级搜索测试文档，条件: {}, 页码: {}, 大小: {}, 结果数: {}", 
-                    conditions, page, size, documents.getTotalElements());
+                    conditions, page, size, documents.size());
             return ResponseEntity.ok(result);
             
         } catch (Exception e) {
