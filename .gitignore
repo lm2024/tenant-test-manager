@@ -20,3 +20,10 @@ docker/mysql/data/tenant_center/test_case.frm
 /segment-id-generator-starter/target
 /my-bugs/target
 /business/my-bugs
+/business/my-product-tenant/target
+/plugins/tenant-routing-starter/target
+/plugins/segment-id-generator-starter/target
+/plugins/file-import-export-starter/target
+/plugins/elasticsearch-crud-starter/target
+/business/my-test-execute/target
+/business/my-function-demand/target
