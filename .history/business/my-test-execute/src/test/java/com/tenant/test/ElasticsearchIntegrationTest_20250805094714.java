@@ -12,7 +12,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -100,8 +99,8 @@ public class ElasticsearchIntegrationTest {
         TestDocument savedDocument = crudService.save(document);
 
         // 搜索文档
-        List<TestDocument> searchResults = crudService.search("title", "搜索测试");
-        assertTrue(searchResults.size() > 0, "应该能找到搜索结果");
+        Page<TestDocument> searchResults = crudService.search("搜索测试", "0", "10");
+        assertTrue(searchResults.getTotalElements() > 0, "应该能找到搜索结果");
 
         // 清理测试数据
         crudService.deleteById(document.getId());

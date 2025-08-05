@@ -10,9 +10,6 @@ server:
   servlet:
     context-path: /
 
-# ==========================================
-# Spring框架配置
-# ==========================================
 spring:
   main:
     allow-bean-definition-overriding: true
@@ -23,23 +20,16 @@ spring:
     multipart:
       max-file-size: 100MB
       max-request-size: 200MB
-  # 数据库配置
+
+# ==========================================
+# 数据库配置
+# ==========================================
+spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/tenant_center?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
     username: root
     password: password
-    # Druid连接池监控配置 (来自tenant-routing-starter)
-    druid:
-      stat-view-servlet:
-        enabled: true
-        url-pattern: /druid/*
-        login-username: admin
-        login-password: admin
-      web-stat-filter:
-        enabled: true
-        url-pattern: /*
-        exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'
   jpa:
     hibernate:
       ddl-auto: update
@@ -50,7 +40,11 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
     open-in-view: false
     database-platform: org.hibernate.dialect.MySQL8Dialect
-  # Redis缓存配置
+
+# ==========================================
+# Redis缓存配置
+# ==========================================
+spring:
   redis:
     host: localhost
     port: 6379
@@ -67,15 +61,6 @@ spring:
           connectionPoolSize: 64
           connectTimeout: 10000
           timeout: 3000
-  # 线程池配置 (来自file-import-export-starter)
-  task:
-    execution:
-      pool:
-        core-size: 5
-        max-size: 20
-        queue-capacity: 100
-        keep-alive: 60s
-      thread-name-prefix: "file-io-"
 
 # ==========================================
 # Knife4j API文档配置
@@ -127,13 +112,13 @@ file:
         max-batch-size: 50000  # CSV/TXT单次导出限制
         concurrent: 10         # 导出并发数
       path:
-        upload-dir: C:\\Users\\lm\\Downloads\\uploads  # 上传目录
-        export-dir: C:\\Users\\lm\\Downloads\\exports  # 导出目录
+        upload-dir: C:\\Users\\lm\\Downloads\\uploads
+        export-dir: C:\\Users\\lm\\Downloads\\exports
       redis:
         key-prefix: "file-io"
         task-ttl: 86400       # 任务过期时间(秒)
       swagger:
-        enabled: false         # 禁用Swagger文档 (原starter默认为true)
+        enabled: false         # 禁用Swagger文档
 
 # ==========================================
 # 租户路由模块配置 (tenant-routing-starter)

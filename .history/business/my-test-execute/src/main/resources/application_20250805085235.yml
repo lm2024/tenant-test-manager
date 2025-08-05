@@ -29,17 +29,6 @@ spring:
     url: jdbc:mysql://localhost:3306/tenant_center?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
     username: root
     password: password
-    # Druid连接池监控配置 (来自tenant-routing-starter)
-    druid:
-      stat-view-servlet:
-        enabled: true
-        url-pattern: /druid/*
-        login-username: admin
-        login-password: admin
-      web-stat-filter:
-        enabled: true
-        url-pattern: /*
-        exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'
   jpa:
     hibernate:
       ddl-auto: update
@@ -127,8 +116,8 @@ file:
         max-batch-size: 50000  # CSV/TXT单次导出限制
         concurrent: 10         # 导出并发数
       path:
-        upload-dir: C:\\Users\\lm\\Downloads\\uploads  # 上传目录
-        export-dir: C:\\Users\\lm\\Downloads\\exports  # 导出目录
+        upload-dir: ${file.import.export.path.upload-dir:C:\\Users\\lm\\Downloads\\uploads}  # 支持环境变量配置
+        export-dir: ${file.import.export.path.export-dir:C:\\Users\\lm\\Downloads\\exports}  # 支持环境变量配置
       redis:
         key-prefix: "file-io"
         task-ttl: 86400       # 任务过期时间(秒)
