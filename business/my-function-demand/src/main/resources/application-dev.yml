@@ -1,0 +1,194 @@
+# 开发环境配置
+spring:
+  # 数据源配置
+  datasource:
+    url: jdbc:mysql://localhost:3306/function_demand_dev?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:123456}
+    druid:
+      # 开发环境连接池配置
+      initial-size: 2
+      min-idle: 2
+      max-active: 10
+      # 开启监控统计
+      stat-view-servlet:
+        enabled: true
+        login-username: admin
+        login-password: 123456
+        allow: 127.0.0.1
+      web-stat-filter:
+        enabled: true
+      # 开启SQL监控
+      filters: stat,wall,slf4j
+      connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=2000
+
+  # JPA配置
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+        generate_statistics: true
+
+  # Redis配置
+  redis:
+    host: localhost
+    port: 6379
+    password: 
+    database: 0
+    timeout: 5000ms
+
+  # 热部署配置
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+      exclude: WEB-INF/**
+    livereload:
+      enabled: true
+      port: 35729
+
+# 服务器配置
+server:
+  port: 8080
+
+# 租户路由配置
+tenant:
+  routing:
+    enabled: true
+    # 开发环境租户数据源配置
+    datasources:
+      tenant1:
+        url: jdbc:mysql://localhost:3306/function_demand_tenant1?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
+        username: ${DB_USERNAME:root}
+        password: ${DB_PASSWORD:123456}
+        driver-class-name: com.mysql.cj.jdbc.Driver
+      tenant2:
+        url: jdbc:mysql://localhost:3306/function_demand_tenant2?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
+        username: ${DB_USERNAME:root}
+        password: ${DB_PASSWORD:123456}
+        driver-class-name: com.mysql.cj.jdbc.Driver
+      tenant3:
+        url: jdbc:mysql://localhost:3306/function_demand_tenant3?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
+        username: ${DB_USERNAME:root}
+        password: ${DB_PASSWORD:123456}
+        driver-class-name: com.mysql.cj.jdbc.Driver
+
+# 文件导入导出配置
+file:
+  import-export:
+    upload-path: /tmp/dev/uploads
+    export-path: /tmp/dev/exports
+    temp-path: /tmp/dev/temp
+    # 开发环境较小的批量大小
+    batch-size: 500
+    thread-pool:
+      core-size: 2
+      max-size: 5
+      queue-capacity: 100
+
+# 缓存配置
+cache:
+  tree:
+    enabled: true
+    ttl: 600  # 开发环境较短的缓存时间
+    max-size: 1000
+  query:
+    enabled: true
+    ttl: 60   # 1分钟
+    max-size: 500
+
+# 性能监控配置
+performance:
+  monitoring:
+    enabled: true
+    slow-query-threshold: 500  # 开发环境更严格的慢查询阈值
+    batch-operation:
+      enabled: true
+      threshold: 2000
+    memory:
+      enabled: true
+      threshold-percentage: 70
+
+# 业务规则配置
+business:
+  rules:
+    max-tree-level: 5
+    max-batch-size: 500  # 开发环境较小的批量大小
+    max-search-results: 1000
+    max-import-records: 5000
+
+# 日志配置
+logging:
+  level:
+    com.example.functiondemand: DEBUG
+    com.example.tenant.routing: DEBUG
+    com.example.file.importexport: DEBUG
+    org.springframework.web: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    com.alibaba.druid: DEBUG
+    # 开启事务日志
+    org.springframework.transaction: DEBUG
+    org.springframework.orm.jpa: DEBUG
+  file:
+    name: logs/function-demand-dev.log
+    max-size: 100MB
+    max-history: 30
+
+# Knife4j API文档配置
+knife4j:
+  enable: true
+  setting:
+    enable-debug: true
+    enable-swagger-models: true
+    enable-document-manage: true
+    swagger-model-name: 实体类列表
+  cors: true
+  production: false
+  basic:
+    enable: false
+
+# 管理端点配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    shutdown:
+      enabled: true
+
+# 开发环境特殊配置
+debug: true
+
+# 自定义配置
+app:
+  features:
+    # 开发环境启用所有功能
+    enable-tree-cache: true
+    enable-batch-optimization: true
+    enable-performance-monitoring: true
+    enable-data-validation: true
+    enable-audit-log: true
+    # 开发环境特有功能
+    enable-debug-mode: true
+    enable-sql-logging: true
+    enable-performance-logging: true
+
+# 开发工具配置
+dev:
+  tools:
+    # 自动创建测试数据
+    auto-create-test-data: false
+    # 重置数据库
+    reset-database-on-startup: false
+    # 性能分析
+    enable-profiling: true
+    # 内存监控
+    enable-memory-monitoring: true

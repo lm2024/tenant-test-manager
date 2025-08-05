@@ -1,213 +1,297 @@
-# ==========================================
-# 功能需求管理微服务配置文件
-# ==========================================
-
-# ==========================================
-# 基础服务配置
-# ==========================================
-server:
-  port: 8083
-  servlet:
-    context-path: /
-
-# ==========================================
-# Spring框架配置
-# ==========================================
+# 需求管理和功能管理模块主配置文件
 spring:
-  main:
-    allow-bean-definition-overriding: true
-    allow-circular-references: true
   application:
     name: my-function-demand
+  profiles:
+    active: dev
+  
+  # 数据源配置
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+      # 初始连接数
+      initial-size: 5
+      # 最小连接池数量
+      min-idle: 10
+      # 最大连接池数量
+      max-active: 20
+      # 配置获取连接等待超时的时间
+      max-wait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      time-between-eviction-runs-millis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      min-evictable-idle-time-millis: 300000
+      # 配置一个连接在池中最大生存的时间，单位是毫秒
+      max-evictable-idle-time-millis: 900000
+      # 配置检测连接是否有效
+      validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      # 打开PSCache，并且指定每个连接上PSCache的大小
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+      filters: stat,wall,slf4j
+      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      connection-properties: druid.stat.mergeSql\=true;druid.stat.slowSqlMillis\=5000
+      # 配置DruidStatFilter
+      web-stat-filter:
+        enabled: true
+        url-pattern: "/*"
+        exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*"
+      # 配置DruidStatViewServlet
+      stat-view-servlet:
+        enabled: true
+        url-pattern: "/druid/*"
+        # IP白名单(没有配置或者为空，则允许所有访问)
+        allow: 127.0.0.1,192.168.163.1
+        # IP黑名单 (存在共同时，deny优先于allow)
+        deny: 192.168.1.73
+        # 禁用HTML页面上的"Reset All"功能
+        reset-enable: false
+        # 登录名
+        login-username: admin
+        # 登录密码
+        login-password: 123456
+
+  # JPA配置
+  jpa:
+    hibernate:
+      ddl-auto: validate
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+        use_sql_comments: true
+        # 批量操作配置
+        jdbc:
+          batch_size: 50
+          batch_versioned_data: true
+        order_inserts: true
+        order_updates: true
+        # 二级缓存配置
+        cache:
+          use_second_level_cache: true
+          use_query_cache: true
+          region:
+            factory_class: org.hibernate.cache.jcache.JCacheRegionFactory
+        # 统计信息
+        generate_statistics: false
+
+  # Redis配置
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:}
+    database: ${REDIS_DATABASE:0}
+    timeout: 5000ms
+    lettuce:
+      pool:
+        max-active: 20
+        max-idle: 10
+        min-idle: 5
+        max-wait: 2000ms
+      shutdown-timeout: 100ms
+
+  # Jackson配置
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    serialization:
+      write-dates-as-timestamps: false
+      fail-on-empty-beans: false
+    deserialization:
+      fail-on-unknown-properties: false
+
+  # 文件上传配置
   servlet:
     multipart:
       max-file-size: 100MB
-      max-request-size: 200MB
-  # 数据库配置
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/tenant_center?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
-    username: root
-    password: password
-    # Druid连接池监控配置
-    druid:
-      stat-view-servlet:
-        enabled: true
-        url-pattern: /druid/*
-        login-username: admin
-        login-password: admin
-      web-stat-filter:
-        enabled: true
-        url-pattern: /*
-        exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-        dialect: org.hibernate.dialect.MySQL8Dialect
-    open-in-view: false
-    database-platform: org.hibernate.dialect.MySQL8Dialect
-  # Redis缓存配置
-  redis:
-    host: localhost
-    port: 6379
-    # password: 如果有密码，请取消注释并填写
-    database: 0
-    # 使用Redisson客户端
-    redisson:
-      config: |
-        singleServerConfig:
-          address: redis://localhost:6379
-          database: 0
-          # password: 如果有密码，请取消注释并填写
-          connectionMinimumIdleSize: 8
-          connectionPoolSize: 64
-          connectTimeout: 10000
-          timeout: 3000
-  # 线程池配置
-  task:
-    execution:
-      pool:
-        core-size: 5
-        max-size: 20
-        queue-capacity: 100
-        keep-alive: 60s
-      thread-name-prefix: "function-demand-"
+      max-request-size: 100MB
+      enabled: true
 
-# ==========================================
+# 服务器配置
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: /function-demand
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  # Tomcat配置
+  tomcat:
+    uri-encoding: UTF-8
+    max-threads: 200
+    min-spare-threads: 10
+    max-connections: 10000
+    accept-count: 100
+    connection-timeout: 20000
+
+# 管理端点配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,druid
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+    metrics:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    tags:
+      application: ${spring.application.name}
+
+# 租户路由配置
+tenant:
+  routing:
+    enabled: true
+    header-name: X-Tenant-Id
+    default-tenant: default
+    # 租户数据源配置
+    datasources:
+      # 这里会在运行时动态加载租户数据源配置
+      enabled: true
+    # 租户缓存配置
+    cache:
+      enabled: true
+      ttl: 3600
+      max-size: 1000
+
+# 文件导入导出配置
+file:
+  import-export:
+    # 文件存储路径
+    upload-path: ${FILE_UPLOAD_PATH:/data/uploads}
+    export-path: ${FILE_EXPORT_PATH:/data/exports}
+    temp-path: ${FILE_TEMP_PATH:/data/temp}
+    # 文件大小限制
+    max-file-size: 100MB
+    # 支持的文件扩展名
+    allowed-extensions: xlsx,xls,csv,txt
+    # 批量处理配置
+    batch-size: 1000
+    # 线程池配置
+    thread-pool:
+      core-size: 5
+      max-size: 20
+      queue-capacity: 1000
+      keep-alive-seconds: 60
+    # 导入配置
+    import:
+      max-concurrent-tasks: 5
+      timeout-minutes: 30
+    # 导出配置
+    export:
+      max-concurrent-tasks: 10
+      timeout-minutes: 60
+      # 大数据导出分页大小
+      page-size: 10000
+
+# 缓存配置
+cache:
+  # 树形结构缓存配置
+  tree:
+    enabled: true
+    ttl: 1800  # 30分钟
+    max-size: 10000
+  # 查询结果缓存配置
+  query:
+    enabled: true
+    ttl: 300   # 5分钟
+    max-size: 5000
+
+# 性能监控配置
+performance:
+  monitoring:
+    enabled: true
+    # 慢查询阈值（毫秒）
+    slow-query-threshold: 1000
+    # 批量操作监控
+    batch-operation:
+      enabled: true
+      threshold: 5000
+    # 内存使用监控
+    memory:
+      enabled: true
+      threshold-percentage: 80
+
+# 业务规则配置
+business:
+  rules:
+    # 树形结构最大层级
+    max-tree-level: 5
+    # 批量操作最大数量
+    max-batch-size: 1000
+    # 搜索结果最大数量
+    max-search-results: 10000
+    # 导入单次最大记录数
+    max-import-records: 20000
+
+# 日志配置
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    com.example.functiondemand: INFO
+    com.example.tenant.routing: INFO
+    com.example.file.importexport: INFO
+    org.springframework.web: WARN
+    org.hibernate: WARN
+    com.alibaba.druid: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [%X{tenantId}] [%X{traceId}] %logger{50} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [%X{tenantId}] [%X{traceId}] %logger{50} - %msg%n"
+
 # Knife4j API文档配置
-# ==========================================
 knife4j:
   enable: true
   setting:
     language: zh-CN
-    enable-swagger-models: true
-    enable-document-manage: true
-    swagger-model-name: 实体类列表
-    enable-version: false
-    enable-reload-cache-parameter: false
+    enable-version: true
+    enable-reload-cache-parameter: true
     enable-after-script: true
     enable-filter-multipart-api-method-type: POST
-    enable-filter-multipart-apis: false
+    enable-filter-multipart-apis: true
     enable-request-cache: true
     enable-host: false
-    enable-host-text: ""
-    enable-home-custom: false
-    home-custom-path: ""
-    enable-search: true
-    enable-footer: false
-    enable-footer-custom: true
-    footer-custom-content: Apache License 2.0 | Copyright  2024-[功能需求管理微服务]
-    enable-dynamic-parameter: false
-    enable-debug: true
-    enable-open-api: false
-    enable-group: true
-  cors: false
+    enable-home-custom: true
+    home-custom-path: classpath:markdown/home.md
+  cors: true
   production: false
   basic:
     enable: false
-    username: test
-    password: 12313
+    username: admin
+    password: 123456
 
-# ==========================================
-# 文件导入导出模块配置
-# ==========================================
-file:
-  import:
-    export:
-      enabled: true
-      import:
-        max-batch-size: 20000
-        max-files: 20
-        concurrent: 1
-      export:
-        max-batch-size: 50000
-        concurrent: 10
-      path:
-        upload-dir: C:\\Users\\lm\\Downloads\\uploads
-        export-dir: C:\\Users\\lm\\Downloads\\exports
-      redis:
-        key-prefix: "function-demand"
-        task-ttl: 86400
-      swagger:
-        enabled: false
-
-# ==========================================
-# 租户路由模块配置
-# ==========================================
-tenant:
-  routing:
-    enabled: true
-    header-name: X-Tenant-ID
-    required: false
-    exclude-paths: 
-      - /swagger-ui.html
-      - /doc.html
-      - /swagger-resources/**
-      - /v3/api-docs/**
-    redis:
-      host: localhost
-      port: 6379
-      password: ""
-      database: 0
-      pool:
-        min-idle: 8
-        max-active: 64
-    batch-size: 1000
-
-# ==========================================
-# Elasticsearch配置
-# ==========================================
-elasticsearch:
-  crud:
-    enabled: true
-    hosts:
-      - localhost:9200
-    username: ""
-    password: ""
-    connection-timeout: 5000
-    socket-timeout: 60000
-    request-timeout: 60000
-    max-connections: 100
-    max-connections-per-route: 100
-    tenant:
-      enabled: true
-      index-prefix: "function_demand_"
-      auto-create-index: true
-      default-shards: 1
-      default-replicas: 0
-    index:
-      use-keyword-as-default: true
-      default-shards: 1
-      default-replicas: 0
-      refresh-interval: "1s"
-    sync:
-      batch-size: 1000
-      thread-pool-size: 10
-      retry-times: 3
-      retry-interval: 1000
-      enable-checkpoint: true
-      checkpoint-interval: 1000
-    queue:
-      type: redis
-      redis:
-        key-prefix: "es:sync:"
-        max-retry: 3
-        consumer-threads: 5
-
-# ==========================================
-# 号段ID生成器配置
-# ==========================================
-segment-id:
-  enabled: true
-  redis:
-    address: redis://localhost:6379
-    password: ""
-  database:
-    url: jdbc:mysql://localhost:3306/tenant_center?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
-    username: root
-    password: password
-    driver-class-name: com.mysql.cj.jdbc.Driver 
+# 自定义配置
+app:
+  name: 需求管理和功能管理模块
+  version: 1.0.0
+  description: 提供需求管理、功能点管理和分类目录管理的完整解决方案
+  author: System Team
+  contact:
+    email: support@example.com
+    url: https://example.com
+  # 功能开关
+  features:
+    # 启用树形结构缓存
+    enable-tree-cache: true
+    # 启用批量操作优化
+    enable-batch-optimization: true
+    # 启用性能监控
+    enable-performance-monitoring: true
+    # 启用数据验证
+    enable-data-validation: true
+    # 启用审计日志
+    enable-audit-log: true

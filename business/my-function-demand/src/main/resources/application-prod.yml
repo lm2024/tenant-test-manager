@@ -1,0 +1,314 @@
+# 生产环境配置
+spring:
+  # 数据源配置
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:function_demand_prod}?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    druid:
+      # 生产环境连接池配置
+      initial-size: 10
+      min-idle: 20
+      max-active: 100
+      max-wait: 60000
+      # 生产环境关闭监控页面
+      stat-view-servlet:
+        enabled: false
+      web-stat-filter:
+        enabled: true
+      # 生产环境过滤器配置
+      filters: stat,wall,slf4j
+      connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      # 连接池监控
+      use-global-data-source-stat: true
+
+  # JPA配置
+  jpa:
+    hibernate:
+      ddl-auto: validate  # 生产环境不自动更新表结构
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        use_sql_comments: false
+        generate_statistics: false
+        # 生产环境批量操作优化
+        jdbc:
+          batch_size: 100
+          batch_versioned_data: true
+        order_inserts: true
+        order_updates: true
+        # 启用二级缓存
+        cache:
+          use_second_level_cache: true
+          use_query_cache: true
+
+  # Redis配置
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD}
+    database: ${REDIS_DATABASE:0}
+    timeout: 10000ms
+    lettuce:
+      pool:
+        max-active: 50
+        max-idle: 20
+        min-idle: 10
+        max-wait: 5000ms
+      shutdown-timeout: 100ms
+    # Redis集群配置（如果使用集群）
+    cluster:
+      nodes: ${REDIS_CLUSTER_NODES:}
+      max-redirects: 3
+
+# 服务器配置
+server:
+  port: ${SERVER_PORT:8080}
+  # 生产环境Tomcat优化
+  tomcat:
+    uri-encoding: UTF-8
+    max-threads: 500
+    min-spare-threads: 50
+    max-connections: 20000
+    accept-count: 200
+    connection-timeout: 30000
+    # 启用压缩
+    compression:
+      enabled: true
+      mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+      min-response-size: 1024
+
+# 租户路由配置
+tenant:
+  routing:
+    enabled: true
+    # 生产环境从配置中心或环境变量加载租户数据源
+    datasources:
+      # 租户数据源配置将通过配置中心动态加载
+      config-source: ${TENANT_CONFIG_SOURCE:environment}
+    cache:
+      enabled: true
+      ttl: 7200  # 2小时
+      max-size: 10000
+
+# 文件导入导出配置
+file:
+  import-export:
+    upload-path: ${FILE_UPLOAD_PATH:/data/prod/uploads}
+    export-path: ${FILE_EXPORT_PATH:/data/prod/exports}
+    temp-path: ${FILE_TEMP_PATH:/data/prod/temp}
+    max-file-size: 500MB
+    # 生产环境大批量处理
+    batch-size: 2000
+    thread-pool:
+      core-size: 10
+      max-size: 50
+      queue-capacity: 5000
+      keep-alive-seconds: 300
+    import:
+      max-concurrent-tasks: 10
+      timeout-minutes: 120
+    export:
+      max-concurrent-tasks: 20
+      timeout-minutes: 180
+      page-size: 50000
+
+# 缓存配置
+cache:
+  tree:
+    enabled: true
+    ttl: 3600  # 1小时
+    max-size: 50000
+  query:
+    enabled: true
+    ttl: 600   # 10分钟
+    max-size: 20000
+
+# 性能监控配置
+performance:
+  monitoring:
+    enabled: true
+    slow-query-threshold: 2000
+    batch-operation:
+      enabled: true
+      threshold: 10000
+    memory:
+      enabled: true
+      threshold-percentage: 85
+
+# 业务规则配置
+business:
+  rules:
+    max-tree-level: 5
+    max-batch-size: 2000
+    max-search-results: 50000
+    max-import-records: 100000
+
+# 日志配置
+logging:
+  level:
+    com.example.functiondemand: INFO
+    com.example.tenant.routing: INFO
+    com.example.file.importexport: INFO
+    org.springframework.web: WARN
+    org.hibernate: WARN
+    com.alibaba.druid: INFO
+    # 生产环境关闭调试日志
+    org.springframework.transaction: WARN
+    org.springframework.orm.jpa: WARN
+    org.hibernate.SQL: WARN
+  file:
+    name: ${LOG_PATH:/data/logs}/function-demand-prod.log
+    max-size: 500MB
+    max-history: 90
+    total-size-cap: 10GB
+  # 日志格式优化
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [%X{tenantId}] [%X{traceId}] [%X{spanId}] %logger{50} - %msg%n"
+
+# Knife4j API文档配置
+knife4j:
+  enable: ${API_DOC_ENABLED:false}  # 生产环境默认关闭API文档
+  setting:
+    enable-debug: false
+  production: true
+  basic:
+    enable: ${API_DOC_AUTH_ENABLED:true}
+    username: ${API_DOC_USERNAME:admin}
+    password: ${API_DOC_PASSWORD}
+
+# 管理端点配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: when-authorized
+      show-components: when-authorized
+    shutdown:
+      enabled: false  # 生产环境禁用shutdown端点
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+        step: 60s
+    tags:
+      application: ${spring.application.name}
+      environment: prod
+      instance: ${HOSTNAME:unknown}
+
+# 安全配置
+security:
+  # 启用安全头
+  headers:
+    frame-options: DENY
+    content-type-options: nosniff
+    xss-protection: 1; mode=block
+  # HTTPS配置
+  require-ssl: ${REQUIRE_SSL:true}
+
+# 自定义配置
+app:
+  features:
+    # 生产环境功能配置
+    enable-tree-cache: true
+    enable-batch-optimization: true
+    enable-performance-monitoring: true
+    enable-data-validation: true
+    enable-audit-log: true
+    # 生产环境关闭调试功能
+    enable-debug-mode: false
+    enable-sql-logging: false
+    enable-performance-logging: false
+
+# 生产环境监控配置
+monitoring:
+  # 应用性能监控
+  apm:
+    enabled: ${APM_ENABLED:true}
+    service-name: function-demand
+    environment: prod
+  # 链路追踪
+  tracing:
+    enabled: ${TRACING_ENABLED:true}
+    sampling-rate: ${TRACING_SAMPLING_RATE:0.1}
+  # 指标收集
+  metrics:
+    enabled: true
+    export-interval: 60s
+    # JVM指标
+    jvm:
+      enabled: true
+    # 数据库指标
+    datasource:
+      enabled: true
+    # 缓存指标
+    cache:
+      enabled: true
+    # 业务指标
+    business:
+      enabled: true
+
+# 集群配置
+cluster:
+  # 节点信息
+  node:
+    id: ${NODE_ID:node-1}
+    ip: ${NODE_IP:localhost}
+    port: ${server.port}
+  # 负载均衡
+  load-balancer:
+    enabled: ${LOAD_BALANCER_ENABLED:false}
+    strategy: ${LOAD_BALANCER_STRATEGY:round-robin}
+
+# 备份配置
+backup:
+  # 数据备份
+  data:
+    enabled: ${BACKUP_ENABLED:true}
+    schedule: ${BACKUP_SCHEDULE:0 2 * * *}  # 每天凌晨2点
+    retention-days: ${BACKUP_RETENTION_DAYS:30}
+  # 日志备份
+  logs:
+    enabled: ${LOG_BACKUP_ENABLED:true}
+    schedule: ${LOG_BACKUP_SCHEDULE:0 3 * * *}  # 每天凌晨3点
+    retention-days: ${LOG_BACKUP_RETENTION_DAYS:90}
+
+# 告警配置
+alerting:
+  enabled: ${ALERTING_ENABLED:true}
+  # 邮件告警
+  email:
+    enabled: ${EMAIL_ALERTING_ENABLED:true}
+    smtp:
+      host: ${SMTP_HOST}
+      port: ${SMTP_PORT:587}
+      username: ${SMTP_USERNAME}
+      password: ${SMTP_PASSWORD}
+    recipients: ${ALERT_EMAIL_RECIPIENTS}
+  # 钉钉告警
+  dingtalk:
+    enabled: ${DINGTALK_ALERTING_ENABLED:false}
+    webhook: ${DINGTALK_WEBHOOK}
+  # 告警规则
+  rules:
+    # CPU使用率告警
+    cpu-usage:
+      threshold: 80
+      duration: 5m
+    # 内存使用率告警
+    memory-usage:
+      threshold: 85
+      duration: 5m
+    # 数据库连接池告警
+    datasource-pool:
+      threshold: 80
+      duration: 2m
+    # 慢查询告警
+    slow-query:
+      threshold: 5000
+      count: 10

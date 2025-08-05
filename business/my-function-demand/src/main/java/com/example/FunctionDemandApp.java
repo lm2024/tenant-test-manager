@@ -12,19 +12,19 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  */
 @SpringBootApplication(
     scanBasePackages = {
-        "com.example",           // 当前模块包
-        "com.example.elasticsearch", // Elasticsearch CRUD组件包
-        "com.common.fileio",         // 文件导入导出组件包
-        "com.tenant.routing",        // 租户路由组件包
-        "com.common.segmentid"       // 号段ID生成组件包
+        "com.example.functiondemand",    // 当前模块包
+        "com.example.elasticsearch",     // Elasticsearch CRUD组件包
+        "com.common.fileio",             // 文件导入导出组件包
+        "com.tenant.routing",            // 租户路由组件包
+        "com.common.segmentid"           // 号段ID生成组件包
     }
 )
 @EnableJpaRepositories(basePackages = {
-    "com.example.repository",
+    "com.example.functiondemand",
     "com.common.segmentid.repository"
 })
 @EntityScan(basePackages = {
-    "com.example.entity", 
+    "com.example.functiondemand", 
     "com.common.segmentid.entity"
 })
 public class FunctionDemandApp {
