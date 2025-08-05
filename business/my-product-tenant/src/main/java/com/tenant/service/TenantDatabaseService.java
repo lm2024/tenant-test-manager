@@ -32,13 +32,14 @@ public class TenantDatabaseService {
         // 创建租户数据库信息
         TenantDbInfo dbInfo = new TenantDbInfo();
         dbInfo.setTenantId(tenantId);
+        dbInfo.setTenantName("租户-" + tenantId);
         dbInfo.setDbName("tenant_" + tenantId);
         dbInfo.setDbUser("tenant_" + tenantId);
         dbInfo.setDbPassword(generatePassword());
         dbInfo.setDbUrl("jdbc:mysql://localhost:3306/tenant_" + tenantId);
         
-        // 保存租户信息 - 这里需要实现保存逻辑
-        // tenantDbInfoRepository.save(dbInfo);
+        // 保存租户信息
+        tenantDbInfoRepository.save(dbInfo);
         
         // 创建数据库和表
         String templateSql = "CREATE DATABASE IF NOT EXISTS tenant_" + tenantId + 

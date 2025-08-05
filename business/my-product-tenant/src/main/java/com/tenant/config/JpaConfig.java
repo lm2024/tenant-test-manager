@@ -34,7 +34,8 @@ public class JpaConfig {
         em.setDataSource(dataSource);
         em.setPackagesToScan(
             "com.tenant.entity",
-            "com.tenant.routing.entity"
+            "com.tenant.routing.entity",
+            "com.common.segmentid.entity"
         );
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();

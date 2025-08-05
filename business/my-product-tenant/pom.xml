@@ -79,10 +79,22 @@
       <artifactId>spring-boot-starter-data-redis</artifactId>
     </dependency>
     
-    <!-- 租户路由组件 -->
+    <!-- 自定义组件 -->
     <dependency>
       <groupId>com.tenant</groupId>
       <artifactId>tenant-routing-starter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.common</groupId>
+      <artifactId>file-import-export-starter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.common</groupId>
+      <artifactId>segment-id-generator-starter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.example</groupId>
+      <artifactId>elasticsearch-crud-starter</artifactId>
     </dependency>
   </dependencies>
 

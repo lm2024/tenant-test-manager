@@ -1,12 +1,29 @@
 package com.common.segmentid.config;
 
-import org.springframework.boot.autoconfigure.domain.EntityScan;
+import com.common.segmentid.service.SegmentIdService;
+import com.common.segmentid.service.impl.SegmentIdServiceImpl;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+/**
+ * 号段ID生成器自动配置类
+ * 
+ * 注意：JPA配置由主应用类负责，这里不重复配置
+ */
 @Configuration
-@EnableJpaRepositories(basePackages = "com.common.segmentid.repository")
-@EntityScan(basePackages = "com.common.segmentid.entity")
+@ComponentScan(basePackages = "com.common.segmentid")
+@ConditionalOnProperty(name = "segment-id.enabled", havingValue = "true", matchIfMissing = true)
 public class SegmentIdGeneratorAutoConfiguration {
-    // 保持为空，自动装配由@Service注解的实现类完成
+    
+    /**
+     * 确保SegmentIdService Bean被正确创建
+     */
+    @Bean
+    @ConditionalOnMissingBean(SegmentIdService.class)
+    public SegmentIdService segmentIdService() {
+        return new SegmentIdServiceImpl();
+    }
 } 

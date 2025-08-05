@@ -1,42 +1,36 @@
 # ==========================================
-# 租户管理微服务配置文件
+# 功能需求管理微服务配置文件
 # ==========================================
 
+# ==========================================
+# 基础服务配置
+# ==========================================
 server:
-  port: 8080
+  port: 8083
   servlet:
     context-path: /
 
+# ==========================================
+# Spring框架配置
+# ==========================================
 spring:
   main:
     allow-bean-definition-overriding: true
     allow-circular-references: true
   application:
-    name: my-product-tenant
+    name: my-function-demand
   servlet:
     multipart:
       max-file-size: 100MB
       max-request-size: 200MB
+  # 数据库配置
   datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://localhost:3306/tenant_center?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/tenant_center?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
     username: root
     password: password
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    # Druid连接池监控配置
     druid:
-      initial-size: 5
-      min-idle: 5
-      max-active: 20
-      max-wait: 60000
-      time-between-eviction-runs-millis: 60000
-      min-evictable-idle-time-millis: 300000
-      validation-query: SELECT 1
-      test-while-idle: true
-      test-on-borrow: false
-      test-on-return: false
-      pool-prepared-statements: true
-      max-pool-prepared-statement-per-connection-size: 20
-      filters: stat,wall,slf4j
       stat-view-servlet:
         enabled: true
         url-pattern: /druid/*
@@ -48,22 +42,25 @@ spring:
         exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
         format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
     open-in-view: false
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+  # Redis缓存配置
   redis:
-    host: 127.0.0.1
+    host: localhost
     port: 6379
-    # password: yourpassword  # 如有密码请取消注释并填写
+    # password: 如果有密码，请取消注释并填写
     database: 0
     # 使用Redisson客户端
     redisson:
       config: |
         singleServerConfig:
-          address: redis://127.0.0.1:6379
+          address: redis://localhost:6379
           database: 0
           # password: 如果有密码，请取消注释并填写
           connectionMinimumIdleSize: 8
@@ -78,7 +75,7 @@ spring:
         max-size: 20
         queue-capacity: 100
         keep-alive: 60s
-      thread-name-prefix: "product-tenant-"
+      thread-name-prefix: "function-demand-"
 
 # ==========================================
 # Knife4j API文档配置
@@ -103,7 +100,7 @@ knife4j:
     enable-search: true
     enable-footer: false
     enable-footer-custom: true
-    footer-custom-content: Apache License 2.0 | Copyright  2024-[租户管理微服务]
+    footer-custom-content: Apache License 2.0 | Copyright  2024-[功能需求管理微服务]
     enable-dynamic-parameter: false
     enable-debug: true
     enable-open-api: false
@@ -133,7 +130,7 @@ file:
         upload-dir: C:\\Users\\lm\\Downloads\\uploads
         export-dir: C:\\Users\\lm\\Downloads\\exports
       redis:
-        key-prefix: "product-tenant"
+        key-prefix: "function-demand"
         task-ttl: 86400
       swagger:
         enabled: false
@@ -152,7 +149,7 @@ tenant:
       - /swagger-resources/**
       - /v3/api-docs/**
     redis:
-      host: 127.0.0.1
+      host: localhost
       port: 6379
       password: ""
       database: 0
@@ -160,11 +157,6 @@ tenant:
         min-idle: 8
         max-active: 64
     batch-size: 1000
-  global-interceptor:
-    enabled: false
-    header-name: X-Tenant-ID
-    required: true
-    exclude-paths: /api/tenant/**,/swagger-ui.html,/doc.html,/druid/**,/v2/api-docs/**
 
 # ==========================================
 # Elasticsearch配置
@@ -183,7 +175,7 @@ elasticsearch:
     max-connections-per-route: 100
     tenant:
       enabled: true
-      index-prefix: "product_tenant_"
+      index-prefix: "function_demand_"
       auto-create-index: true
       default-shards: 1
       default-replicas: 0
@@ -212,22 +204,10 @@ elasticsearch:
 segment-id:
   enabled: true
   redis:
-    address: redis://127.0.0.1:6379
+    address: redis://localhost:6379
     password: ""
   database:
-    url: jdbc:mysql://localhost:3306/tenant_center?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/tenant_center?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
     username: root
     password: password
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
-# Swagger认证配置
-swagger:
-  auth:
-    username: admin
-    password: admin123
-
-logging:
-  config: classpath:logback-spring.xml
-  level:
-    org.hibernate.SQL: debug
-    org.hibernate.type.descriptor.sql.BasicBinder: trace 
+    driver-class-name: com.mysql.cj.jdbc.Driver 

@@ -31,8 +31,9 @@ public class RedissonConfig {
     /**
      * 配置RedissonClient
      */
-    @Bean
-    @ConditionalOnMissingBean
+    @Bean(name = "tenantRedissonClient")
+    @Primary
+    @ConditionalOnMissingBean(name = "tenantRedissonClient")
     public RedissonClient redissonClient() {
         Config config = new Config();
         

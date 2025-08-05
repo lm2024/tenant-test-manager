@@ -5,12 +5,14 @@ import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
 import org.redisson.codec.JsonJacksonCodec;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
 @Configuration
-public class RedissonConfig {
+public class SegmentIdRedissonConfig {
     @Value("${spring.redis.redisson.config:}")
     private String redissonYamlConfig;
 
@@ -20,8 +22,9 @@ public class RedissonConfig {
     @Value("${redisson.password:}")
     private String password;
 
-    @Bean
-    public RedissonClient redissonClient() throws Exception {
+    @Bean(name = "segmentIdRedissonClient")
+    @ConditionalOnMissingBean(name = "segmentIdRedissonClient")
+    public RedissonClient segmentIdRedissonClient() throws Exception {
         Config config;
         if (StringUtils.hasText(redissonYamlConfig)) {
             // 兼容spring.redis.redisson.config的yaml字符串
@@ -33,7 +36,15 @@ public class RedissonConfig {
                 config.useSingleServer().setPassword(password);
             }
         } else {
-            throw new IllegalArgumentException("Redisson配置未找到，请配置spring.redis.redisson.config或redisson.address");
+            // 使用默认配置
+            config = new Config();
+            config.useSingleServer()
+                .setAddress("redis://localhost:6379")
+                .setDatabase(0)
+                .setConnectionMinimumIdleSize(8)
+                .setConnectionPoolSize(64)
+                .setConnectTimeout(10000)
+                .setTimeout(3000);
         }
         
         // 设置序列化方式为JSON，这样Redis客户端就能正常显示

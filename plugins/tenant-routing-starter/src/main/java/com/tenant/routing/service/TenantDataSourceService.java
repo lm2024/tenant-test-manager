@@ -48,6 +48,11 @@ public class TenantDataSourceService {
             logger.info("Initializing all tenant data sources...");
             List<TenantDbInfo> tenantDbInfos = tenantDbInfoRepository.findAll();
             
+            if (tenantDbInfos == null || tenantDbInfos.isEmpty()) {
+                logger.info("No tenant data sources found to initialize");
+                return;
+            }
+            
             Map<Object, Object> targetDataSources = new HashMap<>();
             
             for (TenantDbInfo tenantDbInfo : tenantDbInfos) {

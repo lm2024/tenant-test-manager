@@ -5,7 +5,7 @@ import com.tenant.routing.core.TenantDataSourceCreator;
 import com.tenant.routing.interceptor.GlobalTenantInterceptor;
 import com.tenant.routing.interceptor.TenantHeaderInterceptor;
 import com.tenant.routing.interceptor.TenantSwitchAspect;
-import com.tenant.routing.interceptor.TenantSwitchHeaderAspect;
+import com.tenant.routing.repository.TenantDbInfoRepository;
 import com.tenant.routing.service.TenantDbInfoService;
 import com.tenant.routing.service.TenantRegistryService;
 import com.tenant.routing.service.impl.TenantDbInfoServiceImpl;
@@ -119,6 +119,14 @@ public class TenantAutoConfiguration implements WebMvcConfigurer {
     @Bean
     public JdbcTemplate jdbcTemplate(@Qualifier("tenantCenterDataSource") DataSource dataSource) {
         return new JdbcTemplate(dataSource);
+    }
+    
+    /**
+     * 配置租户数据库信息仓库
+     */
+    @Bean
+    public TenantDbInfoRepository tenantDbInfoRepository(@Qualifier("tenantCenterDataSource") DataSource dataSource) {
+        return new TenantDbInfoRepository(dataSource);
     }
     
     /**

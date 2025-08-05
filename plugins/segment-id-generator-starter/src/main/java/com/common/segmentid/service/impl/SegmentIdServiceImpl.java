@@ -9,6 +9,7 @@ import org.redisson.api.RLock;
 import org.redisson.api.RBucket;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,7 @@ public class SegmentIdServiceImpl implements SegmentIdService {
     @Autowired
     private SequenceManager sequenceManager;
     @Autowired
+    @Qualifier("segmentIdRedissonClient")
     private RedissonClient redissonClient;
 
     private static final String REDIS_KEY_FORMAT = "segmentid:%s:%s"; // tenantId:bizType

@@ -7,6 +7,7 @@ import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 
@@ -35,6 +36,7 @@ public class RedissonTenantCacheService {
     private static final String TENANT_LOADED_FLAG = "tenant:preload:completed";
     
     @Autowired
+    @Qualifier("tenantRedissonClient")
     private RedissonClient redissonClient;
     
     // 使用ApplicationContext延迟加载TenantDbInfoService，避免循环依赖
