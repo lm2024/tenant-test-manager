@@ -28,3 +28,4 @@ docker/mysql/data/tenant_center/test_case.frm
 /business/my-test-execute/target
 /business/my-function-demand/target
 /.history
+/docker/data
