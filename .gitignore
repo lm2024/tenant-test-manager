@@ -29,3 +29,4 @@ docker/mysql/data/tenant_center/test_case.frm
 /business/my-function-demand/target
 /.history
 /docker/data
+/docker/redis/data
