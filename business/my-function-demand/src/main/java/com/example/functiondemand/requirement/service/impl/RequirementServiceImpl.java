@@ -38,6 +38,7 @@ public class RequirementServiceImpl implements RequirementService {
     private final RequirementFunctionRelationRepository relationRepository;
     private final BatchPerformanceOptimizer batchOptimizer;
     private final BusinessRuleChecker businessRuleChecker;
+    private final org.springframework.data.redis.core.RedisTemplate<String, Object> redisTemplate;
 
     @Override
     public RequirementDTO create(RequirementCreateDTO dto) {
@@ -241,10 +242,7 @@ public class RequirementServiceImpl implements RequirementService {
         try {
             @SuppressWarnings("unchecked")
             List<RequirementTreeDTO> cachedResult = (List<RequirementTreeDTO>) 
-                org.springframework.beans.factory.BeanFactoryUtils
-                    .beanOfType(org.springframework.context.ApplicationContext.class, 
-                        org.springframework.data.redis.core.RedisTemplate.class)
-                    .opsForValue().get(cacheKey);
+                redisTemplate.opsForValue().get(cacheKey);
             
             if (cachedResult != null) {
                 log.debug("从缓存获取需求树: {}", cacheKey);
@@ -268,10 +266,7 @@ public class RequirementServiceImpl implements RequirementService {
         // 缓存结果（仅当结果不为空时）
         if (!result.isEmpty()) {
             try {
-                org.springframework.beans.factory.BeanFactoryUtils
-                    .beanOfType(org.springframework.context.ApplicationContext.class, 
-                        org.springframework.data.redis.core.RedisTemplate.class)
-                    .opsForValue().set(cacheKey, result, 30, java.util.concurrent.TimeUnit.MINUTES);
+                redisTemplate.opsForValue().set(cacheKey, result, 30, java.util.concurrent.TimeUnit.MINUTES);
                 log.debug("需求树已缓存: {}", cacheKey);
             } catch (Exception e) {
                 log.debug("缓存失败: {}", e.getMessage());
@@ -457,8 +452,6 @@ public class RequirementServiceImpl implements RequirementService {
     }
     
     private RequirementTreeDTO buildTreeNodeOptimized(Requirement requirement, Map<String, List<Requirement>> childrenMap) {
-        RequirementTreeDTO dto = convertToDTO(requirement);
-        
         List<Requirement> children = childrenMap.getOrDefault(requirement.getId(), Collections.emptyList());
         List<RequirementTreeDTO> childrenDTOs = children.stream()
             .map(child -> buildTreeNodeOptimized(child, childrenMap))
@@ -466,21 +459,21 @@ public class RequirementServiceImpl implements RequirementService {
         
         RequirementTreeDTO treeDTO = new RequirementTreeDTO();
         // 复制基础属性
-        treeDTO.setId(dto.getId());
-        treeDTO.setParentId(dto.getParentId());
-        treeDTO.setCategoryId(dto.getCategoryId());
-        treeDTO.setTitle(dto.getTitle());
-        treeDTO.setDescription(dto.getDescription());
-        treeDTO.setPriority(dto.getPriority());
-        treeDTO.setStatus(dto.getStatus());
-        treeDTO.setSource(dto.getSource());
-        treeDTO.setAssignee(dto.getAssignee());
-        treeDTO.setLevel(dto.getLevel());
-        treeDTO.setPath(dto.getPath());
-        treeDTO.setCreatedTime(dto.getCreatedTime());
-        treeDTO.setUpdatedTime(dto.getUpdatedTime());
-        treeDTO.setCreatedBy(dto.getCreatedBy());
-        treeDTO.setUpdatedBy(dto.getUpdatedBy());
+        treeDTO.setId(requirement.getId());
+        treeDTO.setParentId(requirement.getParentId());
+        treeDTO.setCategoryId(requirement.getCategoryId());
+        treeDTO.setTitle(requirement.getTitle());
+        treeDTO.setDescription(requirement.getDescription());
+        treeDTO.setPriority(requirement.getPriority());
+        treeDTO.setStatus(requirement.getStatus());
+        treeDTO.setSource(requirement.getSource());
+        treeDTO.setAssignee(requirement.getAssignee());
+        treeDTO.setLevel(requirement.getLevel());
+        treeDTO.setPath(requirement.getPath());
+        treeDTO.setCreatedTime(requirement.getCreatedTime());
+        treeDTO.setUpdatedTime(requirement.getUpdatedTime());
+        treeDTO.setCreatedBy(requirement.getCreatedBy());
+        treeDTO.setUpdatedBy(requirement.getUpdatedBy());
         treeDTO.setChildren(childrenDTOs);
         
         return treeDTO;

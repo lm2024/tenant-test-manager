@@ -25,7 +25,6 @@ import java.util.List;
 @RequestMapping("/api/function-points")
 @RequiredArgsConstructor
 @Validated
-@TenantSwitchHeader
 @Tag(name = "功能点管理", description = "功能点管理相关接口")
 public class FunctionPointController {
 

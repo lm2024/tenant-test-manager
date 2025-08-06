@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
+import java.util.Arrays;
 
 @Configuration
 @EnableConfigurationProperties(ElasticsearchCrudProperties.class)
@@ -31,6 +32,12 @@ public class ElasticsearchCrudAutoConfiguration {
     @ConditionalOnMissingBean
     public RestHighLevelClient restHighLevelClient(ElasticsearchCrudProperties properties) {
         log.info("创建 Elasticsearch RestHighLevelClient");
+        
+        // 检查hosts配置
+        if (properties.getHosts() == null || properties.getHosts().isEmpty()) {
+            log.warn("Elasticsearch hosts未配置，使用默认配置 localhost:9200");
+            properties.setHosts(Arrays.asList("localhost:9200"));
+        }
         
         // 构建RestClient.Builder
         String host = properties.getHosts().get(0);

@@ -1,26 +1,35 @@
 # 开发环境配置
 spring:
-  # 数据源配置
+  # 开发环境数据源配置
   datasource:
-    url: jdbc:mysql://localhost:3306/function_demand_dev?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
-    username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:123456}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/tenant_center?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: password
+    # Druid连接池配置
     druid:
-      # 开发环境连接池配置
-      initial-size: 2
-      min-idle: 2
-      max-active: 10
-      # 开启监控统计
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      # 监控配置
       stat-view-servlet:
         enabled: true
+        url-pattern: /druid/*
         login-username: admin
-        login-password: 123456
-        allow: 127.0.0.1
+        login-password: admin
       web-stat-filter:
         enabled: true
-      # 开启SQL监控
-      filters: stat,wall,slf4j
-      connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=2000
+        url-pattern: /*
+        exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'
 
   # JPA配置
   jpa:
@@ -55,40 +64,66 @@ spring:
 server:
   port: 8080
 
-# 租户路由配置
+# 租户路由配置 (使用tenant-routing-starter)
 tenant:
   routing:
     enabled: true
-    # 开发环境租户数据源配置
-    datasources:
-      tenant1:
-        url: jdbc:mysql://localhost:3306/function_demand_tenant1?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
-        username: ${DB_USERNAME:root}
-        password: ${DB_PASSWORD:123456}
-        driver-class-name: com.mysql.cj.jdbc.Driver
-      tenant2:
-        url: jdbc:mysql://localhost:3306/function_demand_tenant2?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
-        username: ${DB_USERNAME:root}
-        password: ${DB_PASSWORD:123456}
-        driver-class-name: com.mysql.cj.jdbc.Driver
-      tenant3:
-        url: jdbc:mysql://localhost:3306/function_demand_tenant3?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
-        username: ${DB_USERNAME:root}
-        password: ${DB_PASSWORD:123456}
-        driver-class-name: com.mysql.cj.jdbc.Driver
+    header-name: X-Tenant-ID
+    required: false  # 设置为false，这样没有租户ID也能访问
+    exclude-paths: 
+      - /swagger-ui.html
+      - /doc.html
+      - /swagger-resources/**
+      - /v3/api-docs/**
+      - /webjars/**
+      - /actuator/**
+      - /api/public/**
+      - /knife4j/**
+      - /favicon.ico
+    tenant-center:
+      url: jdbc:mysql://localhost:3306/tenant_center?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+      username: root
+      password: password
+    max-pool-size: 10
+    min-idle: 2
+    connection-timeout: 30000
+    idle-timeout: 600000
+    max-lifetime: 1800000
+    # Redis配置
+    redis:
+      host: localhost
+      port: 6379
+      database: 0
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+        max-wait: -1
+    # 租户缓存配置
+    preload-enabled: true
+    cache-expire-time: 604800  # 7天，单位秒
+    batch-size: 100
 
-# 文件导入导出配置
+# 文件导入导出配置 (file-import-export-starter)
 file:
-  import-export:
-    upload-path: /tmp/dev/uploads
-    export-path: /tmp/dev/exports
-    temp-path: /tmp/dev/temp
-    # 开发环境较小的批量大小
-    batch-size: 500
-    thread-pool:
-      core-size: 2
-      max-size: 5
-      queue-capacity: 100
+  import:
+    export:
+      enabled: true
+      import:
+        max-batch-size: 10000  # 开发环境较小的批量大小
+        max-files: 10          # 最大上传文件数
+        concurrent: 1          # 导入并发数
+      export:
+        max-batch-size: 20000  # CSV/TXT单次导出限制
+        concurrent: 5          # 导出并发数
+      path:
+        upload-dir: /tmp/dev/uploads  # 上传目录
+        export-dir: /tmp/dev/exports  # 导出目录
+      redis:
+        key-prefix: "file-io-dev"
+        task-ttl: 86400       # 任务过期时间(秒)
+      swagger:
+        enabled: true         # 开发环境启用Swagger文档
 
 # 缓存配置
 cache:
@@ -180,6 +215,48 @@ app:
     enable-debug-mode: true
     enable-sql-logging: true
     enable-performance-logging: true
+
+# Elasticsearch配置
+elasticsearch:
+  crud:
+    enabled: true
+    hosts:
+      - localhost:9200
+    username: 
+    password: 
+    connection-timeout: 5000
+    socket-timeout: 60000
+    request-timeout: 60000
+    max-connections: 100
+    max-connections-per-route: 100
+    sync:
+      batch-size: 1000
+      thread-pool-size: 10
+      retry-times: 3
+      retry-interval: 1000
+      enable-checkpoint: true
+      checkpoint-interval: 1000
+    tenant:
+      enabled: true
+      index-prefix: "tenant_"
+      auto-create-index: true
+      default-shards: 1
+      default-replicas: 0
+    index:
+      use-keyword-as-default: true
+      default-shards: 1
+      default-replicas: 0
+      refresh-interval: "1s"
+    queue:
+      type: redis
+      redis:
+        key-prefix: "es:sync:"
+        max-retry: 3
+        consumer-threads: 5
+
+# 号段ID生成器配置
+segment-id:
+  enabled: true
 
 # 开发工具配置
 dev:

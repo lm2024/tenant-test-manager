@@ -30,49 +30,49 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RequirementNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleRequirementNotFound(RequirementNotFoundException e) {
         log.error("需求未找到: {}", e.getMessage());
-        return buildErrorResponse(HttpStatus.NOT_FOUND, "需求未找到", e.getMessage());
+        return buildErrorResponseEntity(HttpStatus.NOT_FOUND, "需求未找到", e.getMessage());
     }
 
     @ExceptionHandler(FunctionPointNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleFunctionPointNotFound(FunctionPointNotFoundException e) {
         log.error("功能点未找到: {}", e.getMessage());
-        return buildErrorResponse(HttpStatus.NOT_FOUND, "功能点未找到", e.getMessage());
+        return buildErrorResponseEntity(HttpStatus.NOT_FOUND, "功能点未找到", e.getMessage());
     }
 
     @ExceptionHandler(CategoryNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleCategoryNotFound(CategoryNotFoundException e) {
         log.error("分类目录未找到: {}", e.getMessage());
-        return buildErrorResponse(HttpStatus.NOT_FOUND, "分类目录未找到", e.getMessage());
+        return buildErrorResponseEntity(HttpStatus.NOT_FOUND, "分类目录未找到", e.getMessage());
     }
 
     @ExceptionHandler(InvalidTreeStructureException.class)
     public ResponseEntity<Map<String, Object>> handleInvalidTreeStructure(InvalidTreeStructureException e) {
         log.error("无效的树形结构: {}", e.getMessage());
-        return buildErrorResponse(HttpStatus.BAD_REQUEST, "无效的树形结构", e.getMessage());
+        return buildErrorResponseEntity(HttpStatus.BAD_REQUEST, "无效的树形结构", e.getMessage());
     }
 
     @ExceptionHandler(MaxLevelExceededException.class)
     public ResponseEntity<Map<String, Object>> handleMaxLevelExceeded(MaxLevelExceededException e) {
         log.error("超过最大层级限制: {}", e.getMessage());
-        return buildErrorResponse(HttpStatus.BAD_REQUEST, "超过最大层级限制", e.getMessage());
+        return buildErrorResponseEntity(HttpStatus.BAD_REQUEST, "超过最大层级限制", e.getMessage());
     }
 
     @ExceptionHandler(CircularReferenceException.class)
     public ResponseEntity<Map<String, Object>> handleCircularReference(CircularReferenceException e) {
         log.error("循环引用错误: {}", e.getMessage());
-        return buildErrorResponse(HttpStatus.BAD_REQUEST, "循环引用错误", e.getMessage());
+        return buildErrorResponseEntity(HttpStatus.BAD_REQUEST, "循环引用错误", e.getMessage());
     }
 
     @ExceptionHandler(DuplicateRelationException.class)
     public ResponseEntity<Map<String, Object>> handleDuplicateRelation(DuplicateRelationException e) {
         log.error("重复关联关系: {}", e.getMessage());
-        return buildErrorResponse(HttpStatus.BAD_REQUEST, "重复关联关系", e.getMessage());
+        return buildErrorResponseEntity(HttpStatus.BAD_REQUEST, "重复关联关系", e.getMessage());
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, Object>> handleIllegalArgument(IllegalArgumentException e) {
         log.error("参数错误: {}", e.getMessage());
-        return buildErrorResponse(HttpStatus.BAD_REQUEST, "参数错误", e.getMessage());
+        return buildErrorResponseEntity(HttpStatus.BAD_REQUEST, "参数错误", e.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -114,14 +114,14 @@ public class GlobalExceptionHandler {
             .map(ConstraintViolation::getMessage)
             .collect(Collectors.joining(", "));
         
-        return buildErrorResponse(HttpStatus.BAD_REQUEST, "约束验证失败", violations);
+        return buildErrorResponseEntity(HttpStatus.BAD_REQUEST, "约束验证失败", violations);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Map<String, Object>> handleHttpMessageNotReadable(HttpMessageNotReadableException e) {
         String tenantId = TenantContextHolder.getTenantId();
         log.warn("请求体解析失败 - 租户: {}", tenantId, e);
-        return buildErrorResponse(HttpStatus.BAD_REQUEST, "请求体解析失败", "请求数据格式错误");
+        return buildErrorResponseEntity(HttpStatus.BAD_REQUEST, "请求体解析失败", "请求数据格式错误");
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
@@ -130,7 +130,7 @@ public class GlobalExceptionHandler {
         log.warn("参数类型不匹配 - 租户: {}", tenantId, e);
         String message = String.format("参数 '%s' 类型错误，期望类型: %s", 
             e.getName(), e.getRequiredType().getSimpleName());
-        return buildErrorResponse(HttpStatus.BAD_REQUEST, "参数类型错误", message);
+        return buildErrorResponseEntity(HttpStatus.BAD_REQUEST, "参数类型错误", message);
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
@@ -138,7 +138,7 @@ public class GlobalExceptionHandler {
         String tenantId = TenantContextHolder.getTenantId();
         log.warn("缺少必需参数 - 租户: {}", tenantId, e);
         String message = String.format("缺少必需参数: %s", e.getParameterName());
-        return buildErrorResponse(HttpStatus.BAD_REQUEST, "缺少必需参数", message);
+        return buildErrorResponseEntity(HttpStatus.BAD_REQUEST, "缺少必需参数", message);
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
@@ -146,7 +146,7 @@ public class GlobalExceptionHandler {
         String tenantId = TenantContextHolder.getTenantId();
         log.warn("不支持的请求方法 - 租户: {}", tenantId, e);
         String message = String.format("不支持的请求方法: %s", e.getMethod());
-        return buildErrorResponse(HttpStatus.METHOD_NOT_ALLOWED, "请求方法不支持", message);
+        return buildErrorResponseEntity(HttpStatus.METHOD_NOT_ALLOWED, "请求方法不支持", message);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
@@ -161,7 +161,7 @@ public class GlobalExceptionHandler {
             message = "违反外键约束，相关数据不存在";
         }
         
-        return buildErrorResponse(HttpStatus.CONFLICT, "数据完整性错误", message);
+        return buildErrorResponseEntity(HttpStatus.CONFLICT, "数据完整性错误", message);
     }
 
     @ExceptionHandler(IllegalStateException.class)
@@ -171,24 +171,24 @@ public class GlobalExceptionHandler {
         
         // 特殊处理租户相关异常
         if (e.getMessage().contains("租户")) {
-            return buildErrorResponse(HttpStatus.UNAUTHORIZED, "租户上下文错误", e.getMessage());
+            return buildErrorResponseEntity(HttpStatus.UNAUTHORIZED, "租户上下文错误", e.getMessage());
         }
         
-        return buildErrorResponse(HttpStatus.BAD_REQUEST, "操作状态错误", e.getMessage());
+        return buildErrorResponseEntity(HttpStatus.BAD_REQUEST, "操作状态错误", e.getMessage());
     }
 
     @ExceptionHandler(SecurityException.class)
     public ResponseEntity<Map<String, Object>> handleSecurity(SecurityException e) {
         String tenantId = TenantContextHolder.getTenantId();
         log.error("安全异常 - 租户: {}", tenantId, e);
-        return buildErrorResponse(HttpStatus.FORBIDDEN, "安全验证失败", "没有权限执行此操作");
+        return buildErrorResponseEntity(HttpStatus.FORBIDDEN, "安全验证失败", "没有权限执行此操作");
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGeneral(Exception e) {
         String tenantId = TenantContextHolder.getTenantId();
         log.error("系统错误 - 租户: {}", tenantId, e);
-        return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "系统错误", "服务器内部错误");
+        return buildErrorResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, "系统错误", "服务器内部错误");
     }
 
     private Map<String, Object> buildErrorResponse(HttpStatus status, String error, String message) {
@@ -201,7 +201,7 @@ public class GlobalExceptionHandler {
         return errorResponse;
     }
 
-    private ResponseEntity<Map<String, Object>> buildErrorResponse(HttpStatus status, String error, String message) {
+    private ResponseEntity<Map<String, Object>> buildErrorResponseEntity(HttpStatus status, String error, String message) {
         return new ResponseEntity<>(buildErrorResponse(status, error, message), status);
     }
 }

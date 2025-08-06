@@ -60,6 +60,24 @@
             <groupId>com.tenant</groupId>
             <artifactId>tenant-routing-starter</artifactId>
         </dependency>
+
+        <!-- 文件导入导出组件 -->
+        <dependency>
+            <groupId>com.common</groupId>
+            <artifactId>file-import-export-starter</artifactId>
+        </dependency>
+
+        <!-- 号段ID生成组件 -->
+        <dependency>
+            <groupId>com.common</groupId>
+            <artifactId>segment-id-generator-starter</artifactId>
+        </dependency>
+
+        <!-- Elasticsearch CRUD组件 -->
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>elasticsearch-crud-starter</artifactId>
+        </dependency>
         
         <!-- 文件导入导出组件 -->
         <dependency>

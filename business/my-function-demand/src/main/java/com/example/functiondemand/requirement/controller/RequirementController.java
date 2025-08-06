@@ -25,7 +25,6 @@ import java.util.List;
 @RequestMapping("/api/requirements")
 @RequiredArgsConstructor
 @Validated
-@TenantSwitchHeader
 @Tag(name = "需求管理", description = "需求管理相关接口")
 public class RequirementController {
 

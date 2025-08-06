@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name = "category", indexes = {
-    @Index(name = "idx_parent_id", columnList = "parentId"),
+    @Index(name = "idx_parent_id", columnList = "parent_id"),
     @Index(name = "idx_type", columnList = "type"),
     @Index(name = "idx_level", columnList = "level"),
     @Index(name = "idx_path", columnList = "path")

@@ -1,26 +1,32 @@
 # 生产环境配置
 spring:
-  # 数据源配置
+  # 生产环境数据源配置
   datasource:
-    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:function_demand_prod}?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/tenant_center?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=true&allowPublicKeyRetrieval=true
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+    # Druid连接池配置
     druid:
-      # 生产环境连接池配置
       initial-size: 10
-      min-idle: 20
-      max-active: 100
+      min-idle: 10
+      max-active: 50
       max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
       # 生产环境关闭监控页面
       stat-view-servlet:
         enabled: false
       web-stat-filter:
         enabled: true
-      # 生产环境过滤器配置
-      filters: stat,wall,slf4j
-      connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
-      # 连接池监控
-      use-global-data-source-stat: true
+        url-pattern: /*
+        exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'
 
   # JPA配置
   jpa:
@@ -79,40 +85,67 @@ server:
       mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
       min-response-size: 1024
 
-# 租户路由配置
+# 租户路由配置 (使用tenant-routing-starter)
 tenant:
   routing:
     enabled: true
-    # 生产环境从配置中心或环境变量加载租户数据源
-    datasources:
-      # 租户数据源配置将通过配置中心动态加载
-      config-source: ${TENANT_CONFIG_SOURCE:environment}
-    cache:
-      enabled: true
-      ttl: 7200  # 2小时
-      max-size: 10000
+    header-name: X-Tenant-ID
+    required: false
+    exclude-paths: 
+      - /swagger-ui.html
+      - /doc.html
+      - /swagger-resources/**
+      - /v3/api-docs/**
+      - /webjars/**
+      - /actuator/**
+      - /api/public/**
+      - /knife4j/**
+      - /favicon.ico
+    tenant-center:
+      url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/tenant_center?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=true&allowPublicKeyRetrieval=true
+      username: ${DB_USERNAME}
+      password: ${DB_PASSWORD}
+    max-pool-size: 20
+    min-idle: 5
+    connection-timeout: 30000
+    idle-timeout: 600000
+    max-lifetime: 1800000
+    # Redis配置
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD}
+      database: ${REDIS_DATABASE:0}
+      pool:
+        max-active: 50
+        max-idle: 20
+        min-idle: 10
+        max-wait: 5000
+    # 租户缓存配置
+    preload-enabled: true
+    cache-expire-time: 604800  # 7天，单位秒
+    batch-size: 200
 
-# 文件导入导出配置
+# 文件导入导出配置 (file-import-export-starter)
 file:
-  import-export:
-    upload-path: ${FILE_UPLOAD_PATH:/data/prod/uploads}
-    export-path: ${FILE_EXPORT_PATH:/data/prod/exports}
-    temp-path: ${FILE_TEMP_PATH:/data/prod/temp}
-    max-file-size: 500MB
-    # 生产环境大批量处理
-    batch-size: 2000
-    thread-pool:
-      core-size: 10
-      max-size: 50
-      queue-capacity: 5000
-      keep-alive-seconds: 300
-    import:
-      max-concurrent-tasks: 10
-      timeout-minutes: 120
+  import:
     export:
-      max-concurrent-tasks: 20
-      timeout-minutes: 180
-      page-size: 50000
+      enabled: true
+      import:
+        max-batch-size: 50000  # 生产环境大批量处理
+        max-files: 20          # 最大上传文件数
+        concurrent: 2          # 导入并发数
+      export:
+        max-batch-size: 100000 # CSV/TXT单次导出限制
+        concurrent: 20         # 导出并发数
+      path:
+        upload-dir: ${FILE_UPLOAD_PATH:/data/prod/uploads}  # 上传目录
+        export-dir: ${FILE_EXPORT_PATH:/data/prod/exports}  # 导出目录
+      redis:
+        key-prefix: "file-io-prod"
+        task-ttl: 86400       # 任务过期时间(秒)
+      swagger:
+        enabled: false        # 生产环境禁用Swagger文档
 
 # 缓存配置
 cache:

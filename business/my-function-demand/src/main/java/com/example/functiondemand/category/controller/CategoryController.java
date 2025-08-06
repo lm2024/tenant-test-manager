@@ -24,7 +24,6 @@ import java.util.List;
 @RequestMapping("/api/categories")
 @RequiredArgsConstructor
 @Validated
-@TenantSwitchHeader
 @Tag(name = "分类目录管理", description = "分类目录管理相关接口")
 public class CategoryController {
 

@@ -181,8 +181,9 @@ public class PerformanceConfig {
          */
         public void recordBusinessMetric(String metricName, String operation, double value) {
             meterRegistry.gauge("business.metric",
-                    "name", metricName,
-                    "operation", operation,
+                    io.micrometer.core.instrument.Tags.of(
+                            "name", metricName,
+                            "operation", operation),
                     value);
         }
 
@@ -218,13 +219,13 @@ public class PerformanceConfig {
          */
         public void recordThreadPoolUsage(String poolName, int activeThreads, int poolSize, int queueSize) {
             meterRegistry.gauge("thread.pool.active",
-                    "pool", poolName,
+                    io.micrometer.core.instrument.Tags.of("pool", poolName),
                     activeThreads);
             meterRegistry.gauge("thread.pool.size",
-                    "pool", poolName,
+                    io.micrometer.core.instrument.Tags.of("pool", poolName),
                     poolSize);
             meterRegistry.gauge("thread.pool.queue.size",
-                    "pool", poolName,
+                    io.micrometer.core.instrument.Tags.of("pool", poolName),
                     queueSize);
         }
     }

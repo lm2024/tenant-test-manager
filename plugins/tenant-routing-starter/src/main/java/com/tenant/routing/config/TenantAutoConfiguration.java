@@ -121,13 +121,7 @@ public class TenantAutoConfiguration implements WebMvcConfigurer {
         return new JdbcTemplate(dataSource);
     }
     
-    /**
-     * 配置租户数据库信息仓库
-     */
-    @Bean
-    public TenantDbInfoRepository tenantDbInfoRepository(@Qualifier("tenantCenterDataSource") DataSource dataSource) {
-        return new TenantDbInfoRepository(dataSource);
-    }
+
     
     /**
      * 配置Redisson租户缓存服务

@@ -10,10 +10,10 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name = "requirement_function_relation", 
-       uniqueConstraints = @UniqueConstraint(name = "uk_req_func", columnNames = {"requirementId", "functionId"}),
+       uniqueConstraints = @UniqueConstraint(name = "uk_req_func", columnNames = {"requirement_id", "function_id"}),
        indexes = {
-           @Index(name = "idx_requirement_id", columnList = "requirementId"),
-           @Index(name = "idx_function_id", columnList = "functionId")
+           @Index(name = "idx_requirement_id", columnList = "requirement_id"),
+           @Index(name = "idx_function_id", columnList = "function_id")
        })
 @EqualsAndHashCode(callSuper = false)
 public class RequirementFunctionRelation {
