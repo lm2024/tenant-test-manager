@@ -104,6 +104,11 @@
             <groupId>com.example</groupId>
             <artifactId>elasticsearch-crud-starter</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.test</groupId>
+            <artifactId>redis-list-cache-starter</artifactId>
+            <version>1.0.0</version>
+        </dependency>
         
         <!-- 测试 -->
         <dependency>

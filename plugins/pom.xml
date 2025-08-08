@@ -15,5 +15,6 @@
         <module>file-import-export-starter</module>
         <module>segment-id-generator-starter</module>
         <module>tenant-routing-starter</module>
+        <module>redis-list-cache-starter</module>
     </modules>
 </project>

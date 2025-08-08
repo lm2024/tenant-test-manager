@@ -1,0 +1,28 @@
+2025-08-08 13:02:03.753 [task-queue-listener] ERROR [default] [] [] com.common.fileio.queue.TaskQueueListener - 任务队列处理异常
+org.springframework.dao.InvalidDataAccessApiUsageException: java.lang.InterruptedException; nested exception is org.redisson.client.RedisException: java.lang.InterruptedException
+	at org.redisson.spring.data.connection.RedissonExceptionConverter.convert(RedissonExceptionConverter.java:52)
+	at org.redisson.spring.data.connection.RedissonExceptionConverter.convert(RedissonExceptionConverter.java:35)
+	at org.springframework.data.redis.PassThroughExceptionTranslationStrategy.translate(PassThroughExceptionTranslationStrategy.java:44)
+	at org.redisson.spring.data.connection.RedissonConnection.transform(RedissonConnection.java:204)
+	at org.redisson.spring.data.connection.RedissonConnection.syncFuture(RedissonConnection.java:199)
+	at org.redisson.spring.data.connection.RedissonConnection.sync(RedissonConnection.java:369)
+	at org.redisson.spring.data.connection.RedissonConnection.write(RedissonConnection.java:735)
+	at org.redisson.spring.data.connection.RedissonConnection.bLPop(RedissonConnection.java:780)
+	at org.springframework.data.redis.core.DefaultListOperations$3.inRedis(DefaultListOperations.java:124)
+	at org.springframework.data.redis.core.AbstractOperations$ValueDeserializingRedisCallback.doInRedis(AbstractOperations.java:61)
+	at org.springframework.data.redis.core.RedisTemplate.execute(RedisTemplate.java:224)
+	at org.springframework.data.redis.core.RedisTemplate.execute(RedisTemplate.java:191)
+	at org.springframework.data.redis.core.AbstractOperations.execute(AbstractOperations.java:97)
+	at org.springframework.data.redis.core.DefaultListOperations.leftPop(DefaultListOperations.java:120)
+	at com.common.fileio.queue.TaskQueueManager.dequeueTask(TaskQueueManager.java:84)
+	at com.common.fileio.queue.TaskQueueListener.processTaskQueue(TaskQueueListener.java:70)
+	at java.lang.Thread.run(Thread.java:750)
+Caused by: org.redisson.client.RedisException: java.lang.InterruptedException
+	at org.redisson.command.CommandAsyncService.get(CommandAsyncService.java:113)
+	at org.redisson.spring.data.connection.RedissonConnection.syncFuture(RedissonConnection.java:197)
+	... 12 common frames omitted
+Caused by: java.lang.InterruptedException: null
+	at java.util.concurrent.CompletableFuture.reportGet(CompletableFuture.java:347)
+	at java.util.concurrent.CompletableFuture.get(CompletableFuture.java:1908)
+	at org.redisson.command.CommandAsyncService.get(CommandAsyncService.java:109)
+	... 13 common frames omitted

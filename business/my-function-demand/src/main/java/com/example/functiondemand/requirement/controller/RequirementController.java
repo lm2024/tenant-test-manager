@@ -1,5 +1,8 @@
 package com.example.functiondemand.requirement.controller;
 
+import com.common.redis.cache.annotation.CacheConfig;
+import com.common.redis.cache.annotation.CacheEvict;
+import com.common.redis.cache.annotation.ListCache;
 import com.example.functiondemand.requirement.dto.*;
 import com.example.functiondemand.requirement.service.RequirementService;
 import com.tenant.routing.annotation.TenantSwitchHeader;
@@ -26,12 +29,20 @@ import java.util.List;
 @RequiredArgsConstructor
 @Validated
 @Tag(name = "需求管理", description = "需求管理相关接口")
+@CacheConfig(
+    cacheNames = "requirements", 
+    keyPrefix = "req_service", 
+    expireTime = 1800,  // 30分钟
+    maxCachePages = 5,
+    tenantAware = true
+)
 public class RequirementController {
 
     private final RequirementService requirementService;
 
     @PostMapping
     @Operation(summary = "创建需求", description = "创建新的需求")
+    @CacheEvict(keyPattern = "requirements:*", timing = CacheEvict.EvictTiming.AFTER)
     public ResponseEntity<RequirementDTO> create(@Valid @RequestBody RequirementCreateDTO dto) {
         log.info("创建需求请求: {}", dto.getTitle());
         RequirementDTO result = requirementService.create(dto);
@@ -40,6 +51,7 @@ public class RequirementController {
 
     @PutMapping("/{id}")
     @Operation(summary = "更新需求", description = "根据ID更新需求信息")
+    @CacheEvict(keyPattern = "requirements:*", condition = "#result != null")
     public ResponseEntity<RequirementDTO> update(
             @Parameter(description = "需求ID") @PathVariable @NotBlank String id,
             @Valid @RequestBody RequirementUpdateDTO dto) {
@@ -51,6 +63,7 @@ public class RequirementController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "删除需求", description = "根据ID删除需求")
+    @CacheEvict(allEntries = true, timing = CacheEvict.EvictTiming.AFTER)
     public ResponseEntity<Void> delete(
             @Parameter(description = "需求ID") @PathVariable @NotBlank String id) {
         log.info("删除需求请求: {}", id);
@@ -68,6 +81,12 @@ public class RequirementController {
 
     @GetMapping
     @Operation(summary = "分页查询需求", description = "根据条件分页查询需求列表")
+    @ListCache(
+        value = "requirements_list",
+        expireTime = 1800,  // 30分钟
+        maxCachePages = 5,
+        condition = "#pageable.pageNumber < 5"
+    )
     public ResponseEntity<Page<RequirementDTO>> findAll(
             RequirementQueryDTO query,
             @PageableDefault(size = 20) Pageable pageable) {
@@ -77,6 +96,7 @@ public class RequirementController {
 
     @PostMapping("/batch")
     @Operation(summary = "批量创建需求", description = "批量创建多个需求")
+    @CacheEvict(allEntries = true, timing = CacheEvict.EvictTiming.AFTER)
     public ResponseEntity<List<RequirementDTO>> batchCreate(
             @Valid @RequestBody @NotEmpty List<RequirementCreateDTO> dtos) {
         log.info("批量创建需求请求，数量: {}", dtos.size());
@@ -86,6 +106,7 @@ public class RequirementController {
 
     @PutMapping("/batch")
     @Operation(summary = "批量更新需求", description = "批量更新多个需求")
+    @CacheEvict(allEntries = true, timing = CacheEvict.EvictTiming.AFTER)
     public ResponseEntity<Void> batchUpdate(
             @Valid @RequestBody @NotEmpty List<RequirementUpdateDTO> dtos) {
         log.info("批量更新需求请求，数量: {}", dtos.size());
@@ -95,6 +116,7 @@ public class RequirementController {
 
     @DeleteMapping("/batch")
     @Operation(summary = "批量删除需求", description = "批量删除多个需求")
+    @CacheEvict(allEntries = true, timing = CacheEvict.EvictTiming.AFTER)
     public ResponseEntity<Void> batchDelete(
             @RequestBody @NotEmpty List<String> ids) {
         log.info("批量删除需求请求，数量: {}", ids.size());

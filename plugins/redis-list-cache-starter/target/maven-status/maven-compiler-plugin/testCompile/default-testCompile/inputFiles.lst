@@ -1,0 +1,4 @@
+/Users/lm/Downloads/projects/tenant-test-manager/plugins/redis-list-cache-starter/src/test/java/com/common/redis/cache/aspect/ListCacheAspectTest.java
+/Users/lm/Downloads/projects/tenant-test-manager/plugins/redis-list-cache-starter/src/test/java/com/common/redis/cache/integration/CacheIntegrationTest.java
+/Users/lm/Downloads/projects/tenant-test-manager/plugins/redis-list-cache-starter/src/test/java/com/common/redis/cache/service/CacheKeyGeneratorTest.java
+/Users/lm/Downloads/projects/tenant-test-manager/plugins/redis-list-cache-starter/src/test/java/com/common/redis/cache/service/CacheSerializerTest.java

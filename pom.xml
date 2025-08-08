@@ -201,6 +201,20 @@
                 <version>${logstash-logback-encoder.version}</version>
             </dependency>
             
+            <!-- 测试容器 -->
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers</artifactId>
+                <version>${testcontainers.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>junit-jupiter</artifactId>
+                <version>${testcontainers.version}</version>
+                <scope>test</scope>
+            </dependency>
+            
             <!-- 内部组件 -->
             <dependency>
                 <groupId>com.tenant</groupId>
@@ -221,6 +235,11 @@
                 <groupId>com.common</groupId>
                 <artifactId>segment-id-generator-starter</artifactId>
                 <version>1.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.test</groupId>
+                <artifactId>redis-list-cache-starter</artifactId>
+                <version>1.0.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

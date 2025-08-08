@@ -1,0 +1,239 @@
+{
+  "groups": [
+    {
+      "name": "redis.list.cache",
+      "type": "com.common.redis.cache.config.RedisListCacheProperties",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties"
+    },
+    {
+      "name": "redis.list.cache.fallback",
+      "type": "com.common.redis.cache.config.RedisListCacheProperties$FallbackConfig",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties"
+    },
+    {
+      "name": "redis.list.cache.fallback.circuit-breaker",
+      "type": "com.common.redis.cache.config.RedisListCacheProperties$FallbackConfig$CircuitBreakerConfig",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties$FallbackConfig"
+    },
+    {
+      "name": "redis.list.cache.monitor",
+      "type": "com.common.redis.cache.config.RedisListCacheProperties$MonitorConfig",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties"
+    },
+    {
+      "name": "redis.list.cache.performance",
+      "type": "com.common.redis.cache.config.RedisListCacheProperties$PerformanceConfig",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties"
+    },
+    {
+      "name": "redis.list.cache.performance.warm-up",
+      "type": "com.common.redis.cache.config.RedisListCacheProperties$PerformanceConfig$WarmUpConfig",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties$PerformanceConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "redis.list.cache.default-expire-time",
+      "type": "java.lang.Long",
+      "description": "默认过期时间（秒），默认30分钟",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties",
+      "defaultValue": 1800
+    },
+    {
+      "name": "redis.list.cache.enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否启用列表缓存，默认启用",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "redis.list.cache.fallback.circuit-breaker.enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否启用熔断器，默认启用",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties$FallbackConfig$CircuitBreakerConfig",
+      "defaultValue": true
+    },
+    {
+      "name": "redis.list.cache.fallback.circuit-breaker.failure-threshold",
+      "type": "java.lang.Integer",
+      "description": "失败阈值，默认5次",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties$FallbackConfig$CircuitBreakerConfig",
+      "defaultValue": 5
+    },
+    {
+      "name": "redis.list.cache.fallback.circuit-breaker.half-open-max-calls",
+      "type": "java.lang.Integer",
+      "description": "半开状态测试请求数，默认3个",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties$FallbackConfig$CircuitBreakerConfig",
+      "defaultValue": 3
+    },
+    {
+      "name": "redis.list.cache.fallback.circuit-breaker.recovery-time",
+      "type": "java.lang.Long",
+      "description": "恢复时间（秒），默认60秒",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties$FallbackConfig$CircuitBreakerConfig",
+      "defaultValue": 60
+    },
+    {
+      "name": "redis.list.cache.fallback.enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否启用降级，默认启用",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties$FallbackConfig",
+      "defaultValue": true
+    },
+    {
+      "name": "redis.list.cache.fallback.max-retries",
+      "type": "java.lang.Integer",
+      "description": "最大重试次数，默认3次",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties$FallbackConfig",
+      "defaultValue": 3
+    },
+    {
+      "name": "redis.list.cache.fallback.retry-interval",
+      "type": "java.lang.Long",
+      "description": "重试间隔（毫秒），默认100毫秒",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties$FallbackConfig",
+      "defaultValue": 100
+    },
+    {
+      "name": "redis.list.cache.fallback.timeout",
+      "type": "java.lang.Long",
+      "description": "连接超时时间（毫秒），默认200毫秒",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties$FallbackConfig",
+      "defaultValue": 200
+    },
+    {
+      "name": "redis.list.cache.key-prefix",
+      "type": "java.lang.String",
+      "description": "缓存键前缀，默认为list_cache",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties",
+      "defaultValue": "list_cache"
+    },
+    {
+      "name": "redis.list.cache.max-cache-pages",
+      "type": "java.lang.Integer",
+      "description": "最大缓存页数，默认5页",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties",
+      "defaultValue": 5
+    },
+    {
+      "name": "redis.list.cache.monitor.enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否启用监控，默认启用",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties$MonitorConfig",
+      "defaultValue": true
+    },
+    {
+      "name": "redis.list.cache.monitor.jmx-enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否启用JMX监控，默认关闭",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties$MonitorConfig",
+      "defaultValue": false
+    },
+    {
+      "name": "redis.list.cache.monitor.metrics-interval",
+      "type": "java.lang.Integer",
+      "description": "指标收集间隔（秒），默认60秒",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties$MonitorConfig",
+      "defaultValue": 60
+    },
+    {
+      "name": "redis.list.cache.monitor.slow-query-threshold",
+      "type": "java.lang.Long",
+      "description": "慢查询阈值（毫秒），默认1000毫秒",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties$MonitorConfig",
+      "defaultValue": 1000
+    },
+    {
+      "name": "redis.list.cache.monitor.stats-retention-time",
+      "type": "java.lang.Long",
+      "description": "统计信息保留时间（秒），默认24小时",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties$MonitorConfig",
+      "defaultValue": 86400
+    },
+    {
+      "name": "redis.list.cache.monitor.verbose-logging",
+      "type": "java.lang.Boolean",
+      "description": "是否启用详细日志，默认关闭",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties$MonitorConfig",
+      "defaultValue": false
+    },
+    {
+      "name": "redis.list.cache.performance.async-enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否启用异步缓存，默认关闭",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties$PerformanceConfig",
+      "defaultValue": false
+    },
+    {
+      "name": "redis.list.cache.performance.async-thread-pool-size",
+      "type": "java.lang.Integer",
+      "description": "异步线程池大小，默认5",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties$PerformanceConfig",
+      "defaultValue": 5
+    },
+    {
+      "name": "redis.list.cache.performance.batch-size",
+      "type": "java.lang.Integer",
+      "description": "批量操作大小，默认100",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties$PerformanceConfig",
+      "defaultValue": 100
+    },
+    {
+      "name": "redis.list.cache.performance.compression-enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否启用缓存压缩，默认关闭",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties$PerformanceConfig",
+      "defaultValue": false
+    },
+    {
+      "name": "redis.list.cache.performance.compression-threshold",
+      "type": "java.lang.Integer",
+      "description": "压缩阈值（字节），默认1KB",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties$PerformanceConfig",
+      "defaultValue": 1024
+    },
+    {
+      "name": "redis.list.cache.performance.warm-up.concurrency",
+      "type": "java.lang.Integer",
+      "description": "预热并发数，默认3",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties$PerformanceConfig$WarmUpConfig",
+      "defaultValue": 3
+    },
+    {
+      "name": "redis.list.cache.performance.warm-up.delay",
+      "type": "java.lang.Long",
+      "description": "预热延迟时间（秒），默认30秒",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties$PerformanceConfig$WarmUpConfig",
+      "defaultValue": 30
+    },
+    {
+      "name": "redis.list.cache.performance.warm-up.enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否启用预热，默认关闭",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties$PerformanceConfig$WarmUpConfig",
+      "defaultValue": false
+    },
+    {
+      "name": "redis.list.cache.performance.warm-up.key-patterns",
+      "type": "java.lang.String[]",
+      "description": "预热键模式",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties$PerformanceConfig$WarmUpConfig",
+      "defaultValue": []
+    },
+    {
+      "name": "redis.list.cache.serialization-type",
+      "type": "com.common.redis.cache.config.RedisListCacheProperties$SerializationType",
+      "description": "序列化方式，默认JSON",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties"
+    },
+    {
+      "name": "redis.list.cache.tenant-aware",
+      "type": "java.lang.Boolean",
+      "description": "是否启用租户隔离，默认启用",
+      "sourceType": "com.common.redis.cache.config.RedisListCacheProperties",
+      "defaultValue": true
+    }
+  ],
+  "hints": []
+}

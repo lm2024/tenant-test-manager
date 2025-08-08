@@ -81,8 +81,8 @@ public class Knife4jConfig {
     public GroupedOpenApi importExportApi() {
         return GroupedOpenApi.builder()
                 .group("导入导出")
-                .pathsToMatch("/api/import/**", "/api/export/**")
-                .packagesToScan("com.example.functiondemand.importexport.controller")
+                .pathsToMatch("/api/import/**", "/api/export/**", "/api/file/**")
+                .packagesToScan("com.common.fileio.controller")
                 .build();
     }
 

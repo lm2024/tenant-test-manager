@@ -1,0 +1,4 @@
+2025-08-08 13:01:55.165 [main] INFO  [default] [] [] c.example.functiondemand.FunctionDemandApplication - Starting FunctionDemandApplication using Java 1.8.0_442 on lmdeMacBook-Air.local with PID 54616 (/Users/lm/Downloads/projects/tenant-test-manager/business/my-function-demand/target/classes started by lm in /Users/lm/Downloads/projects/tenant-test-manager)
+2025-08-08 13:01:55.167 [main] DEBUG [default] [] [] c.example.functiondemand.FunctionDemandApplication - Running with Spring Boot v2.7.0, Spring v5.3.20
+2025-08-08 13:01:55.167 [main] INFO  [default] [] [] c.example.functiondemand.FunctionDemandApplication - The following 1 profile is active: "dev"
+2025-08-08 13:02:01.781 [main] INFO  [default] [] [] c.example.functiondemand.FunctionDemandApplication - Started FunctionDemandApplication in 7.022 seconds (JVM running for 7.422)

@@ -1,0 +1,16 @@
+com/common/redis/cache/service/CacheSerializerTest$2.class
+com/common/redis/cache/service/CacheSerializerTest$1.class
+com/common/redis/cache/service/CacheSerializerTest.class
+com/common/redis/cache/service/CacheSerializerTest$4.class
+com/common/redis/cache/integration/CacheIntegrationTest$TestService.class
+com/common/redis/cache/service/CacheSerializerTest$TestObject.class
+com/common/redis/cache/aspect/ListCacheAspectTest$TestResultWithDataField.class
+com/common/redis/cache/aspect/ListCacheAspectTest.class
+com/common/redis/cache/aspect/ListCacheAspectTest$TestResultWithoutValidField.class
+com/common/redis/cache/service/CacheKeyGeneratorTest$TestService.class
+com/common/redis/cache/aspect/ListCacheAspectTest$TestBody.class
+com/common/redis/cache/service/CacheSerializerTest$3.class
+com/common/redis/cache/aspect/ListCacheAspectTest$TestResultWithBodyContent.class
+com/common/redis/cache/aspect/ListCacheAspectTest$TestResultWithDirectContent.class
+com/common/redis/cache/service/CacheKeyGeneratorTest.class
+com/common/redis/cache/integration/CacheIntegrationTest.class

@@ -1,0 +1,3 @@
+# Redis List Cache Auto Configuration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.common.redis.cache.config.RedisListCacheAutoConfiguration

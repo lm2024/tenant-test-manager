@@ -131,6 +131,13 @@
       <groupId>com.common</groupId>
       <artifactId>segment-id-generator-starter</artifactId>
     </dependency>
+    
+    <!-- Redis列表缓存组件 -->
+    <dependency>
+      <groupId>com.test</groupId>
+      <artifactId>redis-list-cache-starter</artifactId>
+      <version>1.0.0</version>
+    </dependency>
   </dependencies>
 
   <build>
