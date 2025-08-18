@@ -62,15 +62,16 @@ public class RequirementController {
 //        return ResponseEntity.ok(result);
 //    }
 //
-//    @DeleteMapping("/{id}")
-//    @Operation(summary = "删除需求", description = "根据ID删除需求")
-//    @CacheEvict(allEntries = true, timing = CacheEvict.EvictTiming.AFTER)
-//    public ResponseEntity<Void> delete(
-//            @Parameter(description = "需求ID") @PathVariable @NotBlank String id) {
-//        log.info("删除需求请求: {}", id);
-//        requirementService.delete(id);
-//        return ResponseEntity.ok().build();
-//    }
+    @DeleteMapping("/{id}")
+    @Operation(summary = "删除需求", description = "根据ID删除需求")
+    @TenantSwitchHeader(headerName = "X-Tenant-Id")
+    @CacheEvict(value = {"requirements_list"}, allEntries = true, timing = CacheEvict.EvictTiming.AFTER)
+    public ResponseEntity<Void> delete(
+            @Parameter(description = "需求ID") @PathVariable @NotBlank String id) {
+        log.info("删除需求请求: {}", id);
+        requirementService.delete(id);
+        return ResponseEntity.ok().build();
+    }
 //
 //    @GetMapping("/{id}")
 //    @Operation(summary = "获取需求详情", description = "根据ID获取需求详细信息")
@@ -98,7 +99,8 @@ public class RequirementController {
 
     @PostMapping("/batch")
     @Operation(summary = "批量创建需求", description = "批量创建多个需求")
-    @CacheEvict(allEntries = true, timing = CacheEvict.EvictTiming.AFTER)
+    @TenantSwitchHeader(headerName = "X-Tenant-Id")
+    @CacheEvict(value = {"requirements_list"}, allEntries = true, timing = CacheEvict.EvictTiming.AFTER)
     public ResponseEntity<List<RequirementDTO>> batchCreate(
             @Valid @RequestBody @NotEmpty List<RequirementCreateDTO> dtos) {
         log.info("批量创建需求请求，数量: {}", dtos.size());
@@ -108,7 +110,8 @@ public class RequirementController {
 
     @PutMapping("/batch")
     @Operation(summary = "批量更新需求", description = "批量更新多个需求")
-    @CacheEvict(allEntries = true, timing = CacheEvict.EvictTiming.AFTER)
+    @TenantSwitchHeader(headerName = "X-Tenant-Id")
+    @CacheEvict(value = {"requirements_list"}, allEntries = true, timing = CacheEvict.EvictTiming.AFTER)
     public ResponseEntity<Void> batchUpdate(
             @Valid @RequestBody @NotEmpty List<RequirementUpdateDTO> dtos) {
         log.info("批量更新需求请求，数量: {}", dtos.size());
@@ -118,7 +121,8 @@ public class RequirementController {
 
     @DeleteMapping("/batch")
     @Operation(summary = "批量删除需求", description = "批量删除多个需求")
-    @CacheEvict(allEntries = true, timing = CacheEvict.EvictTiming.AFTER)
+    @TenantSwitchHeader(headerName = "X-Tenant-Id")
+    @CacheEvict(value = {"requirements_list"}, allEntries = true, timing = CacheEvict.EvictTiming.AFTER)
     public ResponseEntity<Void> batchDelete(
             @RequestBody @NotEmpty List<String> ids) {
         log.info("批量删除需求请求，数量: {}", ids.size());

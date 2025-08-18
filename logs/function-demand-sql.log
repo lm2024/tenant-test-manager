@@ -473,3 +473,362 @@
             requiremen0_.created_time desc limit ?
 2025-08-18 21:30:00.556 [http-nio-8080-exec-4] TRACE [default] [] [] org.hibernate.type.descriptor.sql.BasicBinder - binding parameter [1] as [VARCHAR] - [%会话%]
 2025-08-18 21:30:00.556 [http-nio-8080-exec-4] TRACE [default] [] [] org.hibernate.type.descriptor.sql.BasicBinder - binding parameter [2] as [VARCHAR] - [%会话%]
+2025-08-18 21:40:25.997 [http-nio-8080-exec-1] DEBUG [default] [] [] org.hibernate.SQL - 
+    /* select
+        generatedAlias0 
+    from
+        Requirement as generatedAlias0 
+    where
+        1=1 
+    order by
+        generatedAlias0.createdTime desc */ select
+            requiremen0_.id as id1_2_,
+            requiremen0_.assignee as assignee2_2_,
+            requiremen0_.category_id as category3_2_,
+            requiremen0_.created_by as created_4_2_,
+            requiremen0_.created_time as created_5_2_,
+            requiremen0_.description as descript6_2_,
+            requiremen0_.level as level7_2_,
+            requiremen0_.parent_id as parent_i8_2_,
+            requiremen0_.path as path9_2_,
+            requiremen0_.priority as priorit10_2_,
+            requiremen0_.source as source11_2_,
+            requiremen0_.status as status12_2_,
+            requiremen0_.title as title13_2_,
+            requiremen0_.updated_by as updated14_2_,
+            requiremen0_.updated_time as updated15_2_ 
+        from
+            requirement requiremen0_ 
+        where
+            1=1 
+        order by
+            requiremen0_.created_time desc limit ?
+2025-08-18 21:40:26.010 [http-nio-8080-exec-1] DEBUG [default] [] [] org.hibernate.SQL - 
+    /* select
+        count(generatedAlias0) 
+    from
+        Requirement as generatedAlias0 
+    where
+        1=1 */ select
+            count(requiremen0_.id) as col_0_0_ 
+        from
+            requirement requiremen0_ 
+        where
+            1=1
+2025-08-18 21:40:43.191 [http-nio-8080-exec-5] DEBUG [default] [] [] org.hibernate.SQL - 
+    /* select
+        generatedAlias0 
+    from
+        Requirement as generatedAlias0 
+    where
+        1=1 
+    order by
+        generatedAlias0.createdTime desc */ select
+            requiremen0_.id as id1_2_,
+            requiremen0_.assignee as assignee2_2_,
+            requiremen0_.category_id as category3_2_,
+            requiremen0_.created_by as created_4_2_,
+            requiremen0_.created_time as created_5_2_,
+            requiremen0_.description as descript6_2_,
+            requiremen0_.level as level7_2_,
+            requiremen0_.parent_id as parent_i8_2_,
+            requiremen0_.path as path9_2_,
+            requiremen0_.priority as priorit10_2_,
+            requiremen0_.source as source11_2_,
+            requiremen0_.status as status12_2_,
+            requiremen0_.title as title13_2_,
+            requiremen0_.updated_by as updated14_2_,
+            requiremen0_.updated_time as updated15_2_ 
+        from
+            requirement requiremen0_ 
+        where
+            1=1 
+        order by
+            requiremen0_.created_time desc limit ?,
+            ?
+2025-08-18 21:40:43.199 [http-nio-8080-exec-5] DEBUG [default] [] [] org.hibernate.SQL - 
+    /* select
+        count(generatedAlias0) 
+    from
+        Requirement as generatedAlias0 
+    where
+        1=1 */ select
+            count(requiremen0_.id) as col_0_0_ 
+        from
+            requirement requiremen0_ 
+        where
+            1=1
+2025-08-18 21:41:01.101 [http-nio-8080-exec-6] DEBUG [default] [] [] org.hibernate.SQL - 
+    /* select
+        generatedAlias0 
+    from
+        Requirement as generatedAlias0 
+    where
+        1=1 
+    order by
+        generatedAlias0.createdTime desc */ select
+            requiremen0_.id as id1_2_,
+            requiremen0_.assignee as assignee2_2_,
+            requiremen0_.category_id as category3_2_,
+            requiremen0_.created_by as created_4_2_,
+            requiremen0_.created_time as created_5_2_,
+            requiremen0_.description as descript6_2_,
+            requiremen0_.level as level7_2_,
+            requiremen0_.parent_id as parent_i8_2_,
+            requiremen0_.path as path9_2_,
+            requiremen0_.priority as priorit10_2_,
+            requiremen0_.source as source11_2_,
+            requiremen0_.status as status12_2_,
+            requiremen0_.title as title13_2_,
+            requiremen0_.updated_by as updated14_2_,
+            requiremen0_.updated_time as updated15_2_ 
+        from
+            requirement requiremen0_ 
+        where
+            1=1 
+        order by
+            requiremen0_.created_time desc limit ?,
+            ?
+2025-08-18 21:41:01.103 [http-nio-8080-exec-6] DEBUG [default] [] [] org.hibernate.SQL - 
+    /* select
+        count(generatedAlias0) 
+    from
+        Requirement as generatedAlias0 
+    where
+        1=1 */ select
+            count(requiremen0_.id) as col_0_0_ 
+        from
+            requirement requiremen0_ 
+        where
+            1=1
+2025-08-18 21:41:03.416 [http-nio-8080-exec-7] DEBUG [default] [] [] org.hibernate.SQL - 
+    /* select
+        generatedAlias0 
+    from
+        Requirement as generatedAlias0 
+    where
+        1=1 
+    order by
+        generatedAlias0.createdTime desc */ select
+            requiremen0_.id as id1_2_,
+            requiremen0_.assignee as assignee2_2_,
+            requiremen0_.category_id as category3_2_,
+            requiremen0_.created_by as created_4_2_,
+            requiremen0_.created_time as created_5_2_,
+            requiremen0_.description as descript6_2_,
+            requiremen0_.level as level7_2_,
+            requiremen0_.parent_id as parent_i8_2_,
+            requiremen0_.path as path9_2_,
+            requiremen0_.priority as priorit10_2_,
+            requiremen0_.source as source11_2_,
+            requiremen0_.status as status12_2_,
+            requiremen0_.title as title13_2_,
+            requiremen0_.updated_by as updated14_2_,
+            requiremen0_.updated_time as updated15_2_ 
+        from
+            requirement requiremen0_ 
+        where
+            1=1 
+        order by
+            requiremen0_.created_time desc limit ?,
+            ?
+2025-08-18 21:41:03.420 [http-nio-8080-exec-7] DEBUG [default] [] [] org.hibernate.SQL - 
+    /* select
+        count(generatedAlias0) 
+    from
+        Requirement as generatedAlias0 
+    where
+        1=1 */ select
+            count(requiremen0_.id) as col_0_0_ 
+        from
+            requirement requiremen0_ 
+        where
+            1=1
+2025-08-18 21:41:06.455 [http-nio-8080-exec-8] DEBUG [default] [] [] org.hibernate.SQL - 
+    /* select
+        generatedAlias0 
+    from
+        Requirement as generatedAlias0 
+    where
+        1=1 
+    order by
+        generatedAlias0.createdTime desc */ select
+            requiremen0_.id as id1_2_,
+            requiremen0_.assignee as assignee2_2_,
+            requiremen0_.category_id as category3_2_,
+            requiremen0_.created_by as created_4_2_,
+            requiremen0_.created_time as created_5_2_,
+            requiremen0_.description as descript6_2_,
+            requiremen0_.level as level7_2_,
+            requiremen0_.parent_id as parent_i8_2_,
+            requiremen0_.path as path9_2_,
+            requiremen0_.priority as priorit10_2_,
+            requiremen0_.source as source11_2_,
+            requiremen0_.status as status12_2_,
+            requiremen0_.title as title13_2_,
+            requiremen0_.updated_by as updated14_2_,
+            requiremen0_.updated_time as updated15_2_ 
+        from
+            requirement requiremen0_ 
+        where
+            1=1 
+        order by
+            requiremen0_.created_time desc limit ?,
+            ?
+2025-08-18 21:41:06.460 [http-nio-8080-exec-8] DEBUG [default] [] [] org.hibernate.SQL - 
+    /* select
+        count(generatedAlias0) 
+    from
+        Requirement as generatedAlias0 
+    where
+        1=1 */ select
+            count(requiremen0_.id) as col_0_0_ 
+        from
+            requirement requiremen0_ 
+        where
+            1=1
+2025-08-18 21:41:09.573 [http-nio-8080-exec-9] DEBUG [default] [] [] org.hibernate.SQL - 
+    /* select
+        generatedAlias0 
+    from
+        Requirement as generatedAlias0 
+    where
+        1=1 
+    order by
+        generatedAlias0.createdTime desc */ select
+            requiremen0_.id as id1_2_,
+            requiremen0_.assignee as assignee2_2_,
+            requiremen0_.category_id as category3_2_,
+            requiremen0_.created_by as created_4_2_,
+            requiremen0_.created_time as created_5_2_,
+            requiremen0_.description as descript6_2_,
+            requiremen0_.level as level7_2_,
+            requiremen0_.parent_id as parent_i8_2_,
+            requiremen0_.path as path9_2_,
+            requiremen0_.priority as priorit10_2_,
+            requiremen0_.source as source11_2_,
+            requiremen0_.status as status12_2_,
+            requiremen0_.title as title13_2_,
+            requiremen0_.updated_by as updated14_2_,
+            requiremen0_.updated_time as updated15_2_ 
+        from
+            requirement requiremen0_ 
+        where
+            1=1 
+        order by
+            requiremen0_.created_time desc limit ?,
+            ?
+2025-08-18 21:41:09.577 [http-nio-8080-exec-9] DEBUG [default] [] [] org.hibernate.SQL - 
+    /* select
+        count(generatedAlias0) 
+    from
+        Requirement as generatedAlias0 
+    where
+        1=1 */ select
+            count(requiremen0_.id) as col_0_0_ 
+        from
+            requirement requiremen0_ 
+        where
+            1=1
+2025-08-18 21:41:57.435 [http-nio-8080-exec-3] DEBUG [default] [] [] org.hibernate.SQL - 
+    /* select
+        generatedAlias0 
+    from
+        Requirement as generatedAlias0 
+    where
+        1=1 
+    order by
+        generatedAlias0.createdTime desc */ select
+            requiremen0_.id as id1_2_,
+            requiremen0_.assignee as assignee2_2_,
+            requiremen0_.category_id as category3_2_,
+            requiremen0_.created_by as created_4_2_,
+            requiremen0_.created_time as created_5_2_,
+            requiremen0_.description as descript6_2_,
+            requiremen0_.level as level7_2_,
+            requiremen0_.parent_id as parent_i8_2_,
+            requiremen0_.path as path9_2_,
+            requiremen0_.priority as priorit10_2_,
+            requiremen0_.source as source11_2_,
+            requiremen0_.status as status12_2_,
+            requiremen0_.title as title13_2_,
+            requiremen0_.updated_by as updated14_2_,
+            requiremen0_.updated_time as updated15_2_ 
+        from
+            requirement requiremen0_ 
+        where
+            1=1 
+        order by
+            requiremen0_.created_time desc limit ?,
+            ?
+2025-08-18 21:45:05.560 [http-nio-8080-exec-4] DEBUG [default] [] [] org.hibernate.SQL - 
+    /* select
+        count(*) 
+    from
+        Requirement x 
+    WHERE
+        x.id = :id */ select
+            count(*) as col_0_0_ 
+        from
+            requirement requiremen0_ 
+        where
+            requiremen0_.id=?
+2025-08-18 21:45:05.562 [http-nio-8080-exec-4] TRACE [default] [] [] org.hibernate.type.descriptor.sql.BasicBinder - binding parameter [1] as [VARCHAR] - [10101010101010101010101010101010]
+2025-08-18 21:45:34.819 [http-nio-8080-exec-7] DEBUG [default] [] [] org.hibernate.SQL - 
+    /* select
+        count(*) 
+    from
+        Requirement x 
+    WHERE
+        x.id = :id */ select
+            count(*) as col_0_0_ 
+        from
+            requirement requiremen0_ 
+        where
+            requiremen0_.id=?
+2025-08-18 21:45:34.820 [http-nio-8080-exec-7] TRACE [default] [] [] org.hibernate.type.descriptor.sql.BasicBinder - binding parameter [1] as [VARCHAR] - [10101010101010101010101010101010]
+2025-08-18 21:46:41.012 [http-nio-8080-exec-10] DEBUG [default] [] [] org.hibernate.SQL - 
+    /* select
+        count(*) 
+    from
+        Requirement x 
+    WHERE
+        x.id = :id */ select
+            count(*) as col_0_0_ 
+        from
+            requirement requiremen0_ 
+        where
+            requiremen0_.id=?
+2025-08-18 21:46:41.117 [http-nio-8080-exec-10] TRACE [default] [] [] org.hibernate.type.descriptor.sql.BasicBinder - binding parameter [1] as [VARCHAR] - [10101010101010101010101010101010]
+2025-08-18 21:46:41.149 [http-nio-8080-exec-10] DEBUG [default] [] [] org.hibernate.SQL - 
+    /* select
+        generatedAlias0.id 
+    from
+        Requirement as generatedAlias0 
+    where
+        generatedAlias0.parentId=:param0 */ select
+            requiremen0_.id as col_0_0_ 
+        from
+            requirement requiremen0_ 
+        where
+            requiremen0_.parent_id=? limit ?
+2025-08-18 21:46:41.151 [http-nio-8080-exec-10] TRACE [default] [] [] org.hibernate.type.descriptor.sql.BasicBinder - binding parameter [1] as [VARCHAR] - [10101010101010101010101010101010]
+2025-08-18 21:46:41.158 [http-nio-8080-exec-10] DEBUG [default] [] [] org.hibernate.SQL - 
+    /* select
+        generatedAlias0 
+    from
+        RequirementFunctionRelation as generatedAlias0 
+    where
+        generatedAlias0.requirementId=:param0 */ select
+            requiremen0_.id as id1_3_,
+            requiremen0_.created_by as created_2_3_,
+            requiremen0_.created_time as created_3_3_,
+            requiremen0_.description as descript4_3_,
+            requiremen0_.function_id as function5_3_,
+            requiremen0_.relation_type as relation6_3_,
+            requiremen0_.requirement_id as requirem7_3_ 
+        from
+            requirement_function_relation requiremen0_ 
+        where
+            requiremen0_.requirement_id=?
+2025-08-18 21:46:41.159 [http-nio-8080-exec-10] TRACE [default] [] [] org.hibernate.type.descriptor.sql.BasicBinder - binding parameter [1] as [VARCHAR] - [10101010101010101010101010101010]

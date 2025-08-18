@@ -122,9 +122,9 @@ public class RequirementServiceImpl implements RequirementService {
         }
 
         // 业务规则检查
-        businessRuleChecker.checkDeleteRules(id, "requirement");
+//        businessRuleChecker.checkDeleteRules(id, "requirement");
 
-        relationRepository.deleteByRequirementId(id);
+//        relationRepository.deleteByRequirementId(id);
         requirementRepository.deleteById(id);
         
         log.info("需求删除成功: {}", id);
