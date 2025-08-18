@@ -17,6 +17,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springdoc.api.annotations.ParameterObject;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -40,44 +41,44 @@ public class RequirementController {
 
     private final RequirementService requirementService;
 
-    @PostMapping
-    @Operation(summary = "创建需求", description = "创建新的需求")
-    @CacheEvict(keyPattern = "requirements:*", timing = CacheEvict.EvictTiming.AFTER)
-    public ResponseEntity<RequirementDTO> create(@Valid @RequestBody RequirementCreateDTO dto) {
-        log.info("创建需求请求: {}", dto.getTitle());
-        RequirementDTO result = requirementService.create(dto);
-        return ResponseEntity.ok(result);
-    }
-
-    @PutMapping("/{id}")
-    @Operation(summary = "更新需求", description = "根据ID更新需求信息")
-    @CacheEvict(keyPattern = "requirements:*", condition = "#result != null")
-    public ResponseEntity<RequirementDTO> update(
-            @Parameter(description = "需求ID") @PathVariable @NotBlank String id,
-            @Valid @RequestBody RequirementUpdateDTO dto) {
-        log.info("更新需求请求: {}", id);
-        dto.setId(id);
-        RequirementDTO result = requirementService.update(id, dto);
-        return ResponseEntity.ok(result);
-    }
-
-    @DeleteMapping("/{id}")
-    @Operation(summary = "删除需求", description = "根据ID删除需求")
-    @CacheEvict(allEntries = true, timing = CacheEvict.EvictTiming.AFTER)
-    public ResponseEntity<Void> delete(
-            @Parameter(description = "需求ID") @PathVariable @NotBlank String id) {
-        log.info("删除需求请求: {}", id);
-        requirementService.delete(id);
-        return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/{id}")
-    @Operation(summary = "获取需求详情", description = "根据ID获取需求详细信息")
-    public ResponseEntity<RequirementDTO> findById(
-            @Parameter(description = "需求ID") @PathVariable @NotBlank String id) {
-        RequirementDTO result = requirementService.findById(id);
-        return ResponseEntity.ok(result);
-    }
+//    @PostMapping
+//    @Operation(summary = "创建需求", description = "创建新的需求")
+//    @CacheEvict(keyPattern = "requirements:*", timing = CacheEvict.EvictTiming.AFTER)
+//    public ResponseEntity<RequirementDTO> create(@Valid @RequestBody RequirementCreateDTO dto) {
+//        log.info("创建需求请求: {}", dto.getTitle());
+//        RequirementDTO result = requirementService.create(dto);
+//        return ResponseEntity.ok(result);
+//    }
+//
+//    @PutMapping("/{id}")
+//    @Operation(summary = "更新需求", description = "根据ID更新需求信息")
+//    @CacheEvict(keyPattern = "requirements:*", condition = "#result != null")
+//    public ResponseEntity<RequirementDTO> update(
+//            @Parameter(description = "需求ID") @PathVariable @NotBlank String id,
+//            @Valid @RequestBody RequirementUpdateDTO dto) {
+//        log.info("更新需求请求: {}", id);
+//        dto.setId(id);
+//        RequirementDTO result = requirementService.update(id, dto);
+//        return ResponseEntity.ok(result);
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    @Operation(summary = "删除需求", description = "根据ID删除需求")
+//    @CacheEvict(allEntries = true, timing = CacheEvict.EvictTiming.AFTER)
+//    public ResponseEntity<Void> delete(
+//            @Parameter(description = "需求ID") @PathVariable @NotBlank String id) {
+//        log.info("删除需求请求: {}", id);
+//        requirementService.delete(id);
+//        return ResponseEntity.ok().build();
+//    }
+//
+//    @GetMapping("/{id}")
+//    @Operation(summary = "获取需求详情", description = "根据ID获取需求详细信息")
+//    public ResponseEntity<RequirementDTO> findById(
+//            @Parameter(description = "需求ID") @PathVariable @NotBlank String id) {
+//        RequirementDTO result = requirementService.findById(id);
+//        return ResponseEntity.ok(result);
+//    }
 
     @GetMapping
     @Operation(summary = "分页查询需求", description = "根据条件分页查询需求列表")
@@ -87,9 +88,10 @@ public class RequirementController {
         maxCachePages = 5,
         condition = "#pageable.pageNumber < 5"
     )
+    @TenantSwitchHeader(headerName = "X-Tenant-Id")
     public ResponseEntity<Page<RequirementDTO>> findAll(
-            RequirementQueryDTO query,
-            @PageableDefault(size = 20) Pageable pageable) {
+            @ParameterObject RequirementQueryDTO query,
+            @ParameterObject @PageableDefault(size = 20) Pageable pageable) {
         Page<RequirementDTO> result = requirementService.findAll(query, pageable);
         return ResponseEntity.ok(result);
     }

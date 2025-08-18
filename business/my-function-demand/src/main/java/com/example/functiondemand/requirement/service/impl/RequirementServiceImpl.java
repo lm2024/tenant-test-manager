@@ -20,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -140,9 +141,61 @@ public class RequirementServiceImpl implements RequirementService {
     @Override
     @Transactional(readOnly = true)
     public Page<RequirementDTO> findAll(RequirementQueryDTO query, Pageable pageable) {
-        // 这里可以根据查询条件构建复杂查询
-        // 简化实现，直接返回分页结果
-        return requirementRepository.findAll(pageable).map(this::convertToDTO);
+        Specification<Requirement> spec = buildSpecification(query);
+        return requirementRepository.findAll(spec, pageable).map(this::convertToDTO);
+    }
+
+    private Specification<Requirement> buildSpecification(RequirementQueryDTO query) {
+        return (root, cq, cb) -> {
+            java.util.List<javax.persistence.criteria.Predicate> predicates = new java.util.ArrayList<>();
+
+            if (query != null) {
+                if (StrUtil.isNotBlank(query.getKeyword())) {
+                    String like = "%" + query.getKeyword().trim() + "%";
+                    javax.persistence.criteria.Predicate titleLike = cb.like(root.get("title"), like);
+                    javax.persistence.criteria.Predicate descLike = cb.like(root.get("description"), like);
+                    predicates.add(cb.or(titleLike, descLike));
+                }
+                if (StrUtil.isNotBlank(query.getCategoryId())) {
+                    predicates.add(cb.equal(root.get("categoryId"), query.getCategoryId()));
+                }
+                if (query.getPriority() != null) {
+                    predicates.add(cb.equal(root.get("priority"), query.getPriority()));
+                }
+                if (query.getStatus() != null) {
+                    predicates.add(cb.equal(root.get("status"), query.getStatus()));
+                }
+                if (query.getStatuses() != null && !query.getStatuses().isEmpty()) {
+                    predicates.add(root.get("status").in(query.getStatuses()));
+                }
+                if (StrUtil.isNotBlank(query.getAssignee())) {
+                    predicates.add(cb.equal(root.get("assignee"), query.getAssignee()));
+                }
+                if (StrUtil.isNotBlank(query.getSource())) {
+                    predicates.add(cb.equal(root.get("source"), query.getSource()));
+                }
+                if (query.getLevel() != null) {
+                    predicates.add(cb.equal(root.get("level"), query.getLevel()));
+                }
+                if (StrUtil.isNotBlank(query.getParentId())) {
+                    predicates.add(cb.equal(root.get("parentId"), query.getParentId()));
+                }
+                if (query.getCreatedTimeStart() != null) {
+                    predicates.add(cb.greaterThanOrEqualTo(root.get("createdTime"), query.getCreatedTimeStart()));
+                }
+                if (query.getCreatedTimeEnd() != null) {
+                    predicates.add(cb.lessThanOrEqualTo(root.get("createdTime"), query.getCreatedTimeEnd()));
+                }
+                if (query.getUpdatedTimeStart() != null) {
+                    predicates.add(cb.greaterThanOrEqualTo(root.get("updatedTime"), query.getUpdatedTimeStart()));
+                }
+                if (query.getUpdatedTimeEnd() != null) {
+                    predicates.add(cb.lessThanOrEqualTo(root.get("updatedTime"), query.getUpdatedTimeEnd()));
+                }
+            }
+
+            return cb.and(predicates.toArray(new javax.persistence.criteria.Predicate[0]));
+        };
     }
 
     @Override

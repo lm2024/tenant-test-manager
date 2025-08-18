@@ -45,7 +45,7 @@ public class Knife4jConfig {
     public GroupedOpenApi requirementApi() {
         return GroupedOpenApi.builder()
                 .group("需求管理")
-                .pathsToMatch("/api/requirements/**")
+                .pathsToMatch("/api/requirements", "/api/requirements/**")
                 .packagesToScan("com.example.functiondemand.requirement.controller")
                 .build();
     }
@@ -57,7 +57,7 @@ public class Knife4jConfig {
     public GroupedOpenApi functionPointApi() {
         return GroupedOpenApi.builder()
                 .group("功能点管理")
-                .pathsToMatch("/api/function-points/**")
+                .pathsToMatch("/api/function-points", "/api/function-points/**")
                 .packagesToScan("com.example.functiondemand.function.controller")
                 .build();
     }
@@ -69,7 +69,7 @@ public class Knife4jConfig {
     public GroupedOpenApi categoryApi() {
         return GroupedOpenApi.builder()
                 .group("分类目录管理")
-                .pathsToMatch("/api/categories/**")
+                .pathsToMatch("/api/categories", "/api/categories/**")
                 .packagesToScan("com.example.functiondemand.category.controller")
                 .build();
     }
