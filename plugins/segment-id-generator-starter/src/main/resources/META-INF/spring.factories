@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.common.segmentid.config.SegmentIdGeneratorAutoConfiguration 
+com.common.segmentid.config.SegmentIdGeneratorAutoConfiguration,\
+com.common.segmentid.config.SegmentIdAutoConfiguration 
